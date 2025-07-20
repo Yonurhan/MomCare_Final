@@ -5,37 +5,27 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
-// ← new imports for bottom navigation
-import 'package:pregnancy_app/main.dart';
+import 'package:pregnancy_app/screens/manual_input_screen.dart'; // <-- IMPORT the new screen
 import 'package:pregnancy_app/theme/app_theme.dart';
-import 'package:pregnancy_app/utils/constants.dart';
 
 class FoodResultScreen extends StatefulWidget {
   final File? imageFile;
   final String? dishName;
   final String? imageId;
-  final double? calories;
-  final double? protein;
-  final double? fat;
-  final double? carbs;
+  final Map<String, dynamic>? nutritionalInfo;
 
+  // Constructor for image-based results
   const FoodResultScreen.imageResult({
     super.key,
     required this.imageFile,
     required this.dishName,
     required this.imageId,
-  })  : calories = null,
-        protein = null,
-        fat = null,
-        carbs = null;
+  }) : nutritionalInfo = null;
 
+  // Constructor for text-based results from manual input
   const FoodResultScreen.textResult({
     super.key,
-    required this.calories,
-    required this.protein,
-    required this.fat,
-    required this.carbs,
+    required this.nutritionalInfo,
   })  : imageFile = null,
         dishName = null,
         imageId = null;
@@ -45,252 +35,249 @@ class FoodResultScreen extends StatefulWidget {
 }
 
 class _FoodResultScreenState extends State<FoodResultScreen> {
-  late double _calories;
-  late double _protein;
-  late double _fat;
-  late double _carbs;
+  Map<String, dynamic>? _nutritionalInfo;
   bool _isLoading = false;
+  // Check which mode the screen is in
   bool get _isTextMode => widget.imageFile == null;
 
   @override
   void initState() {
     super.initState();
-    _calories = widget.calories ?? 0.0;
-    _protein = widget.protein ?? 0.0;
-    _fat = widget.fat ?? 0.0;
-    _carbs = widget.carbs ?? 0.0;
-
     if (_isTextMode) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showSavePrompt();
-      });
+      // If we have text results, use them directly
+      _nutritionalInfo = widget.nutritionalInfo;
+    } else {
+      // If we have an image, fetch its nutrition info
+      if (widget.imageId != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _fetchNutritionInfo();
+        });
+      }
     }
   }
 
   Future<void> _fetchNutritionInfo() async {
-    if (widget.imageId == null) return;
+    if (widget.imageId == null || widget.imageId!.isEmpty) return;
     setState(() => _isLoading = true);
+
     try {
       final baseUrl = dotenv.env['BASE_URL'];
       final resp = await http.post(
-        Uri.parse(
-            '$baseUrl/food_detection/get_nutritional_info'),
+        Uri.parse('$baseUrl/food_detection/get_nutritional_info'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'imageId': widget.imageId}),
       );
+
       if (resp.statusCode == 200) {
-        final data =
-            jsonDecode(resp.body)['nutritional_info'] as Map<String, dynamic>;
+        final data = jsonDecode(resp.body) as Map<String, dynamic>;
         setState(() {
-          _calories = data['calories'] != null
-              ? (data['calories'] as num).toDouble()
-              : 0.0;
-          _protein = data['protein'] != null
-              ? (data['protein'] as num).toDouble()
-              : 0.0;
-          _fat = data['fat'] != null ? (data['fat'] as num).toDouble() : 0.0;
-          _carbs =
-              data['carbs'] != null ? (data['carbs'] as num).toDouble() : 0.0;
+          _nutritionalInfo = data['nutritional_info'];
         });
-        _showSavePrompt();
       } else {
-        throw Exception('Failed to fetch nutrition: ${resp.statusCode}');
+        throw Exception('Failed to fetch nutrition: ${resp.body}');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Error: $e')));
+        Navigator.of(context).pop();
+      }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
-  }
-
-  void _showSavePrompt() {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Save Nutritional Info'),
-        content: const Text('Would you like to save this nutrition data?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              _saveNutritionalInfo();
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> _saveNutritionalInfo() async {
+    if (_nutritionalInfo == null) return;
     setState(() => _isLoading = true);
+
     final payload = {
-      'calories': _calories,
-      'protein': _protein,
-      'fat': _fat,
-      'carbs': _carbs,
+      'calories': _nutritionalInfo!['calories'] ?? 0,
+      'protein': _nutritionalInfo!['protein'] ?? 0,
+      'fat': _nutritionalInfo!['fat'] ?? 0,
+      'carbs': _nutritionalInfo!['carbs'] ?? 0,
     };
 
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('access_token');
-    print('🔍 Retrieved access_token: $token');
-    if (token == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Please log in first.')));
-      setState(() => _isLoading = false);
-      return;
-    }
-
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+      if (token == null) throw Exception('You are not logged in.');
+
       final baseUrl = dotenv.env['BASE_URL'];
       final resp = await http.post(
-        Uri.parse(
-            '$baseUrl/food_detection/store_nutritional_info'),
+        Uri.parse('$baseUrl/food_detection/store_nutritional_info'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode(payload),
       );
-      final msg = resp.statusCode == 200
-          ? jsonDecode(resp.body)['message']
-          : 'Failed to save';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $e')));
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
 
-  Widget _buildNutritionCard(String label, double value, String unit) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        title: Text(label),
-        trailing: Text('${value.toStringAsFixed(1)} $unit'),
-      ),
-    );
+      final decodedBody = jsonDecode(resp.body);
+      if (resp.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(backgroundColor: Colors.green, content: Text(decodedBody['message'] ?? 'Successfully saved!')),
+        );
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      } else {
+        throw Exception(decodedBody['error'] ?? 'Failed to save nutrition data.');
+      }
+    } catch (e) {
+      if(mounted) {
+        ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Error: $e')));
+      }
+    } finally {
+      if(mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final calories = (_nutritionalInfo?['calories'] as num?)?.toDouble() ?? 0.0;
+    final protein = (_nutritionalInfo?['protein'] as num?)?.toDouble() ?? 0.0;
+    final carbs = (_nutritionalInfo?['carbs'] as num?)?.toDouble() ?? 0.0;
+    final fat = (_nutritionalInfo?['fat'] as num?)?.toDouble() ?? 0.0;
+    final totalMacros = protein + carbs + fat;
+
     return Scaffold(
+      backgroundColor: const Color(0xFFFDFCF8),
       appBar: AppBar(
-        title: Text(_isTextMode ? 'Nutrition Summary' : 'Food Result'),
+        title: Text(
+          _isTextMode ? 'Manual Entry Result' : 'Nutritional Subject',
+          style: const TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ListView(
-              children: [
-                if (!_isTextMode) ...[
-                  if (widget.imageFile != null) ...[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(
-                        widget.imageFile!,
-                        height: 250,
-                        fit: BoxFit.cover,
+          if (_nutritionalInfo != null || !_isTextMode)
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Show image card only if it's not text mode
+                  if (!_isTextMode)
+                    Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      clipBehavior: Clip.antiAlias,
+                      child: widget.imageFile != null
+                          ? Image.file(
+                              widget.imageFile!,
+                              height: 250,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(height: 250, color: Colors.grey[200]),
+                    ),
+                  if (!_isTextMode) const SizedBox(height: 24),
+
+                  // Food Name and Calories
+                  Text(
+                    _isTextMode ? 'Total Nutrition' : widget.dishName ?? 'Unknown Food',
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${calories.toStringAsFixed(0)} Kcal',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Macro Indicators
+                  _buildMacroIndicator('Prot', protein, 'g', totalMacros > 0 ? protein / totalMacros : 0, const Color(0xFF50E486)),
+                  const SizedBox(height: 12),
+                  _buildMacroIndicator('Carb', carbs, 'g', totalMacros > 0 ? carbs / totalMacros : 0, const Color(0xFF8650E4)),
+                  const SizedBox(height: 12),
+                  _buildMacroIndicator('Fats', fat, 'g', totalMacros > 0 ? fat / totalMacros : 0, const Color(0xFFE47A50)),
+                  const SizedBox(height: 32),
+                  
+                  // "Not your food?" Button
+                  if (!_isTextMode) // Only show this button for image results
+                    Center(
+                      child: TextButton(
+                        onPressed: (){
+                          // Navigate to manual input screen
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => const ManualInputScreen()), // <-- NAVIGATE HERE
+                          );
+                        },
+                        child: const Text(
+                          'Not your food? Input your food manually',
+                           style: TextStyle(color: AppTheme.primaryColor),
+                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Detected Food:',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      widget.dishName ?? '',
-                      style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                  if (_calories == 0)
-                    ElevatedButton(
-                      onPressed: _fetchNutritionInfo,
-                      child: const Text('Get Nutritional Info'),
-                    ),
-                  if (_calories > 0) ...[
-                    const SizedBox(height: 12),
-                    _buildNutritionCard('Calories', _calories, 'kcal'),
-                    _buildNutritionCard('Protein', _protein, 'g'),
-                    _buildNutritionCard('Fat', _fat, 'g'),
-                    _buildNutritionCard('Carbs', _carbs, 'g'),
-                    const SizedBox(height: 12),
-                    ElevatedButton(
-                      onPressed: _saveNutritionalInfo,
-                      child: const Text('Save to Profile'),
-                    ),
-                  ],
-                ] else ...[
-                  _buildNutritionCard('Calories', _calories, 'kcal'),
-                  _buildNutritionCard('Protein', _protein, 'g'),
-                  _buildNutritionCard('Fat', _fat, 'g'),
-                  _buildNutritionCard('Carbs', _carbs, 'g'),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: _saveNutritionalInfo,
-                    child: const Text('Save to Profile'),
+                  const SizedBox(height: 16),
+
+                  // Action Buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            foregroundColor: AppTheme.primaryColor,
+                            side: const BorderSide(color: AppTheme.primaryColor),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          ),
+                          child: const Text('Cancel'),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: _saveNutritionalInfo,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            backgroundColor: AppTheme.primaryColor,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          ),
+                          child: const Text('Save'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              ],
+              ),
             ),
-          ),
-          if (_isLoading) const Center(child: CircularProgressIndicator()),
+          
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(child: CircularProgressIndicator()),
+            ),
         ],
       ),
+    );
+  }
 
-      // ← added bottom navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppTheme.primaryColor,
-        unselectedItemColor: AppTheme.secondaryTextColor,
-        currentIndex: 2, // Tracker tab selected
-        onTap: (index) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => MainNavigationScreen(initialIndex: index),
-            ),
-          );
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: AppConstants.homeTab,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.forum_outlined),
-            activeIcon: Icon(Icons.forum),
-            label: AppConstants.forumTab,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt),
-            activeIcon: Icon(Icons.camera_alt),
-            label: 'Tracker',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            activeIcon: Icon(Icons.chat_bubble),
-            label: AppConstants.chatTab,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: AppConstants.profileTab,
-          ),
-        ],
-      ),
+  Widget _buildMacroIndicator(String label, double value, String unit, double percentage, Color color) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text('${value.toStringAsFixed(1)}$unit', style: TextStyle(color: Colors.grey[600])),
+          ],
+        ),
+        const SizedBox(height: 4),
+        LinearProgressIndicator(
+          value: percentage,
+          backgroundColor: Colors.grey[200],
+          color: color,
+          minHeight: 8,
+        ),
+      ],
     );
   }
 }

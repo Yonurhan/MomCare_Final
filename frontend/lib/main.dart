@@ -13,13 +13,10 @@ import 'screens/forum_screen.dart';
 import 'screens/food_capture_widget.dart';
 import 'screens/chat_screen.dart';
 import 'screens/profile_screen.dart';
-import 'screens/food_result_screen.dart';
 
-// Theme and Utilities
 import 'theme/app_theme.dart';
 import 'utils/constants.dart';
 
-// Services
 import 'services/auth_service.dart';
 import 'services/forum_service.dart';
 
@@ -103,15 +100,22 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const ForumScreen(),
-    const FoodCapture(),
+    Container(), 
     const ChatScreen(),
     const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FoodCapture()),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -125,7 +129,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppTheme.primaryColor,
         unselectedItemColor: AppTheme.secondaryTextColor,
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex, 
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
