@@ -3,25 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-// Screens
-import 'screens/splash_screen.dart';
-import 'screens/onboarding_screen.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/forum_screen.dart';
-import 'screens/food_capture_widget.dart';
-import 'screens/chat_screen.dart';
-import 'screens/profile_screen.dart';
-import 'screens/food_result_screen.dart';
+// Ganti dengan path proyek Anda yang sebenarnya
+import 'package:pregnancy_app/screens/splash_screen.dart';
+import 'package:pregnancy_app/screens/onboarding_screen.dart';
+import 'package:pregnancy_app/screens/login_screen.dart';
+import 'package:pregnancy_app/screens/register_screen.dart';
+import 'package:pregnancy_app/screens/home_screen.dart';
+import 'package:pregnancy_app/screens/forum_screen.dart';
+import 'package:pregnancy_app/screens/food_capture_widget.dart';
+import 'package:pregnancy_app/screens/chat_screen.dart';
+import 'package:pregnancy_app/screens/profile_screen.dart';
+// import 'package:pregnancy_app/screens/food_result_screen.dart'; // Uncomment jika file ini ada
 
 // Theme and Utilities
-import 'theme/app_theme.dart';
-import 'utils/constants.dart';
+import 'package:pregnancy_app/theme/app_theme.dart';
+import 'package:pregnancy_app/utils/constants.dart';
 
 // Services
-import 'services/auth_service.dart';
-import 'services/forum_service.dart';
+import 'package:pregnancy_app/services/auth_service.dart';
+import 'package:pregnancy_app/services/forum_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,20 +93,28 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   late int _selectedIndex;
+  late final List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
-  }
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const ForumScreen(),
-    const FoodCapture(),
-    const ChatScreen(),
-    const ProfileScreen(),
-  ];
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    // PERBAIKAN: Gunakan .toString() untuk mengonversi ID (yang berupa int) menjadi String.
+    // Ini adalah cara yang benar dan aman untuk mengatasi error.
+    final userId = authService.currentUser?.id.toString() ?? 'default_user';
+
+    _screens = [
+      const HomeScreen(),
+      const ForumScreen(),
+      const FoodCapture(),
+      // Sekarang userId adalah String yang valid.
+      ChatScreen(userId: userId),
+      const ProfileScreen(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {

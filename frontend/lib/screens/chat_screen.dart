@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pregnancy_app/services/api_service.dart';
-import 'package:pregnancy_app/theme/app_theme.dart';
-import 'package:pregnancy_app/utils/constants.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+// Ganti dengan path proyek Anda
+import 'package:pregnancy_app/services/api_service.dart';
+import 'package:pregnancy_app/models/chat_models.dart';
+import 'package:pregnancy_app/theme/app_theme.dart';
+import 'package:pregnancy_app/services/auth_service.dart';
+import 'chat_history_screen.dart'; // Impor halaman riwayat baru
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final String userId;
+  const ChatScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -15,73 +22,23 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final List<Map<String, dynamic>> _messages = [];
   final ApiService _apiService = ApiService();
 
-  bool _isLoading = false;
-  bool _showSuggestions = true;
+  final List<MessageModel> _messages = [];
+  List<String> _suggestions = [];
+
+  bool _isSending = false;
+  bool _isHistoryLoading = true;
   late AnimationController _typingAnimController;
-
-  // Warna gradient untuk bubble chat
-  final List<Color> _userGradient = [
-    AppTheme.primaryColor,
-    AppTheme.primaryColor.withOpacity(0.7),
-  ];
-
-  final List<Color> _botGradient = [
-    Colors.white,
-    Colors.grey.shade50,
-  ];
 
   @override
   void initState() {
     super.initState();
     _typingAnimController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 600),
     )..repeat(reverse: true);
-
-    // Tambahkan pesan sambutan
-    _fetchInitialSuggestions();
-  }
-
-  void _fetchInitialSuggestions() async {
-    try {
-      final response = await _apiService.sendChatMessage(
-          "Berikan saran pertanyaan untuk ibu hamil", "user123");
-
-      // Konversi List<dynamic> ke List<String>
-      List<String> suggestionsList = [];
-      if (response['suggestions'] != null) {
-        suggestionsList = List<String>.from(
-            response['suggestions'].map((item) => item.toString()));
-      }
-
-      setState(() {
-        _messages.add({
-          'text':
-              'Halo! Saya asisten nutrisi kehamilan Anda. Apa yang ingin Anda tanyakan tentang nutrisi selama kehamilan?',
-          'isUser': false,
-          'timestamp': DateTime.now(),
-          'suggestions': suggestionsList,
-        });
-      });
-    } catch (e) {
-      setState(() {
-        _messages.add({
-          'text':
-              'Halo! Saya asisten nutrisi kehamilan Anda. Apa yang ingin Anda tanyakan tentang nutrisi selama kehamilan?',
-          'isUser': false,
-          'timestamp': DateTime.now(),
-          'suggestions': [
-            'Bagaimana mengatasi morning sickness?',
-            'Makanan apa yang kaya folat?',
-            'Berapa banyak air yang harus diminum setiap hari?',
-            'Apakah aman makan ikan selama kehamilan?',
-          ],
-        });
-      });
-    }
+    _loadInitialChat();
   }
 
   @override
@@ -92,90 +49,100 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  Future<void> _sendMessage(String text) async {
-    if (text.trim().isEmpty) return;
-
-    // Hapus suggestions setelah user mengirim pesan
-    setState(() {
-      _showSuggestions = false;
-    });
-
-    // Tambahkan pesan user
-    final userMessage = {
-      'text': text,
-      'isUser': true,
-      'timestamp': DateTime.now(),
-    };
-
-    setState(() {
-      _messages.add(userMessage);
-      _isLoading = true;
-    });
-
-    _messageController.clear();
-
-    // Auto scroll ke pesan terbaru
-    _scrollToBottom();
-
-    // Tambahkan haptic feedback
-    HapticFeedback.lightImpact();
-
+  Future<void> _loadInitialChat() async {
     try {
-      final response = await _apiService.sendChatMessage(text, 'user123');
-
+      final history = await _apiService.getChatHistory(widget.userId);
       if (mounted) {
         setState(() {
-          _isLoading = false;
-
-          // Konversi List<dynamic> ke List<String>
-          List<String> suggestionsList = [];
-          if (response['suggestions'] != null) {
-            suggestionsList = List<String>.from(
-                response['suggestions'].map((item) => item.toString()));
-          }
-
-          _messages.add({
-            'text': response['response'],
-            'isUser': false,
-            'timestamp': DateTime.now(),
-            'suggestions': suggestionsList,
-          });
+          _messages.addAll(history.messages);
         });
-
-        // Auto scroll ke pesan terbaru
-        _scrollToBottom();
       }
     } catch (e) {
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Gagal memuat riwayat: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ));
+      }
+    } finally {
+      if (mounted) {
         setState(() {
-          _isLoading = false;
-          _messages.add({
-            'text': 'Maaf, terjadi kesalahan. Silakan coba lagi nanti.',
-            'isUser': false,
-            'timestamp': DateTime.now(),
-          });
+          _isHistoryLoading = false;
+          if (_messages.isEmpty) {
+            final username = Provider.of<AuthService>(context, listen: false)
+                    .currentUser
+                    ?.username ??
+                'Pengguna';
+            _messages.add(MessageModel(
+              content:
+                  'Halo $username! Saya GITA, asisten virtual Anda. Apa yang ingin Anda ketahui?',
+              isUser: false,
+              timestamp: DateTime.now().toIso8601String(),
+            ));
+            _suggestions = [
+              'Apa itu stunting?',
+              'Makanan untuk trimester pertama',
+              'Tanda-tanda bahaya kehamilan'
+            ];
+          }
         });
-
-        _scrollToBottom();
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        _scrollToBottom(milliseconds: 400);
       }
     }
   }
 
-  void _scrollToBottom() {
-    // Delay sedikit untuk memastikan UI sudah diupdate
-    Future.delayed(const Duration(milliseconds: 100), () {
+  Future<void> _sendMessage(String text) async {
+    if (text.trim().isEmpty || _isSending) return;
+    HapticFeedback.lightImpact();
+    setState(() {
+      _isSending = true;
+      _messages.add(MessageModel(
+        content: text,
+        isUser: true,
+        timestamp: DateTime.now().toIso8601String(),
+      ));
+      _suggestions = [];
+    });
+    _messageController.clear();
+    _scrollToBottom();
+
+    try {
+      final response = await _apiService.sendChatMessage(
+          message: text, userId: widget.userId);
+      if (mounted) {
+        setState(() {
+          _messages.add(MessageModel(
+            content: response.response,
+            isUser: false,
+            timestamp: DateTime.now().toIso8601String(),
+          ));
+          _suggestions = response.suggestions;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        _messages.add(MessageModel(
+          content: 'Maaf, terjadi kesalahan koneksi. Silakan coba lagi.',
+          isUser: false,
+          timestamp: DateTime.now().toIso8601String(),
+        ));
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSending = false;
+        });
+        _scrollToBottom();
+      }
+    }
+  }
+
+  void _scrollToBottom({int milliseconds = 300}) {
+    Future.delayed(Duration(milliseconds: milliseconds), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 250),
           curve: Curves.easeOut,
         );
       }
@@ -186,159 +153,152 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nutrition Assistant'),
-        elevation: 0,
-        backgroundColor: AppTheme.primaryColor,
+        title: const Text('Asisten GITA'),
+        elevation: 1,
         actions: [
           IconButton(
-            icon: const Icon(Icons.info_outline),
+            icon: const Icon(Icons.history_rounded),
+            tooltip: 'Lihat Riwayat',
             onPressed: () {
-              // Show info about the assistant
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ChatHistoryScreen(userId: widget.userId),
+                ),
+              );
             },
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Chat messages
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                image: DecorationImage(
-                  image: const AssetImage('assets/images/chat_bg.png'),
-                  fit: BoxFit.cover,
-                  opacity: 0.5,
-                ),
-              ),
-              child: ListView.builder(
-                controller: _scrollController,
-                padding: const EdgeInsets.all(16),
-                itemCount: _messages.length + (_isLoading ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (_isLoading && index == _messages.length) {
-                    return _buildLoadingBubble();
-                  }
-
-                  final message = _messages[index];
-                  return _buildMessageBubble(
-                    message['text'],
-                    message['isUser'],
-                    message['timestamp'],
-                    suggestions: message['suggestions'],
-                    isFirstMessage: index == 0,
-                  );
-                },
-              ),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.white,
+              Colors.grey.shade50,
+            ],
           ),
-
-          // Input area
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, -1),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-            child: Row(
-              children: [
-                // Mic button
-                IconButton(
-                  icon: const Icon(Icons.mic_none_rounded),
-                  onPressed: _isLoading
-                      ? null
-                      : () {
-                          // Voice input functionality
-                        },
-                  color: AppTheme.primaryColor,
-                ),
-
-                // Text input
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: TextField(
-                      controller: _messageController,
-                      decoration: InputDecoration(
-                        hintText: 'Ketik pertanyaan Anda...',
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 10,
-                        ),
-                        suffixIcon: _messageController.text.isNotEmpty
-                            ? IconButton(
-                                icon: const Icon(Icons.clear),
-                                onPressed: () {
-                                  _messageController.clear();
-                                  setState(() {});
-                                },
-                              )
-                            : null,
-                      ),
-                      textCapitalization: TextCapitalization.sentences,
-                      onChanged: (text) {
-                        setState(() {});
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: _isHistoryLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _messages.length + (_isSending ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (_isSending && index == _messages.length) {
+                          return _buildLoadingBubble();
+                        }
+                        final message = _messages[index];
+                        final showSuggestions = !_isSending &&
+                            index == _messages.length - 1 &&
+                            _suggestions.isNotEmpty;
+                        return _buildMessageBubble(message, showSuggestions);
                       },
-                      onSubmitted: _isLoading ? null : _sendMessage,
-                      enabled: !_isLoading,
                     ),
-                  ),
-                ),
-
-                const SizedBox(width: 8),
-
-                // Send button
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: 48,
-                  width: 48,
-                  decoration: BoxDecoration(
-                    color: _messageController.text.isNotEmpty
-                        ? AppTheme.primaryColor
-                        : Colors.grey.shade300,
-                    shape: BoxShape.circle,
-                    boxShadow: _messageController.text.isNotEmpty
-                        ? [
-                            BoxShadow(
-                              color: AppTheme.primaryColor.withOpacity(0.4),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ]
-                        : null,
-                  ),
-                  child: IconButton(
-                    icon: _isLoading
-                        ? const SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Icon(Icons.send_rounded),
-                    color: Colors.white,
-                    onPressed: _isLoading || _messageController.text.isEmpty
-                        ? null
-                        : () => _sendMessage(_messageController.text),
-                  ),
-                ),
-              ],
             ),
+            _buildMessageInput(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMessageBubble(MessageModel message, bool showSuggestions) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final userInitial = authService.currentUser?.username.isNotEmpty == true
+        ? authService.currentUser!.username[0].toUpperCase()
+        : 'U';
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Column(
+        crossAxisAlignment:
+            message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: message.isUser
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (!message.isUser)
+                const CircleAvatar(
+                  backgroundColor: AppTheme.primaryColor,
+                  child: Icon(Icons.health_and_safety,
+                      color: Colors.white, size: 22),
+                ),
+              Flexible(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(
+                      message.isUser ? 45 : 10, 4, message.isUser ? 10 : 45, 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color:
+                        message.isUser ? AppTheme.primaryColor : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: _FormattedMessageContent(
+                    text: message.content,
+                    isUser: message.isUser,
+                    timestamp: message.timestamp,
+                  ),
+                ),
+              ),
+              if (message.isUser)
+                CircleAvatar(
+                  backgroundColor: Colors.grey.shade200,
+                  child: Text(userInitial,
+                      style: const TextStyle(
+                          color: Colors.grey, fontWeight: FontWeight.bold)),
+                ),
+            ],
           ),
+          if (showSuggestions) _buildSuggestionsChipList(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSuggestionsChipList() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12.0, left: 50, right: 16, bottom: 8),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: _suggestions.map((suggestion) {
+          return InkWell(
+            onTap: () => _sendMessage(suggestion),
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+                border:
+                    Border.all(color: AppTheme.primaryColor.withOpacity(0.3)),
+              ),
+              child: Text(suggestion,
+                  style: const TextStyle(
+                      color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.w500)),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -346,64 +306,90 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   Widget _buildLoadingBubble() {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 16, right: 60),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const CircleAvatar(
+            backgroundColor: AppTheme.primaryColor,
+            child: Icon(Icons.health_and_safety, color: Colors.white, size: 22),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4))
+              ],
+            ),
+            child: AnimatedBuilder(
+              animation: _typingAnimController,
+              builder: (context, child) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(3, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 3),
+                      child: Opacity(
+                        opacity: (_typingAnimController.value * 2 - index * 0.5)
+                            .clamp(0.2, 1.0),
+                        child: const CircleAvatar(
+                            radius: 4, backgroundColor: AppTheme.primaryColor),
+                      ),
+                    );
+                  }),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessageInput() {
+    return Container(
+      decoration: BoxDecoration(color: Theme.of(context).cardColor, boxShadow: [
+        BoxShadow(
+            offset: const Offset(0, -2),
+            blurRadius: 5,
+            color: Colors.black.withOpacity(0.05))
+      ]),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      child: SafeArea(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Avatar
-            CircleAvatar(
-              backgroundColor: AppTheme.primaryColor,
-              radius: 18,
-              child: const Icon(
-                Icons.health_and_safety,
-                size: 20,
-                color: Colors.white,
+            Expanded(
+              child: TextField(
+                controller: _messageController,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  hintText: 'Ketik pesan Anda...',
+                  filled: true,
+                  fillColor: Colors.grey.shade100,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none),
+                ),
+                onSubmitted: _isSending ? null : (val) => _sendMessage(val),
               ),
             ),
             const SizedBox(width: 8),
-
-            // Bubble
-            Flexible(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      blurRadius: 5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AnimatedBuilder(
-                      animation: _typingAnimController,
-                      builder: (context, child) {
-                        return Row(
-                          children: [
-                            _buildDot(_typingAnimController.value > 0.3),
-                            const SizedBox(width: 4),
-                            _buildDot(_typingAnimController.value > 0.5),
-                            const SizedBox(width: 4),
-                            _buildDot(_typingAnimController.value > 0.7),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
+            IconButton(
+              icon: const Icon(Icons.send_rounded),
+              color: AppTheme.primaryColor,
+              onPressed: _isSending
+                  ? null
+                  : () => _sendMessage(_messageController.text),
+              style: IconButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
+                padding: const EdgeInsets.all(14),
               ),
             ),
           ],
@@ -411,293 +397,127 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
       ),
     );
   }
+}
 
-  Widget _buildDot(bool isActive) {
-    return Container(
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(
-        color: isActive ? AppTheme.primaryColor : Colors.grey.shade300,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
+/// Widget khusus untuk mem-parsing dan menampilkan konten pesan yang diformat
+class _FormattedMessageContent extends StatelessWidget {
+  final String text;
+  final bool isUser;
+  final String timestamp;
 
-  Widget _buildMessageBubble(
-    String message,
-    bool isUser,
-    DateTime timestamp, {
-    List<String>? suggestions,
-    bool isFirstMessage = false,
-  }) {
-    // Process the message text to remove markdown symbols and format properly
-    final formattedMessage = _processMessageText(message);
+  const _FormattedMessageContent({
+    Key? key,
+    required this.text,
+    required this.isUser,
+    required this.timestamp,
+  }) : super(key: key);
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment:
-            isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment:
-                isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              if (!isUser) ...[
-                CircleAvatar(
-                  backgroundColor: AppTheme.primaryColor,
-                  radius: 18,
-                  child: const Icon(
-                    Icons.health_and_safety,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 8),
-              ],
-              Flexible(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isUser ? _userGradient : _botGradient,
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(16),
-                      topRight: const Radius.circular(16),
-                      bottomLeft: Radius.circular(isUser ? 16 : 0),
-                      bottomRight: Radius.circular(isUser ? 0 : 16),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildFormattedMessageContent(formattedMessage, isUser),
-                      const SizedBox(height: 4),
-                      Text(
-                        _formatTime(timestamp),
-                        style: TextStyle(
-                          color: isUser
-                              ? Colors.white.withOpacity(0.7)
-                              : Colors.grey[600],
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (isUser) ...[
-                const SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundColor: Colors.grey.shade200,
-                  radius: 18,
-                  child: const Icon(
-                    Icons.person,
-                    size: 20,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ],
+  @override
+  Widget build(BuildContext context) {
+    final textColor = isUser ? Colors.white : Colors.black87;
+    final boldTextColor = isUser ? Colors.white : AppTheme.primaryColor;
+    final timeColor = isUser ? Colors.white70 : Colors.grey.shade600;
+
+    final boldStyle = TextStyle(
+        fontWeight: FontWeight.bold, color: boldTextColor, fontSize: 16);
+    final regularStyle = TextStyle(color: textColor, fontSize: 16, height: 1.4);
+
+    List<Widget> contentWidgets = [];
+    final paragraphs = text.split(RegExp(r'\n\n+'));
+
+    for (var paragraph in paragraphs) {
+      if (paragraph.trim().isEmpty) continue;
+
+      // Cek untuk judul utama
+      if (paragraph.contains('Selamat!') ||
+          paragraph.contains('Berikut adalah')) {
+        contentWidgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            paragraph.replaceAll('**', '').trim(),
+            style: regularStyle.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 17),
           ),
+        ));
+        continue;
+      }
 
-          // Show suggestions if available
-          if (suggestions != null && suggestions.isNotEmpty)
-            Padding(
-              padding: EdgeInsets.only(
-                top: 8,
-                left: isUser ? 0 : 44,
-                right: isUser ? 44 : 0,
-              ),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                alignment: isUser ? WrapAlignment.end : WrapAlignment.start,
-                children: suggestions.map((suggestion) {
-                  return InkWell(
-                    onTap: () => _sendMessage(suggestion),
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppTheme.primaryColor.withOpacity(0.3),
-                        ),
-                      ),
-                      child: Text(
-                        suggestion,
-                        style: TextStyle(
-                          color: AppTheme.primaryColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
+      // Cek untuk sub-judul
+      if (paragraph.contains('Nutrisi Penting') ||
+          paragraph.contains('Rekomendasi Makanan') ||
+          paragraph.contains('Tips Tambahan') ||
+          paragraph.contains('Contoh Menu Harian') ||
+          paragraph.contains('Penting untuk diingat')) {
+        contentWidgets.add(Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+          child: Text(
+            paragraph.replaceAll('**', '').trim(),
+            style: boldStyle,
+          ),
+        ));
+        continue;
+      }
 
-  // Helper method to build formatted message content
-  Widget _buildFormattedMessageContent(
-      Map<String, dynamic> formattedMessage, bool isUser) {
-    if (formattedMessage['sections'].isEmpty) {
-      // Regular text message
-      return Text(
-        formattedMessage['plainText'],
-        style: TextStyle(
-          color: isUser ? Colors.white : Colors.black,
-          fontSize: 16,
-        ),
-      );
-    } else {
-      // Structured nutrition message
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (formattedMessage['hasTitle'])
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Text(
-                formattedMessage['title'],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                  color: isUser ? Colors.white : AppTheme.primaryColor,
-                ),
-              ),
-            ),
-          ...formattedMessage['sections'].map<Widget>((section) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (section['key'].isNotEmpty) ...[
-                    Text(
-                      section['key'] + ': ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: isUser ? Colors.white : AppTheme.primaryColor,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        section['value'],
-                        style: TextStyle(
-                          color: isUser ? Colors.white : Colors.black87,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ] else
-                    Expanded(
-                      child: Text(
-                        section['value'],
-                        style: TextStyle(
-                          color: isUser ? Colors.white : Colors.black87,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            );
-          }).toList(),
-        ],
-      );
-    }
-  }
-
-  // Process message text to handle formatting
-  Map<String, dynamic> _processMessageText(String message) {
-    Map<String, dynamic> result = {
-      'hasTitle': false,
-      'title': '',
-      'sections': <Map<String, String>>[],
-      'plainText': '',
-    };
-
-    // Remove markdown symbols
-    String processedText = message.replaceAll('**', '');
-
-    // Set plain text for simple messages
-    result['plainText'] = processedText;
-
-    // Split into sections
-    List<String> paragraphs = processedText.split('\n\n');
-
-    // Check if message has a title (like "Kebutuhan Nutrisi Penting")
-    if (paragraphs.isNotEmpty &&
-        (paragraphs[0].contains('Kebutuhan Nutrisi Penting') ||
-            paragraphs[0].contains('Selamat!'))) {
-      result['hasTitle'] = true;
-      result['title'] = paragraphs[0];
-      paragraphs = paragraphs.sublist(1);
-    }
-
-    // Process nutrition sections
-    for (String paragraph in paragraphs) {
-      if (paragraph.contains('Kalori:') ||
-          paragraph.contains('Protein:') ||
-          paragraph.contains('Folat:')) {
-        // Handle bullet points
-        if (paragraph.startsWith('* ')) {
-          paragraph = paragraph.substring(2);
+      // Cek untuk daftar berpoin
+      if (paragraph.trim().startsWith('*')) {
+        final items = paragraph.trim().split(RegExp(r'\n\s*\*\s*'));
+        for (var item in items) {
+          contentWidgets.add(_buildListItem(
+              item.replaceAll('*', '').trim(), regularStyle, boldStyle));
         }
-
-        // Split into key-value pairs for nutrition info
-        List<String> parts = paragraph.split(':');
-        if (parts.length > 1) {
-          result['sections'].add({
-            'key': parts[0].trim(),
-            'value': parts.sublist(1).join(':').trim(),
-          });
-        } else {
-          result['sections'].add({
-            'key': '',
-            'value': paragraph.trim(),
-          });
-        }
-      } else if (paragraph.trim().isNotEmpty) {
-        // Regular paragraph
-        result['sections'].add({
-          'key': '',
-          'value': paragraph.trim(),
-        });
+      } else {
+        // Paragraf biasa
+        contentWidgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 4.0),
+          child: RichText(
+              text: _buildTextSpan(paragraph, regularStyle, boldStyle)),
+        ));
       }
     }
 
-    return result;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...contentWidgets,
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.bottomRight,
+          child: Text(
+            DateFormat('HH:mm').format(DateTime.parse(timestamp)),
+            style: TextStyle(color: timeColor, fontSize: 12),
+          ),
+        ),
+      ],
+    );
   }
 
-  String _formatTime(DateTime time) {
-    final hour = time.hour > 12 ? time.hour - 12 : time.hour;
-    final period = time.hour >= 12 ? 'PM' : 'AM';
-    return '${hour == 0 ? 12 : hour}:${time.minute.toString().padLeft(2, '0')} $period';
+  Widget _buildListItem(
+      String text, TextStyle regularStyle, TextStyle boldStyle) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, bottom: 6.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('• ',
+              style: TextStyle(fontSize: 16, color: AppTheme.primaryColor)),
+          Expanded(
+              child: RichText(
+                  text: _buildTextSpan(text, regularStyle, boldStyle))),
+        ],
+      ),
+    );
+  }
+
+  TextSpan _buildTextSpan(
+      String text, TextStyle regularStyle, TextStyle boldStyle) {
+    final List<TextSpan> children = [];
+    final parts = text.split('**');
+    for (int i = 0; i < parts.length; i++) {
+      children.add(TextSpan(
+        text: parts[i],
+        style: i.isEven ? regularStyle : boldStyle,
+      ));
+    }
+    return TextSpan(children: children);
   }
 }

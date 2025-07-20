@@ -390,7 +390,7 @@ class _RegisterScreenState extends State<RegisterScreen>
         style: GoogleFonts.poppins(),
         decoration: _buildInputDecoration(
           hintText: hintText,
-          prefixIcon: Icon(icon, color: hintColor, size: 22),
+          prefixIcon: Icon(icon, color: primaryColor, size: 22),
           suffixIcon: suffixIcon,
         ),
       ),
@@ -410,7 +410,7 @@ class _RegisterScreenState extends State<RegisterScreen>
           hintText:
               '', // Hint text is handled by the DropdownButtonFormField itself
           prefixIcon: const Icon(Icons.pregnant_woman_outlined,
-              color: hintColor, size: 22),
+              color: primaryColor, size: 22),
         ),
         items: ['1', '2', '3'].map((String value) {
           return DropdownMenuItem<String>(
