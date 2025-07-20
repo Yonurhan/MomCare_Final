@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Future<void> _checkLoginStatus() async {
-    final isLoggedIn = await _authService.isLoggedIn();
+    final isLoggedIn = await _authService.tryAutoLogin();
     if (isLoggedIn) {
       // Navigasi ke home jika sudah login
       Navigator.pushReplacementNamed(context, '/home');

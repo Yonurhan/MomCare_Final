@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pregnancy_app/screens/food_capture_widget.dart';
-import 'package:pregnancy_app/screens/food_result_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 // Screens
 import 'screens/splash_screen.dart';
+import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/chat_screen.dart';
 import 'screens/register_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/home_screen.dart';
 import 'screens/forum_screen.dart';
+import 'screens/food_capture_widget.dart';
+import 'screens/chat_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/food_result_screen.dart';
 
 // Theme and Utilities
 import 'theme/app_theme.dart';
@@ -32,7 +31,6 @@ void main() async {
   ]);
 
   await dotenv.load(fileName: ".env");
-
   runApp(const MyApp());
 }
 
@@ -43,11 +41,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        // Menyediakan AuthService ke seluruh aplikasi
         ChangeNotifierProvider(
           create: (_) => AuthService(),
         ),
-        // Menyediakan ForumService yang bergantung pada AuthService
         ProxyProvider<AuthService, ForumService>(
           update: (_, authService, __) => ForumService(
             headers: {
@@ -64,10 +60,22 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/home':
+              final int initialIndex = (settings.arguments as int?) ?? 0;
+              return MaterialPageRoute(
+                builder: (_) =>
+                    MainNavigationScreen(initialIndex: initialIndex),
+              );
+            default:
+              return null;
+          }
+        },
         routes: {
+          '/onboarding': (context) => const OnboardingScreen(),
           '/login': (context) => const LoginScreen(),
           '/register': (context) => const RegisterScreen(),
-          '/home': (context) => const MainNavigationScreen(),
         },
       ),
     );
@@ -84,19 +92,18 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.initialIndex; // ← use the passed-in index
+    _selectedIndex = widget.initialIndex;
   }
 
-  // List of screens for bottom navigation
   final List<Widget> _screens = [
     const HomeScreen(),
     const ForumScreen(),
-    const FoodCapture(), // Forum screen
+    const FoodCapture(),
     const ChatScreen(),
     const ProfileScreen(),
   ];
@@ -107,67 +114,41 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
-  Future<void> _logout() async {
-    final confirmLogout = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Apakah Anda yakin ingin keluar?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Keluar'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmLogout == true) {
-      // Gunakan Provider untuk logout
-      await Provider.of<AuthService>(context, listen: false).logout();
-
-      if (mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppTheme.primaryColor,
         unselectedItemColor: AppTheme.secondaryTextColor,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: [
-          const BottomNavigationBarItem(
+        items: const [
+          BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             activeIcon: Icon(Icons.home),
             label: AppConstants.homeTab,
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.forum_outlined),
             activeIcon: Icon(Icons.forum),
             label: AppConstants.forumTab,
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt_outlined),
             activeIcon: Icon(Icons.camera_alt),
             label: 'Tracker',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble_outline),
             activeIcon: Icon(Icons.chat_bubble),
             label: AppConstants.chatTab,
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             activeIcon: Icon(Icons.person),
             label: AppConstants.profileTab,

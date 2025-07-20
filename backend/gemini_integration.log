@@ -1,0 +1,106 @@
+2025-07-20 15:03:05,224 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:03:05,265 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:03:08,307 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-20 15:03:08,319 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 15:03:08,346 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 15:03:42,792 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:03:42,801 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:03:43,099 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 15:03:43,149 - werkzeug - INFO -  * Debugger PIN: 124-078-389
+2025-07-20 15:06:20,481 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:06:20,509 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:06:22,236 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-20 15:06:22,237 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 15:06:22,243 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 15:06:47,010 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:06:47,024 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:06:47,344 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 15:06:47,449 - werkzeug - INFO -  * Debugger PIN: 124-078-389
+2025-07-20 15:19:44,029 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:19:44,033 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:19:45,936 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-20 15:19:45,938 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 15:19:45,944 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 15:20:05,236 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:20:05,253 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:20:05,825 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 15:20:05,891 - werkzeug - INFO -  * Debugger PIN: 124-078-389
+2025-07-20 15:20:07,500 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:07] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 201 -
+2025-07-20 15:20:15,096 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:15] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-07-20 15:20:23,897 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:23] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-07-20 15:20:43,338 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:43] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-20 15:20:58,843 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:58] "POST /food_detection/detect_food HTTP/1.1" 200 -
+2025-07-20 15:22:34,857 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:22:34] "POST /food_detection/get_nutritional_info HTTP/1.1" 200 -
+2025-07-20 15:25:06,620 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:25:06] "POST /food_detection/store_nutritional_info HTTP/1.1" 200 -
+2025-07-20 15:25:21,757 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:25:21] "POST /food_detection/get_nutrition_by_text HTTP/1.1" 200 -
+2025-07-20 15:26:27,128 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:26:27] "[35m[1mPOST /nutrition/set_goal HTTP/1.1[0m" 201 -
+2025-07-20 15:26:37,525 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:26:37] "[35m[1mGET /nutrition/goal HTTP/1.1[0m" 500 -
+2025-07-20 15:26:57,533 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:26:57] "GET /nutrition/log/today HTTP/1.1" 200 -
+2025-07-20 15:27:12,086 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:27:12] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-20 15:37:59,163 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:37:59] "[35m[1mGET /nutrition/goal HTTP/1.1[0m" 500 -
+2025-07-20 15:43:05,574 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:43:05] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-20 15:43:26,782 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:43:26] "[35m[1mGET /nutrition/goal HTTP/1.1[0m" 500 -
+2025-07-20 15:49:10,524 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:49:10,526 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:49:12,051 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-20 15:49:12,052 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 15:49:12,059 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 15:49:16,899 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:49:16,900 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:49:16,946 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 15:49:16,989 - werkzeug - INFO -  * Debugger PIN: 124-078-389
+2025-07-20 15:53:58,969 - GeminiIntegration - INFO - Request #1, time since last request: 1753001638.97s
+2025-07-20 15:54:00,590 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:54:00] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:54:03,627 - GeminiIntegration - INFO - Request #2, time since last request: 4.66s
+2025-07-20 15:54:05,365 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 6.38s)
+2025-07-20 15:54:05,375 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:54:05] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 15:54:07,757 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 4.13s)
+2025-07-20 15:54:07,759 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:54:07] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 15:54:09,404 - GeminiIntegration - INFO - Request #3, time since last request: 5.78s
+2025-07-20 15:54:14,978 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.57s)
+2025-07-20 15:54:14,981 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:54:14] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 15:55:32,133 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:55:32] "POST /food_detection/detect_food HTTP/1.1" 200 -
+2025-07-20 15:55:37,038 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:55:37] "POST /food_detection/get_nutritional_info HTTP/1.1" 200 -
+2025-07-20 15:56:45,106 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:56:45] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-20 15:56:48,124 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:56:48] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:56:50,336 - GeminiIntegration - INFO - Request #4, time since last request: 160.93s
+2025-07-20 15:56:50,636 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:56:50] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:56:55,596 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.26s)
+2025-07-20 15:56:55,606 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:56:55] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 15:56:56,875 - GeminiIntegration - INFO - Request #5, time since last request: 6.54s
+2025-07-20 15:56:58,824 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:56:58] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:57:00,082 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 3.21s)
+2025-07-20 15:57:00,085 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:00] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 15:57:33,884 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:57:33] "[31m[1mPOST /api/forums HTTP/1.1[0m" 422 -
+2025-07-20 15:57:41,636 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:57:41] "[35m[1mPOST /api/forums HTTP/1.1[0m" 201 -
+2025-07-20 15:57:45,044 - GeminiIntegration - INFO - Request #6, time since last request: 48.17s
+2025-07-20 15:57:45,804 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:45] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:57:46,010 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:46] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
+2025-07-20 15:57:47,671 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:47] "GET /api/forums/1 HTTP/1.1" 200 -
+2025-07-20 15:57:50,749 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.70s)
+2025-07-20 15:57:50,752 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:50] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 15:57:53,822 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:53] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:57:55,774 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:55] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 15:57:57,014 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:57] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=asc HTTP/1.1" 200 -
+2025-07-20 15:57:58,288 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:57:58] "GET /api/forums?page=1&per_page=10&sort_by=likes&order=desc HTTP/1.1" 200 -
+2025-07-20 15:57:59,183 - GeminiIntegration - INFO - Request #7, time since last request: 14.14s
+2025-07-20 15:58:03,825 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 4.64s)
+2025-07-20 15:58:03,828 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 15:58:03] "POST /api/chat HTTP/1.1" 200 -
+2025-07-20 16:13:43,578 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 16:13:43] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 16:13:43,772 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 16:13:43] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
+2025-07-20 16:13:46,515 - GeminiIntegration - INFO - Request #8, time since last request: 947.33s
+2025-07-20 16:13:47,225 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 16:13:47] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-20 16:13:52,451 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.93s)
+2025-07-20 16:13:52,455 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 16:13:52] "POST /api/chat HTTP/1.1" 200 -
