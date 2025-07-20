@@ -90,20 +90,28 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   late int _selectedIndex;
+  late final List<Widget> _screens;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex;
-  }
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const ForumScreen(),
-    Container(), 
-    const ChatScreen(),
-    const ProfileScreen(),
-  ];
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    // PERBAIKAN: Gunakan .toString() untuk mengonversi ID (yang berupa int) menjadi String.
+    // Ini adalah cara yang benar dan aman untuk mengatasi error.
+    final userId = authService.currentUser?.id.toString() ?? 'default_user';
+
+    _screens = [
+      const HomeScreen(),
+      const ForumScreen(),
+      Container(), 
+      // Sekarang userId adalah String yang valid.
+      ChatScreen(userId: userId),
+      const ProfileScreen(),
+    ];
+  }
 
   void _onItemTapped(int index) {
     if (index == 2) {

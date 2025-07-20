@@ -180,17 +180,55 @@ def update_preferences():
 
 @chat_bp.route('/history/<user_id>', methods=['GET'])
 def get_history(user_id):
-    """Endpoint to get chat history for a user"""
-    if user_id not in chat_sessions:
-        return jsonify({"error": "No chat history found for this user"}), 404
+    """Endpoint untuk mendapatkan riwayat chat HANYA dari file penyimpanan."""
     
-    session = chat_sessions[user_id]
-    messages = [msg.to_dict() for msg in session.messages]
-    
-    return jsonify({
-        "user_id": user_id,
-        "messages": messages
-    })
+    try:
+        # --- SOLUSI PALING STABIL DENGAN DEBUGGING LENGKAP ---
+        
+        # 1. Dapatkan path absolut dari file ini (misal: C:\...\backend\routes\chat.py)
+        # os.path.realpath akan mengatasi masalah symbolic links
+        current_file_path = os.path.realpath(__file__)
+        print(f"[DEBUG] Path file route ini: {current_file_path}")
+
+        # 2. Dapatkan direktori dari file ini (misal: C:\...\backend\routes)
+        current_directory = os.path.dirname(current_file_path)
+        print(f"[DEBUG] Direktori route ini: {current_directory}")
+
+        # 3. Bangun path ke folder sessions
+        sessions_dir = os.path.join(current_directory, '..', 'sessions')
+        # os.path.normpath akan membersihkan path (mengganti / dengan \ di Windows, dll.)
+        sessions_dir = os.path.normpath(sessions_dir)
+        print(f"[DEBUG] Path folder sessions yang diasumsikan: {sessions_dir}")
+        
+        # 4. Bangun path lengkap ke file JSON
+        file_path = os.path.join(sessions_dir, f"{user_id}.json")
+        
+        # INI ADALAH PRINT PALING PENTING
+        print(f"Mencari file riwayat di path absolut: {file_path}")
+
+        if os.path.exists(file_path):
+            print(f"File riwayat DITEMUKAN untuk user {user_id}. Membaca dari file.")
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data_from_file = json.load(f)
+                messages_from_file = data_from_file.get('messages')
+
+                if isinstance(messages_from_file, list):
+                    return jsonify({
+                        "user_id": user_id,
+                        "messages": messages_from_file 
+                    })
+                else:
+                    print(f"Error: Key 'messages' tidak ditemukan atau bukan array di file {file_path}.")
+                    return jsonify({"error": "Invalid history file format: 'messages' key missing or not an array"}), 500
+        else:
+            # Jika file tidak ada, berarti memang tidak ada riwayat.
+            print(f"File riwayat TIDAK DITEMUKAN di path: {file_path}")
+            return jsonify({"error": f"No history file found for user {user_id}"}), 404
+
+    except Exception as e:
+        print(f"Error kritis dalam get_history: {e}")
+        return jsonify({"error": "An internal server error occurred"}), 500
+
 
 @chat_bp.route('/init-data', methods=['POST'])
 def initialize_data():

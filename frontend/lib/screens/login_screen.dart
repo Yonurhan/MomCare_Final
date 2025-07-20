@@ -213,7 +213,8 @@ class _LoginScreenState extends State<LoginScreen>
       style: GoogleFonts.poppins(),
       decoration: _buildInputDecoration(
         hintText: 'Enter your email',
-        suffixIcon: const Icon(Icons.mail_outline, color: hintColor, size: 22),
+        suffixIcon:
+            const Icon(Icons.mail_outline, color: primaryColor, size: 22),
       ),
     );
   }
@@ -231,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen>
             _obscurePassword
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
-            color: hintColor,
+            color: primaryColor,
             size: 22,
           ),
           onPressed: () {
