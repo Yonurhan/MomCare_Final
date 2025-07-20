@@ -1,5 +1,5 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:pregnancy_app/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animate_do/animate_do.dart';
@@ -13,118 +13,65 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  // Hanya butuh satu controller sekarang
+  final PageController _pageController = PageController();
   int _currentPage = 0;
-  final LiquidController _liquidController = LiquidController();
-  final PageController _pageIndicatorController = PageController();
 
   @override
   void dispose() {
-    _pageIndicatorController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
+  // Menambahkan properti 'color' untuk membuat kode lebih bersih
   final List<Map<String, dynamic>> pageData = [
     {
       "image": "assets/images/screen1.png",
       "title": "Setiap Detak Adalah Cerita",
       "subtitle":
           "Pantau setiap momen berharga dalam perjalanan kehamilan Anda bersama kami.",
-      "color": AppTheme.nutritionCardColor,
+      "color": const Color.fromARGB(255, 255, 255, 255),
     },
     {
       "image": "assets/images/screen2.png",
       "title": "Pahami Kesehatan Anda",
       "subtitle":
           "Dapatkan informasi akurat dan tips harian untuk menjaga kesehatan ibu dan bayi.",
-      "color": AppTheme.morningCardColor,
+      "color": const Color.fromARGB(255, 255, 255, 255),
     },
     {
       "image": "assets/images/screen3.png",
       "title": "Melahirkan Masa Depan",
       "subtitle":
           "Siapkan diri Anda untuk menjadi ibu yang hebat dengan panduan lengkap dari para ahli.",
-      "color": AppTheme.weightCardColor,
+      "color": const Color.fromARGB(255, 255, 255, 255),
     }
   ];
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Stack(
         children: [
-          LiquidSwipe.builder(
+          // Menggunakan PageView untuk animasi geser yang bersih
+          PageView.builder(
+            controller: _pageController,
             itemCount: pageData.length,
-            liquidController: _liquidController,
-            onPageChangeCallback: (page) {
+            onPageChanged: (page) {
               setState(() {
                 _currentPage = page;
-                _pageIndicatorController.animateToPage(
-                  page,
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeOut,
-                );
               });
             },
             itemBuilder: (context, index) {
-              return Container(
-                width: size.width,
-                height: size.height,
-                color: pageData[index]['color'],
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FadeInDown(
-                      duration: const Duration(milliseconds: 800),
-                      child: Image.asset(pageData[index]["image"]!,
-                          height: size.height * 0.4),
-                    ),
-                    const SizedBox(height: 40),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Column(
-                        children: [
-                          FadeInUp(
-                            duration: const Duration(milliseconds: 900),
-                            child: Text(
-                              pageData[index]["title"]!,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineLarge
-                                  ?.copyWith(
-                                    color: AppTheme.primaryTextColor,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          FadeInUp(
-                            duration: const Duration(milliseconds: 900),
-                            delay: const Duration(milliseconds: 200),
-                            child: Text(
-                              pageData[index]["subtitle"]!,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: AppTheme.secondaryTextColor,
-                                    fontSize: 16,
-                                    height: 1.5,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              // Mengirim controller ke setiap halaman untuk animasi
+              return OnboardingPage(
+                pageController: _pageController,
+                pageData: pageData[index],
+                index: index,
               );
             },
-            preferDragFromRevealedArea: true,
-            enableLoop: false,
           ),
+          // Kontrol (Tombol dan Indikator)
           Positioned(
             bottom: 40,
             left: 20,
@@ -132,10 +79,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Tombol SKIP
                 TextButton(
-                  onPressed: () {
-                    _finishOnboarding();
-                  },
+                  onPressed: () => _finishOnboarding(),
                   child: Text(
                     "SKIP",
                     style: TextStyle(
@@ -144,22 +90,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                 ),
+                // Indikator Halaman
                 SmoothPageIndicator(
-                  controller: _pageIndicatorController,
+                  controller:
+                      _pageController, // Terhubung langsung, tidak perlu sinkronisasi manual
                   count: pageData.length,
-                  effect: ExpandingDotsEffect(
+                  effect: WormEffect(
+                    // Efek yang elegan dan ringan
                     activeDotColor: AppTheme.primaryColor,
                     dotColor: AppTheme.accentColor,
-                    dotHeight: 10,
-                    dotWidth: 10,
+                    dotHeight: 12,
+                    dotWidth: 12,
                   ),
                 ),
+                // Tombol NEXT / FINISH
                 ElevatedButton(
                   onPressed: () {
-                    if (_currentPage < pageData.length - 1) {
-                      _liquidController.jumpToPage(page: _currentPage + 1);
-                    } else {
+                    if (_currentPage == pageData.length - 1) {
                       _finishOnboarding();
+                    } else {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 400),
+                        curve: Curves.easeInOut,
+                      );
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -186,5 +139,101 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (mounted) {
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     }
+  }
+}
+
+// Widget terpisah untuk setiap halaman dengan animasi parallax
+class OnboardingPage extends StatelessWidget {
+  final PageController pageController;
+  final Map<String, dynamic> pageData;
+  final int index;
+
+  const OnboardingPage({
+    Key? key,
+    required this.pageController,
+    required this.pageData,
+    required this.index,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return AnimatedBuilder(
+      animation: pageController,
+      builder: (context, child) {
+        double pageOffset = 0;
+        if (pageController.position.haveDimensions) {
+          pageOffset = pageController.page! - index;
+        }
+
+        // Faktor untuk membuat gambar bergerak lebih lambat (efek parallax)
+        double imageTranslate = pageOffset * (size.width / 2);
+
+        // Faktor untuk skala dan fade out
+        double scale = max(0.7, 1 - pageOffset.abs() * 0.5);
+        double opacity = max(0.0, 1 - pageOffset.abs() * 1.5);
+
+        return Opacity(
+          opacity: opacity,
+          child: Transform.scale(
+            scale: scale,
+            child: Container(
+              width: size.width,
+              height: size.height,
+              color: pageData['color'],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Transform.translate(
+                    offset: Offset(imageTranslate, 0),
+                    child: FadeInDown(
+                      duration: const Duration(milliseconds: 800),
+                      child: Image.asset(pageData["image"],
+                          height: size.height * 0.4),
+                    ),
+                  ),
+                  const SizedBox(height: 60),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: Column(
+                      children: [
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 900),
+                          child: Text(
+                            pageData["title"],
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(
+                                  color: AppTheme.primaryTextColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 900),
+                          delay: const Duration(milliseconds: 200),
+                          child: Text(
+                            pageData["subtitle"],
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: AppTheme.secondaryTextColor,
+                                      height: 1.5,
+                                    ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
