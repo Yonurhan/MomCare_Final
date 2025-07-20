@@ -232,7 +232,7 @@ class HomeScreen extends StatelessWidget {
                   FeatureCard(
                     icon: Icons.restaurant,
                     title: AppConstants.nutritionFeature,
-                    color: AppTheme.nutritionCardColor,
+                    color: AppTheme.accentColor,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -245,7 +245,7 @@ class HomeScreen extends StatelessWidget {
                   FeatureCard(
                     icon: Icons.sick,
                     title: AppConstants.morningSicknessFeature,
-                    color: AppTheme.morningCardColor,
+                    color: AppTheme.accentColor,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -258,7 +258,7 @@ class HomeScreen extends StatelessWidget {
                   FeatureCard(
                     icon: Icons.monitor_weight,
                     title: AppConstants.weightTrackerFeature,
-                    color: AppTheme.weightCardColor,
+                    color: AppTheme.accentColor,
                     onTap: () {
                       // Navigate to weight tracker
                     },
@@ -266,7 +266,7 @@ class HomeScreen extends StatelessWidget {
                   FeatureCard(
                     icon: Icons.calendar_today,
                     title: AppConstants.appointmentsFeature,
-                    color: AppTheme.appointmentCardColor,
+                    color: AppTheme.accentColor,
                     onTap: () {
                       // Navigate to appointments
                     },
@@ -297,7 +297,7 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           const Icon(
                             Icons.lightbulb_outline,
-                            color: AppTheme.secondaryColor,
+                            color: AppTheme.accentColor,
                           ),
                           const SizedBox(width: 8),
                           Text(
@@ -365,12 +365,12 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppTheme.appointmentCardColor.withOpacity(0.3),
+                        color: AppTheme.accentColor.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
                         Icons.calendar_today,
-                        color: AppTheme.appointmentCardColor,
+                        color: AppTheme.accentColor,
                       ),
                     ),
                     const SizedBox(width: 16),

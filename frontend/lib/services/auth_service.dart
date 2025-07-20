@@ -3,52 +3,49 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthService with ChangeNotifier {
-  static const String baseUrl = 'http://192.168.0.103:5000/api';
+  final baseUrl = dotenv.env['BASE_URL'];
 
   bool _isAuthenticated = false;
   String? _token;
   User? _currentUser;
 
+  // Getter for authentication status
   bool get isAuthenticated => _isAuthenticated;
   String? get token => _token;
   User? get currentUser => _currentUser;
 
   AuthService() {
-    tryAutoLogin();
+    _loadFromPrefs();
   }
 
-  Future<bool> tryAutoLogin() async {
+  // Load token and user data from SharedPreferences
+  Future<void> _loadFromPrefs() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      if (!prefs.containsKey('token')) {
-        return false;
-      }
-
-      final storedToken = prefs.getString('token');
+      _token = prefs.getString('token');
       final userDataString = prefs.getString('user_data');
-
-      if (storedToken == null || userDataString == null) {
-        return false;
+      if (_token != null && userDataString != null) {
+        _currentUser = User.fromJson(jsonDecode(userDataString));
+        _isAuthenticated = true;
+      } else {
+        _isAuthenticated = false;
       }
-
-      _token = storedToken;
-      _currentUser = User.fromJson(jsonDecode(userDataString));
-      _isAuthenticated = true;
       notifyListeners();
-      return true;
     } catch (e) {
-      print("Failed to auto login: $e");
-      await logout();
-      return false;
+      _isAuthenticated = false;
+      _token = null;
+      _currentUser = null;
     }
   }
 
+  // Login user
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/auth/login'),
+        Uri.parse('$baseUrl/api/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -60,28 +57,25 @@ class AuthService with ChangeNotifier {
         if (data['user'] != null) {
           await prefs.setString('user_data', jsonEncode(data['user']));
         }
-        await tryAutoLogin();
+        _token = data['token'];
+        _currentUser = User.fromJson(data['user']);
+        _isAuthenticated = true;
+        notifyListeners();
         return data;
       } else {
-        throw Exception(data['message'] ?? 'Login gagal');
+        throw Exception(data['message'] ?? 'Login failed');
       }
     } catch (e) {
-      throw Exception('Error saat login: $e');
+      throw Exception('Login error: $e');
     }
   }
 
-  Future<Map<String, dynamic>> register(
-    String username,
-    String email,
-    String password,
-    int age,
-    int weight,
-    int height,
-    int trimester,
-  ) async {
+  // Register user
+  Future<Map<String, dynamic>> register(String username, String email,
+      String password, int age, int weight, int height, int trimester) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/auth/register'),
+        Uri.parse('$baseUrl/api/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
@@ -90,30 +84,49 @@ class AuthService with ChangeNotifier {
           'age': age,
           'weight': weight,
           'height': height,
-          'trimester': trimester,
+          'trimester': trimester
         }),
       );
-
-      if (response.statusCode == 201) {
-        return jsonDecode(response.body);
-      } else {
-        final data = jsonDecode(response.body);
-        throw Exception(data['message'] ?? 'Registrasi gagal');
-      }
+      return jsonDecode(response.body);
     } catch (e) {
-      throw Exception('Error saat registrasi: $e');
+      throw Exception('Registration error: $e');
     }
   }
 
+  // Get current user from SharedPreferences
+  Future<User?> getCurrentUser() async {
+    if (_currentUser != null) return _currentUser;
+
+    final prefs = await SharedPreferences.getInstance();
+    final userDataString = prefs.getString('user_data');
+    if (userDataString == null) return null;
+
+    _currentUser = User.fromJson(jsonDecode(userDataString));
+    return _currentUser;
+  }
+
+  // Logout user
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
     await prefs.remove('user_data');
-    await prefs.remove('hasSeenOnboarding');
-
     _isAuthenticated = false;
     _token = null;
     _currentUser = null;
     notifyListeners();
+  }
+
+  // Check if user is logged in
+  Future<bool> isLoggedIn() async {
+    if (_token != null) return _isAuthenticated;
+
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    _isAuthenticated = token != null;
+    if (_isAuthenticated && _currentUser == null) {
+      await getCurrentUser();
+    }
+    notifyListeners();
+    return _isAuthenticated;
   }
 }

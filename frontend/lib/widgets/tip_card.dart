@@ -12,7 +12,7 @@ class TipCard extends StatelessWidget {
   const TipCard({
     Key? key,
     required this.tip,
-    this.iconColor = AppTheme.morningCardColor,
+    this.iconColor = AppTheme.accentColor,
     this.backgroundColor = Colors.white,
   }) : super(key: key);
 

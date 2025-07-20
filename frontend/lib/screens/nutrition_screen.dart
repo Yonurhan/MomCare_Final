@@ -102,7 +102,7 @@ class NutritionScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppConstants.firstTrimesterNutrition),
-        backgroundColor: AppTheme.nutritionCardColor,
+        backgroundColor: AppTheme.accentColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -112,7 +112,7 @@ class NutritionScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: AppTheme.nutritionCardColor.withOpacity(0.3),
+                color: AppTheme.accentColor.withOpacity(0.3),
               ),
               child: Row(
                 children: [
@@ -155,7 +155,7 @@ class NutritionScreen extends StatelessWidget {
                   Text(
                     AppConstants.dailyNutritionalNeeds,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppTheme.nutritionCardColor.withOpacity(0.8),
+                          color: AppTheme.accentColor.withOpacity(0.8),
                         ),
                   ),
                   const SizedBox(height: 16),
@@ -194,7 +194,7 @@ class NutritionScreen extends StatelessWidget {
                   Text(
                     AppConstants.proteinSources,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppTheme.nutritionCardColor.withOpacity(0.8),
+                          color: AppTheme.accentColor.withOpacity(0.8),
                         ),
                   ),
                   const SizedBox(height: 16),
@@ -219,7 +219,7 @@ class NutritionScreen extends StatelessWidget {
                   Text(
                     AppConstants.vegetables,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppTheme.nutritionCardColor.withOpacity(0.8),
+                          color: AppTheme.accentColor.withOpacity(0.8),
                         ),
                   ),
                   const SizedBox(height: 16),
@@ -244,7 +244,7 @@ class NutritionScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppTheme.nutritionCardColor.withOpacity(0.1),
+                      color: AppTheme.accentColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -289,7 +289,7 @@ class NutritionScreen extends StatelessWidget {
                       icon: const Icon(Icons.question_answer),
                       label: const Text(AppConstants.askNutritionQuestion),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.nutritionCardColor,
+                        backgroundColor: AppTheme.accentColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -322,12 +322,12 @@ class NutritionScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppTheme.nutritionCardColor.withOpacity(0.2),
+              color: AppTheme.accentColor.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.lunch_dining,
-              color: AppTheme.nutritionCardColor,
+              color: AppTheme.accentColor,
               size: 20,
             ),
           ),
@@ -361,7 +361,7 @@ class NutritionScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppTheme.nutritionCardColor.withOpacity(0.8),
+              color: AppTheme.accentColor.withOpacity(0.8),
             ),
           ),
         ],
