@@ -28,7 +28,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   List<String> _suggestions = [];
 
   bool _isSending = false;
-  bool _isHistoryLoading = true;
+  // _isHistoryLoading sekarang tidak lagi relevan, tapi kita set false saja.
+  bool _isHistoryLoading = false;
   late AnimationController _typingAnimController;
 
   @override
@@ -49,45 +50,33 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  // --- FUNGSI INI TELAH DIMODIFIKASI ---
   Future<void> _loadInitialChat() async {
-    try {
-      final history = await _apiService.getChatHistory(widget.userId);
-      if (mounted) {
-        setState(() {
-          _messages.addAll(history.messages);
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Gagal memuat riwayat: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ));
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isHistoryLoading = false;
-          if (_messages.isEmpty) {
-            final username = Provider.of<AuthService>(context, listen: false)
-                    .currentUser
-                    ?.username ??
-                'Pengguna';
-            _messages.add(MessageModel(
-              content:
-                  'Halo $username! Saya GITA, asisten virtual Anda. Apa yang ingin Anda ketahui?',
-              isUser: false,
-              timestamp: DateTime.now().toIso8601String(),
-            ));
-            _suggestions = [
-              'Apa itu stunting?',
-              'Makanan untuk trimester pertama',
-              'Tanda-tanda bahaya kehamilan'
-            ];
-          }
-        });
-        _scrollToBottom(milliseconds: 400);
-      }
+    // Langsung tampilkan pesan sapaan awal tanpa memuat riwayat dari API.
+    if (mounted) {
+      setState(() {
+        _isHistoryLoading = false;
+
+        // Karena _messages selalu kosong di awal, blok ini akan selalu dijalankan.
+        if (_messages.isEmpty) {
+          final username = Provider.of<AuthService>(context, listen: false)
+                  .currentUser
+                  ?.username ??
+              'Pengguna';
+          _messages.add(MessageModel(
+            content:
+                'Halo $username! Saya GITA, asisten virtual Anda. Apa yang ingin Anda ketahui?',
+            isUser: false,
+            timestamp: DateTime.now().toIso8601String(),
+          ));
+          _suggestions = [
+            'Apa itu stunting?',
+            'Makanan untuk trimester pertama',
+            'Tanda-tanda bahaya kehamilan'
+          ];
+        }
+      });
+      _scrollToBottom(milliseconds: 400);
     }
   }
 
