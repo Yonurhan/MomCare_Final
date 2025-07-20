@@ -2,15 +2,16 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.10:5000api';
+  final baseUrl = dotenv.env['BASE_URL'];
 
   Future<Map<String, dynamic>> sendChatMessage(
       String message, String userId) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/chat'),
+        Uri.parse('$baseUrl/api/chat'),
         headers: {
           'Content-Type': 'application/json',
         },

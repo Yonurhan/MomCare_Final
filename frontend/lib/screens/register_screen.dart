@@ -6,6 +6,7 @@ import '../utils/validators.dart';
 import '../widgets/custom_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -126,9 +127,10 @@ class _RegisterScreenState extends State<RegisterScreen>
     String token = prefs.getString('jwt_token') ?? '';
 
     // Send a POST request to the protected route with the token
+    final baseUrl = dotenv.env['BASE_URL'];
     final response = await http.post(
       Uri.parse(
-          'http://192.168.1.10:5000/nutrition/set_goal'), // Replace with your actual API endpoint
+          '$baseUrl/nutrition/set_goal'), // Replace with your actual API endpoint
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token', // Send the JWT token here

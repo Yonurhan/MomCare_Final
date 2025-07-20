@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 // ← new imports for bottom navigation
 import 'package:pregnancy_app/main.dart';
@@ -69,9 +71,10 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
     if (widget.imageId == null) return;
     setState(() => _isLoading = true);
     try {
+      final baseUrl = dotenv.env['BASE_URL'];
       final resp = await http.post(
         Uri.parse(
-            'http://192.168.1.10:5000/food_detection/get_nutritional_info'),
+            '$baseUrl/food_detection/get_nutritional_info'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'imageId': widget.imageId}),
       );
@@ -144,9 +147,10 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
     }
 
     try {
+      final baseUrl = dotenv.env['BASE_URL'];
       final resp = await http.post(
         Uri.parse(
-            'http://192.168.1.10:5000/food_detection/store_nutritional_info'),
+            '$baseUrl/food_detection/store_nutritional_info'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

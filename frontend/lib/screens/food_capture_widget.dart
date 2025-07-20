@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
@@ -74,9 +75,9 @@ class _FoodCaptureState extends State<FoodCapture> {
     }
 
     try {
+      final baseUrl = dotenv.env['BASE_URL'];
       final response = await http.post(
-        Uri.parse(
-            'http://192.168.1.10:5000/food_detection/get_nutrition_by_text'),
+        Uri.parse('$baseUrl/food_detection/get_nutrition_by_text'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'items': items}),
       );
@@ -138,9 +139,10 @@ class _FoodCaptureState extends State<FoodCapture> {
     }
 
     final compressed = img.encodeJpg(image, quality: 25);
+    final baseUrl = dotenv.env['BASE_URL'];
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.1.10:5000/food_detection/detect_food'),
+      Uri.parse('$baseUrl/food_detection/detect_food'),
     );
     request.files.add(http.MultipartFile.fromBytes(
       'file',

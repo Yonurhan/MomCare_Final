@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/forum_model.dart';
 import '../models/comment_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ForumService {
-  static const String baseUrl = 'http://192.168.1.10:5000/api';
+  final baseUrl = dotenv.env['BASE_URL'];
   final Map<String, String> headers;
 
   ForumService({required this.headers});
@@ -18,7 +19,7 @@ class ForumService {
     int? userId,
   }) async {
     String url =
-        '$baseUrl/forums?page=$page&per_page=$perPage&sort_by=$sortBy&order=$order';
+        '$baseUrl/api/forums?page=$page&per_page=$perPage&sort_by=$sortBy&order=$order';
     if (userId != null) {
       url += '&user_id=$userId';
     }
@@ -35,7 +36,7 @@ class ForumService {
 
   Future<Forum> getForumDetails(int forumId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/forums/$forumId'),
+      Uri.parse('$baseUrl/api/forums/$forumId'),
       headers: headers,
     );
     if (response.statusCode == 200) {
@@ -53,7 +54,7 @@ class ForumService {
     if (image != null) {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('$baseUrl/forums'),
+        Uri.parse('$baseUrl/api/forums'),
       );
       request.headers.addAll({
         'Authorization': headers['Authorization'] ?? '',
@@ -72,7 +73,7 @@ class ForumService {
       }
     } else {
       final response = await http.post(
-        Uri.parse('$baseUrl/forums'),
+        Uri.parse('$baseUrl/api/forums'),
         headers: headers,
         body: json.encode({
           'title': title,
@@ -94,7 +95,7 @@ class ForumService {
     required String description,
   }) async {
     final response = await http.put(
-      Uri.parse('$baseUrl/forums/$forumId'),
+      Uri.parse('$baseUrl/api/forums/$forumId'),
       headers: headers,
       body: json.encode({
         'title': title,
@@ -108,7 +109,7 @@ class ForumService {
 
   Future<void> deleteForum(int forumId) async {
     final response = await http.delete(
-      Uri.parse('$baseUrl/forums/$forumId'),
+      Uri.parse('$baseUrl/api/forums/$forumId'),
       headers: headers,
     );
     if (response.statusCode != 200) {
@@ -118,7 +119,7 @@ class ForumService {
 
   Future<Comment> addComment(int forumId, String content) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/forums/$forumId/comments'),
+      Uri.parse('$baseUrl/api/forums/$forumId/comments'),
       headers: headers,
       body: json.encode({'content': content}),
     );
@@ -134,7 +135,7 @@ class ForumService {
       {int page = 1, int perPage = 10}) async {
     final response = await http.get(
       Uri.parse(
-          '$baseUrl/forums/$forumId/comments?page=$page&per_page=$perPage'),
+          '$baseUrl/api/forums/$forumId/comments?page=$page&per_page=$perPage'),
       headers: headers,
     );
     if (response.statusCode == 200) {
@@ -146,7 +147,7 @@ class ForumService {
 
   Future<Map<String, dynamic>> toggleLike(int forumId, bool isLike) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/forums/$forumId/like'),
+      Uri.parse('$baseUrl/api/forums/$forumId/like'),
       headers: headers,
       body: json.encode({'is_like': isLike}),
     );

@@ -6,6 +6,7 @@ import 'package:pregnancy_app/models/tip_model.dart';
 import 'package:pregnancy_app/theme/app_theme.dart';
 import 'package:pregnancy_app/utils/constants.dart';
 import 'package:pregnancy_app/widgets/food_item.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pregnancy_app/widgets/tip_card.dart';
 
 class MorningSicknessScreen extends StatelessWidget {

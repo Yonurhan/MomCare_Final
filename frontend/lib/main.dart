@@ -4,6 +4,8 @@ import 'package:pregnancy_app/screens/food_capture_widget.dart';
 import 'package:pregnancy_app/screens/food_result_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Screens
 import 'screens/splash_screen.dart';
@@ -28,6 +30,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }

@@ -4,6 +4,7 @@ import '../models/forum_model.dart';
 import '../models/comment_model.dart';
 import '../services/auth_service.dart';
 import '../services/forum_service.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ForumDetailScreen extends StatefulWidget {
   final int forumId;
@@ -46,7 +47,7 @@ class _ForumDetailScreenState extends State<ForumDetailScreen> {
     if (imagePath.startsWith('http')) return imagePath;
 
     // Jika tidak, tambahkan baseUrl
-    const String baseUrl = 'http://192.168.0.103:5000';
+    final baseUrl = dotenv.env['BASE_URL'];
 
     // Jika imagePath dimulai dengan '/static', tambahkan baseUrl saja
     if (imagePath.startsWith('/static')) {

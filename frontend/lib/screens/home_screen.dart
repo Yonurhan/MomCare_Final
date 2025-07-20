@@ -10,6 +10,7 @@ import 'package:pregnancy_app/theme/app_theme.dart';
 import 'package:pregnancy_app/utils/constants.dart';
 import 'package:pregnancy_app/widgets/feature_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NutritionData {
   final double goalCalories, goalProtein, goalFat, goalCarbs;
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
       throw Exception('User not authenticated');
     }
     final headers = {'Authorization': 'Bearer $token'};
-    final baseUrl = 'http://192.168.1.10:5000';
+    final baseUrl = dotenv.env['BASE_URL'];
 
     final goalResp = await http.get(
       Uri.parse('$baseUrl/nutrition/goal'),

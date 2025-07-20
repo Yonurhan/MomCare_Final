@@ -7,6 +7,7 @@ import 'package:pregnancy_app/theme/app_theme.dart';
 import 'package:pregnancy_app/utils/constants.dart';
 import 'package:pregnancy_app/widgets/food_item.dart';
 import 'package:pregnancy_app/screens/morning_sickness_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NutritionScreen extends StatelessWidget {
   const NutritionScreen({Key? key}) : super(key: key);

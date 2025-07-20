@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/forum_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../services/forum_service.dart';
 import '../services/auth_service.dart';
 import '../widgets/forum_card.dart';
@@ -68,7 +69,7 @@ class _ForumScreenState extends State<ForumScreen> {
 
     if (imagePath.startsWith('http')) return imagePath;
 
-    const String baseUrl = 'http://192.168.0.103:5000';
+    final baseUrl = dotenv.env['BASE_URL'];
 
     if (imagePath.startsWith('/static')) {
       return '$baseUrl$imagePath';
