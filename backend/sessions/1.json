@@ -96,13 +96,28 @@
       "is_user": false,
       "timestamp": "2025-07-20T20:42:31.057993",
       "attachments": []
+    },
+    {
+      "content": "Makanan untuk trimester pertama",
+      "is_user": true,
+      "timestamp": "2025-07-20T22:18:52.288773",
+      "attachments": []
+    },
+    {
+      "content": "Selamat! Memasuki trimester pertama kehamilan adalah momen yang sangat penting. Pada periode ini, nutrisi yang tepat sangat krusial untuk perkembangan janin dan kesehatan Ibu. Berikut adalah informasi tentang makanan yang direkomendasikan untuk trimester pertama kehamilan:\n\n**Kebutuhan Nutrisi Penting di Trimester Pertama**\n\nPada trimester pertama, ada beberapa nutrisi yang sangat penting untuk diperhatikan:\n\n*   **Kalori:** Ibu hamil membutuhkan tambahan sekitar 300 kalori per hari dari makanan yang bergizi.\n*   **Protein:** Kebutuhan protein meningkat menjadi 60 gram per hari. Protein penting untuk pertumbuhan dan perkembangan janin.\n*   **Folat:** Sangat penting untuk mencegah cacat tabung saraf pada janin. Ibu hamil membutuhkan 600 mikrogram folat per hari. Sumber folat yang baik adalah sayuran hijau, kacang-kacangan, dan buah jeruk.\n*   **Zat Besi:** Mencegah anemia pada ibu hamil. Kebutuhan zat besi adalah 27 mg per hari. Sumber zat besi yang baik adalah daging merah, bayam, dan kacang-kacangan.\n*   **Kalsium:** Penting untuk pembentukan tulang dan gigi janin. Ibu hamil membutuhkan 1000 mg kalsium per hari. Sumber kalsium yang baik adalah susu, keju, dan yogurt.\n\n**Rekomendasi Makanan untuk Trimester Pertama**\n\nBerikut adalah beberapa contoh makanan yang direkomendasikan untuk memenuhi kebutuhan nutrisi di trimester pertama:\n\n*   **Protein:**\n    *   **Telur:** Sumber protein lengkap dan kolin yang baik untuk perkembangan otak janin. Konsumsi 1 butir (50g) per hari.\n    *   **Ikan Salmon:** Kaya akan omega-3 yang penting untuk perkembangan otak janin. Konsumsi 85-140g, 2-3 kali seminggu.\n    *   **Daging Tanpa Lemak:** Sumber zat besi heme yang mudah diserap tubuh. Konsumsi 85g per hari.\n*   **Sayuran:**\n    *   **Bayam:** Kaya akan zat besi, folat, dan vitamin K. Konsumsi 1 mangkuk (30g) per hari.\n    *   **Brokoli:** Kaya akan folat, kalsium, dan serat. Konsumsi 1 mangkuk (30g) per hari.\n    *   **Kacang-kacangan:** Sumber protein nabati dan serat yang baik. Konsumsi 1/2 mangkuk (100g) per hari.\n\n**Tips Tambahan:**\n\n*   **Makan Porsi Kecil Tapi Sering:** Ini dapat membantu mengatasi mual yang sering terjadi di trimester pertama.\n*   **Hindari Makanan Berminyak dan Pedas:** Makanan ini dapat memperburuk mual dan gangguan pencernaan.\n\n**Contoh Menu Harian (Ini hanyalah contoh, konsultasikan dengan dokter atau ahli gizi untuk menu yang lebih personal):**\n\n*   **Sarapan:** Telur rebus, roti gandum dengan alpukat, segelas susu.\n*   **Camilan Pagi:** Buah-buahan seperti pisang atau jeruk.\n*   **Makan Siang:** Nasi merah, ikan salmon panggang, tumis brokoli dan wortel.\n*   **Camilan Sore:** Yogurt dengan buah beri.\n*   **Makan Malam:** Sup ayam dengan sayuran, tahu dan tempe.\n\n**Masalah Umum di Trimester Pertama:**\n\nBanyak ibu hamil mengalami *morning sickness*, mual, muntah, dan kelelahan di trimester pertama. Tips di atas, seperti makan porsi kecil tapi sering dan menghindari makanan yang memicu mual, dapat membantu mengatasi masalah ini.\n\n**Penting:** Selalu konsultasikan dengan dokter atau ahli gizi untuk mendapatkan saran nutrisi yang lebih personal dan sesuai dengan kondisi kesehatan Anda. Semoga kehamilan Anda sehat dan lancar!\n",
+      "is_user": false,
+      "timestamp": "2025-07-20T22:18:57.755441",
+      "attachments": []
     }
   ],
   "context": {
     "last_intent": "nutrisi_kehamilan",
-    "last_entities": {},
+    "last_entities": {
+      "trimester": "pertama"
+    },
     "last_context": [
       "rekomendasi_makanan",
+      "trimester_pertama",
       "rekomendasi_makanan"
     ]
   }
