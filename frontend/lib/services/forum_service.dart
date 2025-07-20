@@ -11,22 +11,30 @@ class ForumService {
 
   ForumService({required this.headers});
 
+  // --- GET ALL FORUMS (DENGAN SEARCH) ---
   Future<ForumResponse> getForums({
     int page = 1,
     int perPage = 10,
     String sortBy = 'created_at',
     String order = 'desc',
     int? userId,
+    String? search, // Parameter search ditambahkan
   }) async {
+    // Membangun URL dasar
     String url =
         '$baseUrl/api/forums?page=$page&per_page=$perPage&sort_by=$sortBy&order=$order';
+
+    // Menambahkan filter opsional
     if (userId != null) {
       url += '&user_id=$userId';
     }
-    final response = await http.get(
-      Uri.parse(url),
-      headers: headers,
-    );
+    if (search != null && search.isNotEmpty) {
+      url +=
+          '&search=${Uri.encodeComponent(search)}'; // URI Encode untuk keamanan
+    }
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
     if (response.statusCode == 200) {
       return ForumResponse.fromJson(json.decode(response.body));
     } else {
@@ -155,6 +163,33 @@ class ForumService {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to process like/dislike');
+    }
+  }
+
+  // --- GET MY FORUMS (DENGAN SEARCH) ---
+  Future<ForumResponse> getMyForums({
+    int page = 1,
+    int perPage = 10,
+    String sortBy = 'created_at',
+    String order = 'desc',
+    String? search, // Parameter search ditambahkan
+  }) async {
+    // Membangun URL dasar
+    String url =
+        '$baseUrl/api/forums/me?page=$page&per_page=$perPage&sort_by=$sortBy&order=$order';
+
+    // Menambahkan filter opsional
+    if (search != null && search.isNotEmpty) {
+      url +=
+          '&search=${Uri.encodeComponent(search)}'; // URI Encode untuk keamanan
+    }
+
+    final response = await http.get(Uri.parse(url), headers: headers);
+
+    if (response.statusCode == 200) {
+      return ForumResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load my forums: ${response.body}');
     }
   }
 }
