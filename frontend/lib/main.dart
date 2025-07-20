@@ -3,25 +3,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-// Ganti dengan path proyek Anda yang sebenarnya
-import 'package:pregnancy_app/screens/splash_screen.dart';
-import 'package:pregnancy_app/screens/onboarding_screen.dart';
-import 'package:pregnancy_app/screens/login_screen.dart';
-import 'package:pregnancy_app/screens/register_screen.dart';
-import 'package:pregnancy_app/screens/home_screen.dart';
-import 'package:pregnancy_app/screens/forum_screen.dart';
-import 'package:pregnancy_app/screens/food_capture_widget.dart';
-import 'package:pregnancy_app/screens/chat_screen.dart';
-import 'package:pregnancy_app/screens/profile_screen.dart';
-// import 'package:pregnancy_app/screens/food_result_screen.dart'; // Uncomment jika file ini ada
+// Screens
+import 'screens/splash_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/forum_screen.dart';
+import 'screens/food_capture_widget.dart';
+import 'screens/chat_screen.dart';
+import 'screens/profile_screen.dart';
 
-// Theme and Utilities
-import 'package:pregnancy_app/theme/app_theme.dart';
-import 'package:pregnancy_app/utils/constants.dart';
+import 'theme/app_theme.dart';
+import 'utils/constants.dart';
 
-// Services
-import 'package:pregnancy_app/services/auth_service.dart';
-import 'package:pregnancy_app/services/forum_service.dart';
+import 'services/auth_service.dart';
+import 'services/forum_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -109,7 +106,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     _screens = [
       const HomeScreen(),
       const ForumScreen(),
-      const FoodCapture(),
+      Container(), 
       // Sekarang userId adalah String yang valid.
       ChatScreen(userId: userId),
       const ProfileScreen(),
@@ -117,9 +114,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FoodCapture()),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -133,7 +137,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppTheme.primaryColor,
         unselectedItemColor: AppTheme.secondaryTextColor,
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex, 
         onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(

@@ -546,3 +546,6 @@
 2025-07-20 20:44:33,840 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:44:33] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
 2025-07-20 20:45:47,032 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:45:47] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
 2025-07-20 20:45:47,550 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:45:47] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
+2025-07-20 22:18:52,321 - GeminiIntegration - INFO - Request #9, time since last request: 5784.97s
+2025-07-20 22:18:57,749 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.42s)
+2025-07-20 22:18:57,775 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 22:18:57] "POST /api/chat HTTP/1.1" 200 -
