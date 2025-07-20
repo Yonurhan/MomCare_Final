@@ -1,7 +1,9 @@
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.daily_nutrition_log import DailyNutritionLog  
 from models import db
 import os
+from datetime import date
 import requests
 from dotenv import load_dotenv
 load_dotenv()
@@ -164,3 +166,53 @@ def get_nutrition_by_text():
         'fat':      total_fat,
         'carbs':    total_carbs
     })
+
+@food_detection_bp.route('/goal', methods=['GET'])
+@jwt_required()
+def get_nutrition_goal():
+    """
+    Provides the daily nutrition goals for the user.
+    For now, these are fixed values. Later, you can load them from the user's profile.
+    """
+    # In the future, you could fetch these from your User model
+    return jsonify({
+        'calories': 2200,
+        'protein': 150,
+        'fat': 70,
+        'carbs': 250,
+    }), 200
+
+@food_detection_bp.route('/log/today', methods=['GET'])
+@jwt_required()
+def get_today_log():
+    """
+    Calculates the sum of all nutrition logs for the current user for today.
+    """
+    user_id = get_jwt_identity()
+    
+    # THE FIX: Use today's date directly for the query
+    today = date.today()
+    
+    # This query now correctly compares the 'date' column with today's date.
+    todays_logs = DailyNutritionLog.query.filter_by(user_id=user_id, date=today).all()
+
+    if not todays_logs:
+        return jsonify({
+            'daily_calories': 0,
+            'daily_protein': 0,
+            'daily_fat': 0,
+            'daily_carbs': 0,
+        }), 200
+
+    # Safely sum the values, handling potential nulls
+    total_calories = sum(log.daily_calories or 0 for log in todays_logs)
+    total_protein = sum(log.daily_protein or 0 for log in todays_logs)
+    total_fat = sum(log.daily_fat or 0 for log in todays_logs)
+    total_carbs = sum(log.daily_carbs or 0 for log in todays_logs)
+
+    return jsonify({
+        'daily_calories': total_calories,
+        'daily_protein': total_protein,
+        'daily_fat': total_fat,
+        'daily_carbs': total_carbs,
+    }), 200

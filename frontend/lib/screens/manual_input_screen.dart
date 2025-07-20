@@ -63,7 +63,7 @@ class _ManualInputScreenState extends State<ManualInputScreen> {
           // Assume 'g' for grams if no unit is specified
           final quantity = pair['quantity']!.text.trim();
           return (name.isNotEmpty && quantity.isNotEmpty)
-              ? {'name': name, 'quantity': '${quantity}g'} // Send quantity as string with unit
+              ? {'name': name, 'quantity': '${quantity}'} // Send quantity as string with unit
               : null;
         })
         .where((e) => e != null)
