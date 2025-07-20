@@ -118,3 +118,9 @@
 2025-07-20 21:38:25,127 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
 2025-07-20 21:38:25,166 - werkzeug - WARNING -  * Debugger is active!
 2025-07-20 21:38:25,170 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-20 21:39:05,348 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\chat_routes.py', reloading
+2025-07-20 21:39:05,675 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 21:39:08,820 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 21:39:08,822 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 21:39:08,855 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 21:39:08,860 - werkzeug - INFO -  * Debugger PIN: 110-584-636
