@@ -1,57 +1,63 @@
-2025-07-20 15:03:05,224 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:03:05,265 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:03:08,307 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2025-07-20 15:36:10,555 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://192.168.0.101:5000
-2025-07-20 15:03:08,319 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2025-07-20 15:03:08,346 - werkzeug - INFO -  * Restarting with stat
-2025-07-20 15:03:42,792 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:03:42,801 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:03:43,099 - werkzeug - WARNING -  * Debugger is active!
-2025-07-20 15:03:43,149 - werkzeug - INFO -  * Debugger PIN: 124-078-389
-2025-07-20 15:06:20,481 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:06:20,509 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:06:22,236 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://192.168.1.13:5000
+2025-07-20 15:36:10,557 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 15:37:26,237 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://192.168.0.101:5000
-2025-07-20 15:06:22,237 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2025-07-20 15:06:22,243 - werkzeug - INFO -  * Restarting with stat
-2025-07-20 15:06:47,010 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:06:47,024 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:06:47,344 - werkzeug - WARNING -  * Debugger is active!
-2025-07-20 15:06:47,449 - werkzeug - INFO -  * Debugger PIN: 124-078-389
-2025-07-20 15:19:44,029 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:19:44,033 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:19:45,936 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://192.168.1.13:5000
+2025-07-20 15:37:26,275 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 15:39:48,802 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:39:48,804 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 15:41:17,028 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 15:41:17,030 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 16:59:28,996 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 16:59:28,996 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 17:00:46,923 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 17:00:46,923 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 17:01:45,187 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 17:01:45,187 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 17:01:45,505 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
- * Running on http://192.168.0.101:5000
-2025-07-20 15:19:45,938 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
-2025-07-20 15:19:45,944 - werkzeug - INFO -  * Restarting with stat
-2025-07-20 15:20:05,236 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:20:05,253 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:20:05,825 - werkzeug - WARNING -  * Debugger is active!
-2025-07-20 15:20:05,891 - werkzeug - INFO -  * Debugger PIN: 124-078-389
-2025-07-20 15:20:07,500 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:07] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 201 -
-2025-07-20 15:20:15,096 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:15] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
-2025-07-20 15:20:23,897 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:23] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
-2025-07-20 15:20:43,338 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:43] "POST /api/auth/login HTTP/1.1" 200 -
-2025-07-20 15:20:58,843 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:20:58] "POST /food_detection/detect_food HTTP/1.1" 200 -
-2025-07-20 15:22:34,857 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:22:34] "POST /food_detection/get_nutritional_info HTTP/1.1" 200 -
-2025-07-20 15:25:06,620 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:25:06] "POST /food_detection/store_nutritional_info HTTP/1.1" 200 -
-2025-07-20 15:25:21,757 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:25:21] "POST /food_detection/get_nutrition_by_text HTTP/1.1" 200 -
-2025-07-20 15:26:27,128 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:26:27] "[35m[1mPOST /nutrition/set_goal HTTP/1.1[0m" 201 -
-2025-07-20 15:26:37,525 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:26:37] "[35m[1mGET /nutrition/goal HTTP/1.1[0m" 500 -
-2025-07-20 15:26:57,533 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:26:57] "GET /nutrition/log/today HTTP/1.1" 200 -
-2025-07-20 15:27:12,086 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:27:12] "GET /nutrition/summary HTTP/1.1" 200 -
-2025-07-20 15:37:59,163 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:37:59] "[35m[1mGET /nutrition/goal HTTP/1.1[0m" 500 -
-2025-07-20 15:43:05,574 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:43:05] "POST /api/auth/login HTTP/1.1" 200 -
-2025-07-20 15:43:26,782 - werkzeug - INFO - 127.0.0.1 - - [20/Jul/2025 15:43:26] "[35m[1mGET /nutrition/goal HTTP/1.1[0m" 500 -
-2025-07-20 15:49:10,524 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
-2025-07-20 15:49:10,526 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
-2025-07-20 15:49:12,051 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://192.168.10.100:5000
+2025-07-20 17:01:45,506 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 17:01:45,507 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 17:01:52,799 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 17:01:52,799 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 17:01:52,839 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 17:01:52,846 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-20 17:19:36,601 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 17:19:36,601 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 17:19:36,685 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.10.100:5000
+2025-07-20 17:19:36,685 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 17:19:36,691 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 17:19:44,895 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 17:19:44,895 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 17:19:44,950 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 17:19:44,955 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-20 18:04:33,821 - werkzeug - INFO - 192.168.1.12 - - [20/Jul/2025 18:04:33] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-07-20 18:04:43,344 - werkzeug - INFO - 192.168.1.12 - - [20/Jul/2025 18:04:43] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-07-20 18:05:05,224 - werkzeug - INFO - 192.168.1.12 - - [20/Jul/2025 18:05:05] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-07-20 18:12:35,342 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 18:12:35,342 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 18:12:35,588 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-07-20 18:12:35,588 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-20 18:12:35,590 - werkzeug - INFO -  * Restarting with stat
+2025-07-20 18:12:38,649 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 18:12:38,651 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 18:12:38,695 - werkzeug - WARNING -  * Debugger is active!
+2025-07-20 18:12:38,698 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-20 18:13:12,799 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-20 18:13:12,799 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-20 18:13:12,848 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
  * Running on http://192.168.0.101:5000
@@ -546,6 +552,3 @@
 2025-07-20 20:44:33,840 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:44:33] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
 2025-07-20 20:45:47,032 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:45:47] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
 2025-07-20 20:45:47,550 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:45:47] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
-2025-07-20 22:18:52,321 - GeminiIntegration - INFO - Request #9, time since last request: 5784.97s
-2025-07-20 22:18:57,749 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.42s)
-2025-07-20 22:18:57,775 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 22:18:57] "POST /api/chat HTTP/1.1" 200 -
