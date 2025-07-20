@@ -4,12 +4,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart'; // <-- ADD THIS IMPORT
+import 'package:pregnancy_app/services/auth_service.dart';
 import 'package:pregnancy_app/screens/morning_sickness_screen.dart';
 import 'package:pregnancy_app/screens/nutrition_screen.dart';
 import 'package:pregnancy_app/theme/app_theme.dart';
 import 'package:pregnancy_app/utils/constants.dart';
 import 'package:pregnancy_app/widgets/feature_card.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NutritionData {
@@ -27,47 +28,91 @@ class NutritionData {
   });
 }
 
-class HomeScreen extends StatelessWidget {
+// 1. CONVERTED TO A STATEFULWIDGET
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // 2. State variable to hold the future
+  Future<NutritionData>? _nutritionDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    // 3. Fetch data when the screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Use listen:false in initState because we don't need to rebuild here
+      final authService = Provider.of<AuthService>(context, listen: false);
+      // Only fetch data if the user is logged in
+      if (authService.token != null) {
+        setState(() {
+          _nutritionDataFuture = _fetchNutritionData();
+        });
+      }
+    });
+  }
+
+  // 4. CORRECTED THE DATA FETCHING LOGIC
   Future<NutritionData> _fetchNutritionData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('jwtoken') ?? '';
-    if (token.isEmpty) {
-      throw Exception('User not authenticated');
+    // Get token correctly from AuthService, which is the right way for your app
+    final token = Provider.of<AuthService>(context, listen: false).token;
+
+    // --- DEBUGGING STEP ---
+    // This will print the token to your console so you can see if it exists.
+    // If this prints "Token: null", the user is not logged in.
+    print("Fetching data with Token: $token");
+
+    if (token == null || token.isEmpty) {
+      throw Exception('User is not logged in. Token is missing.');
     }
-    final headers = {'Authorization': 'Bearer $token'};
+
+    // This is the standard header format
+    final headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+    };
     final baseUrl = dotenv.env['BASE_URL'];
 
-    final goalResp = await http.get(
-      Uri.parse('$baseUrl/nutrition/goal'),
-      headers: headers,
-    );
-    if (goalResp.statusCode != 200) {
-      throw Exception('Goal fetch failed: HTTP \${goalResp.statusCode}');
-    }
-    final goalJson = json.decode(goalResp.body);
+    try {
+      // Make sure your blueprint is registered as '/food_detection' in Python
+      final goalResp = await http.get(
+        Uri.parse('$baseUrl/food_detection/goal'),
+        headers: headers,
+      );
+      if (goalResp.statusCode != 200) {
+        // Provide a more detailed error message
+        throw Exception('Failed to fetch goals: HTTP ${goalResp.statusCode} - ${goalResp.body}');
+      }
+      final goalJson = json.decode(goalResp.body);
 
-    final logResp = await http.get(
-      Uri.parse('$baseUrl/nutrition/log/today'),
-      headers: headers,
-    );
-    if (logResp.statusCode != 200) {
-      throw Exception('Log fetch failed: HTTP \${logResp.statusCode}');
-    }
-    final logJson = json.decode(logResp.body);
+      final logResp = await http.get(
+        Uri.parse('$baseUrl/food_detection/log/today'),
+        headers: headers,
+      );
+      if (logResp.statusCode != 200) {
+        throw Exception('Failed to fetch logs: HTTP ${logResp.statusCode} - ${logResp.body}');
+      }
+      final logJson = json.decode(logResp.body);
 
-    return NutritionData(
-      goalCalories: (goalJson['calories'] as num).toDouble(),
-      goalProtein: (goalJson['protein'] as num).toDouble(),
-      goalFat: (goalJson['fat'] as num).toDouble(),
-      goalCarbs: (goalJson['carbs'] as num).toDouble(),
-      logCalories: (logJson['daily_calories'] as num).toDouble(),
-      logProtein: (logJson['daily_protein'] as num).toDouble(),
-      logFat: (logJson['daily_fat'] as num).toDouble(),
-      logCarbs: (logJson['daily_carbs'] as num).toDouble(),
-    );
-  }
+      return NutritionData(
+        goalCalories: (goalJson['calories'] as num).toDouble(),
+        goalProtein: (goalJson['protein'] as num).toDouble(),
+        goalFat: (goalJson['fat'] as num).toDouble(),
+        goalCarbs: (goalJson['carbs'] as num).toDouble(),
+        logCalories: (logJson['daily_calories'] as num).toDouble(),
+        logProtein: (logJson['daily_protein'] as num).toDouble(),
+        logFat: (logJson['daily_fat'] as num).toDouble(),
+        logCarbs: (logJson['daily_carbs'] as num).toDouble(),
+      );
+    } catch (e) {
+      // This will show the specific error in your app UI
+      throw Exception('Failed to load nutrition data: $e');
+    }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +127,6 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.person_outline),
             onPressed: () {},
-// lib/screens/home_screen.dart (continued)
           ),
         ],
       ),
@@ -179,38 +223,63 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
+              
+              FutureBuilder<NutritionData>(
+                future: _nutritionDataFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox(
+                      height: 150,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Container(
+                      margin: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.red[50],
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(child: Text('Error: ${snapshot.error}')),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    final data = snapshot.data!;
+                    return Container(
+                      margin: const EdgeInsets.all(16), 
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
                             color: Colors.grey.withOpacity(0.1),
                             blurRadius: 10,
-                            offset: const Offset(0, 4))
-                      ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Daily Nutrition',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      Text(
-                          'Calories: \${data.logCalories.toInt()} / \${data.goalCalories.toInt()}'),
-                      Text(
-                          'Protein:  \${data.logProtein.toInt()}g / \${data.goalProtein.toInt()}g'),
-                      Text(
-                          'Fat:      \${data.logFat.toInt()}g / \${data.goalFat.toInt()}g'),
-                      Text(
-                          'Carbs:    \${data.logCarbs.toInt()}g / \${data.goalCarbs.toInt()}g'),
-                    ],
-                  ),
-                ),
+                            offset: const Offset(0, 4),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Daily Nutrition',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          Text('Calories: ${data.logCalories.toInt()} / ${data.goalCalories.toInt()}'),
+                          Text('Protein:  ${data.logProtein.toInt()}g / ${data.goalProtein.toInt()}g'),
+                          Text('Fat:      ${data.logFat.toInt()}g / ${data.goalFat.toInt()}g'),
+                          Text('Carbs:    ${data.logCarbs.toInt()}g / ${data.goalCarbs.toInt()}g'),
+                        ],
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink(); 
+                },
               ),
+
               // Quick access cards
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

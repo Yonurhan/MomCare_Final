@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart'; // <-- 1. IMPORT PROVIDER
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:pregnancy_app/screens/manual_input_screen.dart'; // <-- IMPORT the new screen
+import 'package:pregnancy_app/services/auth_service.dart'; // <-- 2. IMPORT AUTHSERVICE
+import 'package:pregnancy_app/screens/manual_input_screen.dart';
 import 'package:pregnancy_app/theme/app_theme.dart';
 
 class FoodResultScreen extends StatefulWidget {
@@ -14,7 +15,6 @@ class FoodResultScreen extends StatefulWidget {
   final String? imageId;
   final Map<String, dynamic>? nutritionalInfo;
 
-  // Constructor for image-based results
   const FoodResultScreen.imageResult({
     super.key,
     required this.imageFile,
@@ -22,7 +22,6 @@ class FoodResultScreen extends StatefulWidget {
     required this.imageId,
   }) : nutritionalInfo = null;
 
-  // Constructor for text-based results from manual input
   const FoodResultScreen.textResult({
     super.key,
     required this.nutritionalInfo,
@@ -37,17 +36,14 @@ class FoodResultScreen extends StatefulWidget {
 class _FoodResultScreenState extends State<FoodResultScreen> {
   Map<String, dynamic>? _nutritionalInfo;
   bool _isLoading = false;
-  // Check which mode the screen is in
   bool get _isTextMode => widget.imageFile == null;
 
   @override
   void initState() {
     super.initState();
     if (_isTextMode) {
-      // If we have text results, use them directly
       _nutritionalInfo = widget.nutritionalInfo;
     } else {
-      // If we have an image, fetch its nutrition info
       if (widget.imageId != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _fetchNutritionInfo();
@@ -89,6 +85,7 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
     }
   }
 
+  // 3. THIS IS THE CORRECTED SAVE FUNCTION
   Future<void> _saveNutritionalInfo() async {
     if (_nutritionalInfo == null) return;
     setState(() => _isLoading = true);
@@ -101,16 +98,20 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
     };
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('access_token');
-      if (token == null) throw Exception('You are not logged in.');
+      // Get the token correctly from AuthService using Provider
+      final token = Provider.of<AuthService>(context, listen: false).token;
+      
+      if (token == null) {
+        // This is the source of your error
+        throw Exception('You are not logged in.');
+      }
 
       final baseUrl = dotenv.env['BASE_URL'];
       final resp = await http.post(
         Uri.parse('$baseUrl/food_detection/store_nutritional_info'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token', // Correctly formatted header
         },
         body: jsonEncode(payload),
       );
@@ -120,6 +121,7 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
            SnackBar(backgroundColor: Colors.green, content: Text(decodedBody['message'] ?? 'Successfully saved!')),
         );
+        // Navigate back to the home screen after saving
         Navigator.of(context).popUntil((route) => route.isFirst);
       } else {
         throw Exception(decodedBody['error'] ?? 'Failed to save nutrition data.');
@@ -127,7 +129,7 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
     } catch (e) {
       if(mounted) {
         ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Error: $e')));
+          .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Save Error: $e')));
       }
     } finally {
       if(mounted) {
@@ -135,6 +137,7 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +166,6 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Show image card only if it's not text mode
                   if (!_isTextMode)
                     Card(
                       elevation: 4,
@@ -180,7 +182,6 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                     ),
                   if (!_isTextMode) const SizedBox(height: 24),
 
-                  // Food Name and Calories
                   Text(
                     _isTextMode ? 'Total Nutrition' : widget.dishName ?? 'Unknown Food',
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -191,7 +192,6 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Macro Indicators
                   _buildMacroIndicator('Prot', protein, 'g', totalMacros > 0 ? protein / totalMacros : 0, const Color(0xFF50E486)),
                   const SizedBox(height: 12),
                   _buildMacroIndicator('Carb', carbs, 'g', totalMacros > 0 ? carbs / totalMacros : 0, const Color(0xFF8650E4)),
@@ -199,14 +199,12 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                   _buildMacroIndicator('Fats', fat, 'g', totalMacros > 0 ? fat / totalMacros : 0, const Color(0xFFE47A50)),
                   const SizedBox(height: 32),
                   
-                  // "Not your food?" Button
-                  if (!_isTextMode) // Only show this button for image results
+                  if (!_isTextMode)
                     Center(
                       child: TextButton(
                         onPressed: (){
-                          // Navigate to manual input screen
                           Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => const ManualInputScreen()), // <-- NAVIGATE HERE
+                            MaterialPageRoute(builder: (context) => const ManualInputScreen()),
                           );
                         },
                         child: const Text(
@@ -217,7 +215,6 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                     ),
                   const SizedBox(height: 16),
 
-                  // Action Buttons
                   Row(
                     children: [
                       Expanded(
