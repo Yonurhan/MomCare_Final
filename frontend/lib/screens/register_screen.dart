@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 // Pastikan semua file ini ada dan diimpor dengan benar
 import '../services/auth_service.dart';
@@ -23,9 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen>
   final _ageController = TextEditingController();
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
-
-  // State untuk Dropdown
-  String? _selectedTrimester;
+  final _dueDateController = TextEditingController();
+  DateTime? _selectedDueDate;
 
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -75,6 +75,31 @@ class _RegisterScreenState extends State<RegisterScreen>
     return Validators.validateConfirmPassword(value, _passwordController.text);
   }
 
+  Future<void> _selectDueDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDueDate ?? DateTime.now().add(const Duration(days: 280)),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 400)),
+      helpText: 'Pilih Perkiraan Tanggal Lahir',
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(primary: primaryColor),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedDueDate) {
+      setState(() {
+        _selectedDueDate = picked;
+        _dueDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
   Future<void> _register() async {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) {
@@ -94,8 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen>
         int.tryParse(_ageController.text.trim()) ?? 0,
         int.tryParse(_weightController.text.trim()) ?? 0,
         int.tryParse(_heightController.text.trim()) ?? 0,
-        int.tryParse(_selectedTrimester!) ??
-            0, // Menggunakan nilai dari dropdown
+        _dueDateController.text, 
       );
 
       if (!mounted) return;
@@ -136,6 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     _weightController.dispose();
     _heightController.dispose();
     _animationController.dispose();
+    _dueDateController.dispose(); 
     super.dispose();
   }
 
@@ -347,11 +372,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               ],
             ),
           ),
-          _buildAnimatedWidget(
-            begin: 0.65,
-            end: 1.0,
-            child: _buildTrimesterDropdown(),
-          ),
+          _buildAnimatedWidget(begin: 0.65, end: 1.0, child: _buildDueDateField()),
         ],
       ),
     );
@@ -397,32 +418,19 @@ class _RegisterScreenState extends State<RegisterScreen>
     );
   }
 
-  Widget _buildTrimesterDropdown() {
+  Widget _buildDueDateField() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
-      child: DropdownButtonFormField<String>(
-        value: _selectedTrimester,
-        validator: (value) => value == null ? 'Pilih trimester' : null,
-        hint: Text('Select Trimester',
-            style: GoogleFonts.poppins(color: hintColor)),
-        style: GoogleFonts.poppins(color: Colors.black87),
+      child: TextFormField(
+        controller: _dueDateController,
+        validator: (value) => value == null || value.isEmpty ? 'HPL tidak boleh kosong' : null,
+        readOnly: true,
+        onTap: () => _selectDueDate(context),
+        style: GoogleFonts.poppins(),
         decoration: _buildInputDecoration(
-          hintText:
-              '', // Hint text is handled by the DropdownButtonFormField itself
-          prefixIcon: const Icon(Icons.pregnant_woman_outlined,
-              color: primaryColor, size: 22),
+          hintText: 'Perkiraan Tanggal Lahir (HPL)',
+          prefixIcon: const Icon(Icons.calendar_month_outlined, color: primaryColor, size: 22),
         ),
-        items: ['1', '2', '3'].map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text('Trimester $value'),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          setState(() {
-            _selectedTrimester = newValue;
-          });
-        },
       ),
     );
   }

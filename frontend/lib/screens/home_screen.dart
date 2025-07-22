@@ -1,34 +1,23 @@
-// lib/screens/home_screen.dart
-
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:provider/provider.dart'; // <-- ADD THIS IMPORT
-import 'package:pregnancy_app/services/auth_service.dart';
-import 'package:pregnancy_app/screens/morning_sickness_screen.dart';
-import 'package:pregnancy_app/screens/nutrition_screen.dart';
-import 'package:pregnancy_app/theme/app_theme.dart';
-import 'package:pregnancy_app/utils/constants.dart';
-import 'package:pregnancy_app/widgets/feature_card.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
-class NutritionData {
-  final double goalCalories, goalProtein, goalFat, goalCarbs;
-  final double logCalories, logProtein, logFat, logCarbs;
-  NutritionData({
-    required this.goalCalories,
-    required this.goalProtein,
-    required this.goalFat,
-    required this.goalCarbs,
-    required this.logCalories,
-    required this.logProtein,
-    required this.logFat,
-    required this.logCarbs,
-  });
-}
+// Impor semua model dan service yang relevan
+import '../services/auth_service.dart';
+import '../services/api_service.dart';
+import '../models/user_model.dart';
+import '../models/nutrition_summary_model.dart';
 
-// 1. CONVERTED TO A STATEFULWIDGET
+// Impor layar dan widget kustom Anda
+import 'morning_sickness_screen.dart';
+import 'nutrition_screen.dart';
+import '../theme/app_theme.dart';
+import '../utils/constants.dart';
+import '../widgets/feature_card.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -37,82 +26,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // 2. State variable to hold the future
-  Future<NutritionData>? _nutritionDataFuture;
-
+  Future<NutritionSummary>? _nutritionSummaryFuture;
+  final ApiService _apiService = ApiService();
+  
   @override
   void initState() {
     super.initState();
-    // 3. Fetch data when the screen loads
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Use listen:false in initState because we don't need to rebuild here
-      final authService = Provider.of<AuthService>(context, listen: false);
-      // Only fetch data if the user is logged in
-      if (authService.token != null) {
-        setState(() {
-          _nutritionDataFuture = _fetchNutritionData();
-        });
-      }
+    _refreshData(); 
+  }
+
+  Future<NutritionSummary> _fetchNutritionData() async {
+    await Provider.of<AuthService>(context, listen: false).refreshUserProfile();
+    return _apiService.getNutritionSummary();
+  }
+
+  void _refreshData() {
+    setState(() {
+      _nutritionSummaryFuture = _fetchNutritionData();
     });
   }
 
-  // 4. CORRECTED THE DATA FETCHING LOGIC
-  Future<NutritionData> _fetchNutritionData() async {
-    // Get token correctly from AuthService, which is the right way for your app
-    final token = Provider.of<AuthService>(context, listen: false).token;
+  Future<void> _navigateToNutritionScreen() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const NutritionScreen()),
+    );
+    _refreshData();
+  }
+  
+  Future<void> _logWater() async {
+    await _apiService.logWater();
+    _refreshData();
+  }
 
-    // --- DEBUGGING STEP ---
-    // This will print the token to your console so you can see if it exists.
-    // If this prints "Token: null", the user is not logged in.
-    print("Fetching data with Token: $token");
-
-    if (token == null || token.isEmpty) {
-      throw Exception('User is not logged in. Token is missing.');
-    }
-
-    // This is the standard header format
-    final headers = {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json'
-    };
-    final baseUrl = dotenv.env['BASE_URL'];
-
-    try {
-      // Make sure your blueprint is registered as '/food_detection' in Python
-      final goalResp = await http.get(
-        Uri.parse('$baseUrl/food_detection/goal'),
-        headers: headers,
-      );
-      if (goalResp.statusCode != 200) {
-        // Provide a more detailed error message
-        throw Exception('Failed to fetch goals: HTTP ${goalResp.statusCode} - ${goalResp.body}');
-      }
-      final goalJson = json.decode(goalResp.body);
-
-      final logResp = await http.get(
-        Uri.parse('$baseUrl/food_detection/log/today'),
-        headers: headers,
-      );
-      if (logResp.statusCode != 200) {
-        throw Exception('Failed to fetch logs: HTTP ${logResp.statusCode} - ${logResp.body}');
-      }
-      final logJson = json.decode(logResp.body);
-
-      return NutritionData(
-        goalCalories: (goalJson['calories'] as num).toDouble(),
-        goalProtein: (goalJson['protein'] as num).toDouble(),
-        goalFat: (goalJson['fat'] as num).toDouble(),
-        goalCarbs: (goalJson['carbs'] as num).toDouble(),
-        logCalories: (logJson['daily_calories'] as num).toDouble(),
-        logProtein: (logJson['daily_protein'] as num).toDouble(),
-        logFat: (logJson['daily_fat'] as num).toDouble(),
-        logCarbs: (logJson['daily_carbs'] as num).toDouble(),
-      );
-    } catch (e) {
-      // This will show the specific error in your app UI
-      throw Exception('Failed to load nutrition data: $e');
-    }
-}
+  Future<void> _logSleep() async {
+    await _apiService.logSleep(hours: 1.0);
+    _refreshData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,14 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text(AppConstants.appName),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {},
-          ),
+          IconButton(icon: const Icon(Icons.notifications_outlined), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.person_outline), onPressed: () {}),
         ],
       ),
       body: SafeArea(
@@ -135,158 +79,35 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Pregnancy week tracker
-              Container(
-                padding: const EdgeInsets.all(20),
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppTheme.primaryColor, AppTheme.accentColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppTheme.primaryColor.withOpacity(0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${AppConstants.weekLabel} 8',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            const Text(
-                              AppConstants.firstTrimester,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            '56 days to go',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    LinearPercentIndicator(
-                      percent: 0.2,
-                      lineHeight: 10,
-                      backgroundColor: Colors.white.withOpacity(0.3),
-                      progressColor: Colors.white,
-                      barRadius: const Radius.circular(5),
-                      padding: EdgeInsets.zero,
-                      animation: true,
-                      animationDuration: 1000,
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildWeekIndicator('1', true),
-                        _buildWeekIndicator('12', true),
-                        _buildWeekIndicator('24', false),
-                        _buildWeekIndicator('40', false),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              // --- KARTU PROGRES DARI KODE LAMA ANDA ---
+              _OldPregnancyProgressCard(),
               
-              FutureBuilder<NutritionData>(
-                future: _nutritionDataFuture,
+              // --- KARTU NUTRISI BARU YANG DISISIPKAN ---
+              FutureBuilder<NutritionSummary>(
+                future: _nutritionSummaryFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SizedBox(
-                      height: 150,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
+                    return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
                   }
                   if (snapshot.hasError) {
-                    return Container(
-                      margin: const EdgeInsets.all(16),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.red[50],
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(child: Text('Error: ${snapshot.error}')),
-                    );
+                    return Center(child: Padding(padding: const EdgeInsets.all(16.0), child: Text('Gagal memuat data nutrisi: ${snapshot.error}')));
                   }
                   if (snapshot.hasData) {
-                    final data = snapshot.data!;
-                    return Container(
-                      margin: const EdgeInsets.all(16), 
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          )
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Daily Nutrition',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          Text('Calories: ${data.logCalories.toInt()} / ${data.goalCalories.toInt()}'),
-                          Text('Protein:  ${data.logProtein.toInt()}g / ${data.goalProtein.toInt()}g'),
-                          Text('Fat:      ${data.logFat.toInt()}g / ${data.goalFat.toInt()}g'),
-                          Text('Carbs:    ${data.logCarbs.toInt()}g / ${data.goalCarbs.toInt()}g'),
-                        ],
-                      ),
+                    final summary = snapshot.data!;
+                    return _TodayNutritionCard(
+                      summary: summary,
+                      onWaterLogged: _logWater,
+                      onSleepLogged: _logSleep,
                     );
                   }
-                  return const SizedBox.shrink(); 
+                  return const SizedBox(height: 200, child: Center(child: Text('Data nutrisi tidak tersedia.')));
                 },
               ),
 
-              // Quick access cards
+              // --- GRID FITUR DARI KODE LAMA ANDA ---
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Quick Access',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: Text('Quick Access', style: Theme.of(context).textTheme.headlineMedium),
               ),
               const SizedBox(height: 16),
               GridView.count(
@@ -302,186 +123,136 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icons.restaurant,
                     title: AppConstants.nutritionFeature,
                     color: AppTheme.accentColor,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NutritionScreen(),
-                        ),
-                      );
-                    },
+                    onTap: _navigateToNutritionScreen,
                   ),
                   FeatureCard(
                     icon: Icons.sick,
                     title: AppConstants.morningSicknessFeature,
                     color: AppTheme.accentColor,
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MorningSicknessScreen(),
-                        ),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const MorningSicknessScreen()));
                     },
                   ),
                   FeatureCard(
                     icon: Icons.monitor_weight,
                     title: AppConstants.weightTrackerFeature,
                     color: AppTheme.accentColor,
-                    onTap: () {
-                      // Navigate to weight tracker
-                    },
+                    onTap: () {},
                   ),
                   FeatureCard(
                     icon: Icons.calendar_today,
                     title: AppConstants.appointmentsFeature,
                     color: AppTheme.accentColor,
-                    onTap: () {
-                      // Navigate to appointments
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),
+              
+              // --- KARTU TIPS HARIAN DARI KODE LAMA ANDA ---
+              _DailyTipCard(),
 
-              // Daily tips section
+              // --- KARTU JANJI TEMU DARI KODE LAMA ANDA ---
               Padding(
-                padding: const EdgeInsets.all(16),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.lightbulb_outline,
-                            color: AppTheme.accentColor,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppConstants.dailyTipLabel,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Try eating small, frequent meals to help manage morning sickness. Keep crackers by your bedside to eat before getting up.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          height: 1.5,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MorningSicknessScreen(),
-                                ),
-                              );
-                            },
-                            child: const Text('Read More'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Upcoming appointments
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  'Upcoming Appointments',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+                child: Text('Upcoming Appointments', style: Theme.of(context).textTheme.headlineMedium),
               ),
               const SizedBox(height: 16),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppTheme.accentColor.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.calendar_today,
-                        color: AppTheme.accentColor,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Prenatal Checkup',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'March 25, 2025 • 10:00 AM',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: AppTheme.secondaryTextColor,
-                      ),
-                      onPressed: () {
-                        // Navigate to appointment details
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              _AppointmentCard(),
               const SizedBox(height: 24),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// --- WIDGET DARI KODE LAMA ANDA (DENGAN PERBAIKAN) ---
+class _OldPregnancyProgressCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<AuthService>(context).currentUser;
+    int week = 0;
+    String trimesterText = 'Trimester 1';
+    int daysRemaining = 280;
+
+    if (user?.dueDate != null) {
+      final dueDate = DateTime.tryParse(user!.dueDate!);
+      if (dueDate != null) {
+        daysRemaining = dueDate.difference(DateTime.now()).inDays;
+        if (daysRemaining < 0) daysRemaining = 0;
+        
+        final pregnancyDays = 280 - daysRemaining;
+        week = (pregnancyDays / 7).ceil();
+
+        if (week <= 13) trimesterText = AppConstants.firstTrimester;
+        else if (week <= 27) trimesterText = AppConstants.secondTrimester;
+        else trimesterText = AppConstants.thirdTrimester;
+      }
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [AppTheme.primaryColor, AppTheme.accentColor],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.primaryColor.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${AppConstants.weekLabel} $week', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+                  const SizedBox(height: 4),
+                  Text(trimesterText, style: const TextStyle(fontSize: 16, color: Colors.white)),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text('$daysRemaining days to go', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          LinearPercentIndicator(
+            percent: week / 40.0,
+            lineHeight: 10,
+            backgroundColor: Colors.white.withOpacity(0.3),
+            progressColor: Colors.white,
+            barRadius: const Radius.circular(5),
+            padding: EdgeInsets.zero,
+          ),
+          // --- INDIKATOR MINGGU DARI KODE LAMA ANDA ---
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildWeekIndicator('1', true),
+              _buildWeekIndicator('12', true),
+              _buildWeekIndicator('24', false),
+              _buildWeekIndicator('40', false),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -490,8 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       children: [
         Container(
-          width: 24,
-          height: 24,
+          width: 24, height: 24,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isPassed ? Colors.white : Colors.white.withOpacity(0.3),
@@ -510,12 +280,261 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 4),
         Text(
           'Week',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.white.withOpacity(0.8),
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.8)),
         ),
       ],
+    );
+  }
+}
+
+// --- WIDGET BARU UNTUK KARTU NUTRISI ---
+// (Tidak ada perubahan di sini)
+class _TodayNutritionCard extends StatelessWidget {
+  final NutritionSummary summary;
+  final VoidCallback onWaterLogged;
+  final VoidCallback onSleepLogged;
+
+  const _TodayNutritionCard({required this.summary, required this.onWaterLogged, required this.onSleepLogged});
+
+  @override
+  Widget build(BuildContext context) {
+    // ... kode sama seperti sebelumnya
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 4))]
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Nutrisi Hari Ini', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              SizedBox(
+                width: 120, height: 120,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CircularProgressIndicator(
+                      value: summary.goals.calories > 0 ? min(summary.consumed.calories / summary.goals.calories, 1.0) : 0.0,
+                      strokeWidth: 10,
+                      backgroundColor: Colors.grey[200],
+                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.accentColor),
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('${summary.consumed.calories.toInt()}', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                          Text('/ ${summary.goals.calories.toInt()} kkal', style: const TextStyle(color: Colors.grey)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  children: [
+                    _NutrientStat(label: 'Karbohidrat', consumed: summary.consumed.carbs, goal: summary.goals.carbs, unit: 'g', color: Colors.orange),
+                    const SizedBox(height: 12),
+                    _NutrientStat(label: 'Protein', consumed: summary.consumed.protein, goal: summary.goals.protein, unit: 'g', color: Colors.pinkAccent),
+                    const SizedBox(height: 12),
+                    _NutrientStat(label: 'Lemak', consumed: summary.consumed.fat, goal: summary.goals.fat, unit: 'g', color: Colors.lightBlue),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const Divider(height: 40),
+          Row(
+            children: [
+              Expanded(child: _ExtraLogItem(title: "Air Minum", value: "${(summary.consumed.water / 250).toInt()} Gelas", percent: summary.goals.waterMl > 0 ? min(summary.consumed.water / summary.goals.waterMl, 1.0) : 0.0, color: Colors.lightBlue, onAdd: onWaterLogged)),
+              const SizedBox(width: 16),
+              Expanded(child: _ExtraLogItem(title: "Tidur", value: "${summary.consumed.sleep.toStringAsFixed(1)} Jam", percent: summary.goals.sleepHours > 0 ? min(summary.consumed.sleep / summary.goals.sleepHours, 1.0) : 0.0, color: Colors.purpleAccent, onAdd: onSleepLogged)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NutrientStat extends StatelessWidget {
+  final String label;
+  final double consumed;
+  final double goal;
+  final Color color;
+  final String unit;
+
+  const _NutrientStat({required this.label, required this.consumed, required this.goal, required this.color, required this.unit});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
+        const SizedBox(height: 4),
+        Text('${consumed.toInt()}/${goal.toInt()}$unit', style: const TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        LinearProgressIndicator(
+          value: goal > 0 ? min(consumed / goal, 1.0) : 0.0,
+          backgroundColor: color.withOpacity(0.2),
+          valueColor: AlwaysStoppedAnimation<Color>(color),
+          minHeight: 6,
+          borderRadius: BorderRadius.circular(3),
+        ),
+      ],
+    );
+  }
+}
+
+class _ExtraLogItem extends StatelessWidget {
+  final String title;
+  final String value;
+  final double percent;
+  final Color color;
+  final VoidCallback onAdd;
+
+  const _ExtraLogItem({required this.title, required this.value, required this.percent, required this.color, required this.onAdd});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(
+              width: 24, height: 24,
+              child: IconButton(padding: EdgeInsets.zero, icon: const Icon(Icons.add_circle, size: 24), color: color, onPressed: onAdd),
+            )
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(value, style: const TextStyle(color: Colors.grey)),
+        const SizedBox(height: 8),
+        LinearProgressIndicator(
+          value: percent,
+          backgroundColor: color.withOpacity(0.2),
+          valueColor: AlwaysStoppedAnimation<Color>(color),
+          minHeight: 6,
+          borderRadius: BorderRadius.circular(3),
+        ),
+      ],
+    );
+  }
+}
+
+// --- WIDGET DARI KODE LAMA ANDA ---
+class _DailyTipCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.lightbulb_outline, color: AppTheme.accentColor),
+                const SizedBox(width: 8),
+                Text(AppConstants.dailyTipLabel, style: Theme.of(context).textTheme.headlineSmall),
+              ],
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Try eating small, frequent meals to help manage morning sickness. Keep crackers by your bedside to eat before getting up.',
+              style: TextStyle(fontSize: 16, height: 1.5),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MorningSicknessScreen()),
+                    );
+                  },
+                  child: const Text('Read More'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// --- WIDGET DARI KODE LAMA ANDA ---
+class _AppointmentCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppTheme.accentColor.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.calendar_today, color: AppTheme.accentColor),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Prenatal Checkup', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text('March 25, 2025 • 10:00 AM', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_ios, size: 16, color: AppTheme.secondaryTextColor),
+            onPressed: () {},
+          ),
+        ],
+      ),
     );
   }
 }

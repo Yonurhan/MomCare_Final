@@ -1,8 +1,11 @@
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.daily_nutrition_log import DailyNutritionLog  
+from models.user import User
+from services.nutrition_service import calculate_nutrition_goals
 from models import db
 import os
+import datetime
 from datetime import date
 import requests
 from dotenv import load_dotenv
@@ -22,6 +25,17 @@ food_detection_bp = Blueprint('food_detection', __name__)
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+# --- Helper Function ---
+def find_or_create_log(user_id, session):
+    """Finds today's log for a user or creates a new one if it doesn't exist."""
+    today = date.today()
+    log = DailyNutritionLog.query.filter_by(user_id=user_id, date=today).first()
+    if not log:
+        log = DailyNutritionLog(user_id=user_id, date=today)
+        session.add(log)
+    return log
 
 @food_detection_bp.route('/detect_food', methods=['POST'])
 def detect_food():
@@ -170,49 +184,83 @@ def get_nutrition_by_text():
 @food_detection_bp.route('/goal', methods=['GET'])
 @jwt_required()
 def get_nutrition_goal():
-    """
-    Provides the daily nutrition goals for the user.
-    For now, these are fixed values. Later, you can load them from the user's profile.
-    """
-    # In the future, you could fetch these from your User model
-    return jsonify({
-        'calories': 2200,
-        'protein': 150,
-        'fat': 70,
-        'carbs': 250,
-    }), 200
+    try:
+        user_id = int(get_jwt_identity())
+        user = User.query.get(user_id)
+
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        if not user.due_date:
+            return jsonify({'error': 'Due date has not been set for this user.'}), 400
+
+        nutrition_goals = calculate_nutrition_goals(
+            age=user.age,
+            weight=user.weight,
+            height=user.height,
+            due_date=user.due_date
+        )
+
+        nutrition_goals['water_ml'] = 2000  
+        nutrition_goals['sleep_hours'] = 8.0
+
+        return jsonify(nutrition_goals), 200
+
+    except Exception as e:
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
 @food_detection_bp.route('/log/today', methods=['GET'])
 @jwt_required()
 def get_today_log():
     """
     Calculates the sum of all nutrition logs for the current user for today.
+    NOW INCLUDES WATER AND SLEEP.
     """
-    user_id = get_jwt_identity()
-    
-    # THE FIX: Use today's date directly for the query
-    today = date.today()
-    
-    # This query now correctly compares the 'date' column with today's date.
-    todays_logs = DailyNutritionLog.query.filter_by(user_id=user_id, date=today).all()
+    user_id = int(get_jwt_identity())
+    log = find_or_create_log(user_id, db.session)
 
-    if not todays_logs:
+    # Return the log using the to_dict() method we created
+    return jsonify(log.to_dict()), 200
+
+# --- NEW ROUTE for logging water ---
+@food_detection_bp.route('/log/water', methods=['POST'])
+@jwt_required()
+def log_water():
+    """Increments the water log for the day by a fixed amount (1 glass = 250ml)."""
+    user_id = int(get_jwt_identity())
+    
+    try:
+        log = find_or_create_log(user_id, db.session)
+        log.daily_water += 250  # Add 250ml for one glass of water
+        db.session.commit()
         return jsonify({
-            'daily_calories': 0,
-            'daily_protein': 0,
-            'daily_fat': 0,
-            'daily_carbs': 0,
+            'message': 'Water logged successfully.',
+            'new_total_water': log.daily_water
         }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
-    # Safely sum the values, handling potential nulls
-    total_calories = sum(log.daily_calories or 0 for log in todays_logs)
-    total_protein = sum(log.daily_protein or 0 for log in todays_logs)
-    total_fat = sum(log.daily_fat or 0 for log in todays_logs)
-    total_carbs = sum(log.daily_carbs or 0 for log in todays_logs)
+# --- NEW ROUTE for logging sleep ---
+@food_detection_bp.route('/log/sleep', methods=['POST'])
+@jwt_required()
+def log_sleep():
+    """Adds sleep hours to the daily log from the request body."""
+    user_id = int(get_jwt_identity())
+    data = request.get_json()
+    hours_to_add = data.get('hours')
 
-    return jsonify({
-        'daily_calories': total_calories,
-        'daily_protein': total_protein,
-        'daily_fat': total_fat,
-        'daily_carbs': total_carbs,
-    }), 200
+    if not isinstance(hours_to_add, (int, float)) or hours_to_add <= 0:
+        return jsonify({'error': 'Invalid "hours" value provided.'}), 400
+
+    try:
+        log = find_or_create_log(user_id, db.session)
+        log.daily_sleep += hours_to_add
+        db.session.commit()
+        return jsonify({
+            'message': 'Sleep logged successfully.',
+            'new_total_sleep': log.daily_sleep
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

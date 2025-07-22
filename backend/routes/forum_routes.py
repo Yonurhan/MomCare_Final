@@ -10,6 +10,7 @@ from utils.validation import validate_forum_data, validate_comment_data
 from utils.auth_middleware import admin_required
 from datetime import datetime
 import os
+from datetime import date
 
 forum_bp = Blueprint('forum', __name__, url_prefix='/api/forums')
 

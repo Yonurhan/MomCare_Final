@@ -5,6 +5,7 @@ from models.daily_nutrition import DailyNutrition
 from models import db
 from models.user import User
 import datetime
+from datetime import date
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
@@ -14,23 +15,22 @@ def register():
     """
     data = request.get_json()
 
-    if not all(key in data for key in ['username', 'email', 'password', 'age', 'weight', 'height', 'trimester']):
+    if not all(key in data for key in ['username', 'email', 'password', 'age', 'weight', 'height', 'due_date']):
         return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
     
     if User.find_by_email(data['email']):
         return jsonify({'success': False, 'message': 'Email sudah terdaftar'}), 400
     
     try:
-        new_user = User.create(data['username'], data['email'], data['password'], data['age'], data['height'], data['weight'], data['trimester'])
+        new_user = User.create(data['username'], data['email'], data['password'], data['age'], data['height'], data['weight'], data['due_date'])
         
-        # 2) Calculate initial nutrition goals for this user
         goals = calculate_nutrition_goals(
             new_user.age,
             new_user.weight,
             new_user.height,
-            new_user.trimester
+            new_user.due_date
         )
-        # 3) Store the goals in daily_nutrition table
+
         initial_goal = DailyNutrition(
             user_id=new_user.id,
             calories=goals['calories'],
@@ -41,7 +41,7 @@ def register():
         db.session.add(initial_goal)
         db.session.commit()
         
-        
+
         access_token = create_access_token(identity=str(new_user.id))
         return jsonify({
         'success': True,
@@ -66,7 +66,7 @@ def login():
                 'success': False,
                 'message': 'Email dan password wajib diisi'
             }), 400
-
+        print("test")
         email = data['email'].strip().lower()
         password = data['password']
 
@@ -103,6 +103,25 @@ def login():
             'success': False,
             'message': f'Terjadi kesalahan server: {str(e)}'
         }), 500
+
+# NEW: Added /profile endpoint
+@auth_bp.route('/profile', methods=['GET'])
+@jwt_required()
+def get_user_profile():
+    """
+    Endpoint to get the current logged-in user's profile data.
+    """
+    try:
+        user_id = int(get_jwt_identity())
+    except (TypeError, ValueError):
+        return jsonify({'error': 'Invalid user identity'}), 400
+        
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+        
+    # The user.to_dict() method already includes the due_date
+    return jsonify(user.to_dict()), 200
 
 
 @auth_bp.route('/protected', methods=['GET'])
