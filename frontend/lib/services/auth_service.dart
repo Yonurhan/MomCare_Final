@@ -72,7 +72,7 @@ class AuthService with ChangeNotifier {
 
   // Register user
   Future<Map<String, dynamic>> register(String username, String email,
-      String password, int age, int weight, int height, int trimester) async {
+      String password, int age, int weight, int height, String dueDate) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/api/auth/register'),
@@ -84,7 +84,7 @@ class AuthService with ChangeNotifier {
           'age': age,
           'weight': weight,
           'height': height,
-          'trimester': trimester
+          'due_date': dueDate,
         }),
       );
       return jsonDecode(response.body);
@@ -103,6 +103,35 @@ class AuthService with ChangeNotifier {
 
     _currentUser = User.fromJson(jsonDecode(userDataString));
     return _currentUser;
+  }
+  Future<void> refreshUserProfile() async {
+    if (_token == null) return; // Can't refresh without a token
+
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/auth/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final userData = jsonDecode(response.body);
+        _currentUser = User.fromJson(userData);
+
+        // Update the stored user data in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_data', jsonEncode(userData));
+
+        notifyListeners();
+      } else {
+        // Handle token expiration or other errors by logging out
+        await logout();
+      }
+    } catch (e) {
+      print('Failed to refresh user profile: $e');
+    }
   }
 
   // Logout user

@@ -60,10 +60,9 @@ class _ManualInputScreenState extends State<ManualInputScreen> {
     final items = _controllers
         .map((pair) {
           final name = pair['name']!.text.trim();
-          // Assume 'g' for grams if no unit is specified
           final quantity = pair['quantity']!.text.trim();
           return (name.isNotEmpty && quantity.isNotEmpty)
-              ? {'name': name, 'quantity': '${quantity}'} // Send quantity as string with unit
+              ? {'name': name, 'quantity': '${quantity}'}
               : null;
         })
         .where((e) => e != null)
@@ -157,7 +156,7 @@ class _ManualInputScreenState extends State<ManualInputScreen> {
                                 controller: pair['quantity'],
                                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 decoration: const InputDecoration(
-                                  labelText: 'Quantity (g)',
+                                  labelText: 'Quantity',
                                   border: OutlineInputBorder(),
                                 ),
                               ),
