@@ -552,3 +552,42 @@
 2025-07-20 20:44:33,840 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:44:33] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
 2025-07-20 20:45:47,032 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:45:47] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
 2025-07-20 20:45:47,550 - werkzeug - INFO - 192.168.0.103 - - [20/Jul/2025 20:45:47] "GET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1" 200 -
+2025-07-21 01:48:36,213 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-21 01:48:36,214 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-21 01:48:37,543 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-21 01:48:37,544 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-21 01:48:37,546 - werkzeug - INFO -  * Restarting with stat
+2025-07-21 01:48:47,967 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-21 01:48:47,968 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-21 01:48:48,116 - werkzeug - WARNING -  * Debugger is active!
+2025-07-21 01:48:48,147 - werkzeug - INFO -  * Debugger PIN: 124-078-389
+2025-07-21 01:51:37,728 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:51:37] "GET /food_detection/goal HTTP/1.1" 200 -
+2025-07-21 01:51:37,859 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:51:37] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-21 01:51:38,571 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:51:38] "GET /food_detection/log/today HTTP/1.1" 200 -
+2025-07-21 01:51:39,811 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:51:39] "[36mGET /static/uploads/1eeb89284aff48d0b58aef01a1ac7429_d26af689-153b-4f84-af6e-13355d76d306_restaurant-image_1694600301276.jpg HTTP/1.1[0m" 304 -
+2025-07-21 01:51:39,883 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:51:39] "[36mGET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1[0m" 304 -
+2025-07-21 01:51:59,775 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:51:59] "POST /food_detection/detect_food HTTP/1.1" 200 -
+2025-07-21 01:52:03,808 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:52:03] "POST /food_detection/get_nutritional_info HTTP/1.1" 200 -
+2025-07-21 01:52:09,005 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:52:09] "POST /food_detection/store_nutritional_info HTTP/1.1" 200 -
+2025-07-21 01:52:09,684 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:52:09] "[36mGET /static/uploads/1eeb89284aff48d0b58aef01a1ac7429_d26af689-153b-4f84-af6e-13355d76d306_restaurant-image_1694600301276.jpg HTTP/1.1[0m" 304 -
+2025-07-21 01:52:09,686 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:52:09] "[36mGET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1[0m" 304 -
+2025-07-21 01:54:56,348 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:54:56] "[35m[1mPOST /api/forums HTTP/1.1[0m" 201 -
+2025-07-21 01:54:57,119 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:54:57] "GET /api/forums/me?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-21 01:54:57,579 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:54:57] "[36mGET /static/uploads/1eeb89284aff48d0b58aef01a1ac7429_d26af689-153b-4f84-af6e-13355d76d306_restaurant-image_1694600301276.jpg HTTP/1.1[0m" 304 -
+2025-07-21 01:54:57,585 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:54:57] "[36mGET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1[0m" 304 -
+2025-07-21 01:54:57,596 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:54:57] "GET /static/uploads/0337828797f7477f9f9bc14ad363ff8c_IMG-20250717-WA0000.jpg HTTP/1.1" 200 -
+2025-07-21 01:55:02,877 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:02] "POST /api/forums/4/like HTTP/1.1" 200 -
+2025-07-21 01:55:03,606 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:03] "GET /api/forums/4 HTTP/1.1" 200 -
+2025-07-21 01:55:07,091 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:07] "[35m[1mPOST /api/forums/4/comments HTTP/1.1[0m" 201 -
+2025-07-21 01:55:07,357 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:07] "GET /api/forums/4 HTTP/1.1" 200 -
+2025-07-21 01:55:12,932 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:12] "DELETE /api/forums/4 HTTP/1.1" 200 -
+2025-07-21 01:55:13,107 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:13] "GET /api/forums/me?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-21 01:55:15,449 - GeminiIntegration - INFO - Request #1, time since last request: 1753037715.45s
+2025-07-21 01:55:20,055 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 4.60s)
+2025-07-21 01:55:20,060 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:20] "POST /api/chat HTTP/1.1" 200 -
+2025-07-21 01:55:22,441 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:22] "GET /api/history/1 HTTP/1.1" 200 -
+2025-07-21 01:55:35,550 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:35] "[36mGET /static/uploads/5e915c5e3f594d1f97d65d8f25d2abf0_Delicious_juicy_cheeseburger_with_fresh_lettuce_tomato_and_melted_cheese_for_food_photography.jpeg HTTP/1.1[0m" 304 -
+2025-07-21 01:55:35,559 - werkzeug - INFO - 192.168.0.103 - - [21/Jul/2025 01:55:35] "[36mGET /static/uploads/1eeb89284aff48d0b58aef01a1ac7429_d26af689-153b-4f84-af6e-13355d76d306_restaurant-image_1694600301276.jpg HTTP/1.1[0m" 304 -
