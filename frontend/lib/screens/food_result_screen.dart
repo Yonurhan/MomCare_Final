@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart'; // <-- 1. IMPORT PROVIDER
+import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'package:pregnancy_app/services/auth_service.dart'; // <-- 2. IMPORT AUTHSERVICE
+import 'package:pregnancy_app/services/auth_service.dart';
 import 'package:pregnancy_app/screens/manual_input_screen.dart';
 import 'package:pregnancy_app/theme/app_theme.dart';
 
@@ -70,12 +70,11 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
           _nutritionalInfo = data['nutritional_info'];
         });
       } else {
-        throw Exception('Failed to fetch nutrition: ${resp.body}');
+        throw Exception('Gagal mengambil nutrisi: ${resp.body}');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Error: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Error: $e')));
         Navigator.of(context).pop();
       }
     } finally {
@@ -85,7 +84,6 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
     }
   }
 
-  // 3. THIS IS THE CORRECTED SAVE FUNCTION
   Future<void> _saveNutritionalInfo() async {
     if (_nutritionalInfo == null) return;
     setState(() => _isLoading = true);
@@ -95,15 +93,16 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
       'protein': _nutritionalInfo!['protein'] ?? 0,
       'fat': _nutritionalInfo!['fat'] ?? 0,
       'carbs': _nutritionalInfo!['carbs'] ?? 0,
+      'folic_acid': _nutritionalInfo!['folic_acid'] ?? 0,
+      'iron': _nutritionalInfo!['iron'] ?? 0,
+      'calcium': _nutritionalInfo!['calcium'] ?? 0,
+      'zinc': _nutritionalInfo!['zinc'] ?? 0,
     };
 
     try {
-      // Get the token correctly from AuthService using Provider
       final token = Provider.of<AuthService>(context, listen: false).token;
-      
       if (token == null) {
-        // This is the source of your error
-        throw Exception('You are not logged in.');
+        throw Exception('Anda tidak sedang login.');
       }
 
       final baseUrl = dotenv.env['BASE_URL'];
@@ -111,25 +110,25 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
         Uri.parse('$baseUrl/food_detection/store_nutritional_info'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token', // Correctly formatted header
+          'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(payload),
+        body: jsonEncode(payload), 
       );
 
       final decodedBody = jsonDecode(resp.body);
       if (resp.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(backgroundColor: Colors.green, content: Text(decodedBody['message'] ?? 'Successfully saved!')),
-        );
-        // Navigate back to the home screen after saving
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(backgroundColor: Colors.green, content: Text(decodedBody['message'] ?? 'Berhasil disimpan!')),
+          );
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        }
       } else {
-        throw Exception(decodedBody['error'] ?? 'Failed to save nutrition data.');
+        throw Exception(decodedBody['error'] ?? 'Gagal menyimpan data nutrisi.');
       }
     } catch (e) {
       if(mounted) {
-        ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Save Error: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red, content: Text('Error saat menyimpan: $e')));
       }
     } finally {
       if(mounted) {
@@ -137,7 +136,6 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +149,7 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
       backgroundColor: const Color(0xFFFDFCF8),
       appBar: AppBar(
         title: Text(
-          _isTextMode ? 'Manual Entry Result' : 'Nutritional Subject',
+          _isTextMode ? 'Hasil Input Manual' : 'Informasi Nutrisi',
           style: const TextStyle(color: Colors.black, fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
@@ -160,45 +158,42 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
       ),
       body: Stack(
         children: [
-          if (_nutritionalInfo != null || !_isTextMode)
+          if (_isLoading && _nutritionalInfo == null)
+            const Center(child: CircularProgressIndicator())
+          else if (_nutritionalInfo != null)
             SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (!_isTextMode)
+                  if (!_isTextMode && widget.imageFile != null)
                     Card(
                       elevation: 4,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       clipBehavior: Clip.antiAlias,
-                      child: widget.imageFile != null
-                          ? Image.file(
-                              widget.imageFile!,
-                              height: 250,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(height: 250, color: Colors.grey[200]),
+                      child: Image.file(
+                        widget.imageFile!,
+                        height: 250,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   if (!_isTextMode) const SizedBox(height: 24),
-
                   Text(
-                    _isTextMode ? 'Total Nutrition' : widget.dishName ?? 'Unknown Food',
+                    _isTextMode ? 'Total Nutrisi' : widget.dishName ?? 'Makanan Tidak Dikenal',
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    '${calories.toStringAsFixed(0)} Kcal',
+                    '${calories.toStringAsFixed(0)} Kkal',
                     style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 24),
-
-                  _buildMacroIndicator('Prot', protein, 'g', totalMacros > 0 ? protein / totalMacros : 0, const Color(0xFF50E486)),
+                  _buildMacroIndicator('Protein', protein, 'g', totalMacros > 0 ? protein / totalMacros : 0, const Color(0xFF50E486)),
                   const SizedBox(height: 12),
-                  _buildMacroIndicator('Carb', carbs, 'g', totalMacros > 0 ? carbs / totalMacros : 0, const Color(0xFF8650E4)),
+                  _buildMacroIndicator('Karbohidrat', carbs, 'g', totalMacros > 0 ? carbs / totalMacros : 0, const Color(0xFF8650E4)),
                   const SizedBox(height: 12),
-                  _buildMacroIndicator('Fats', fat, 'g', totalMacros > 0 ? fat / totalMacros : 0, const Color(0xFFE47A50)),
+                  _buildMacroIndicator('Lemak', fat, 'g', totalMacros > 0 ? fat / totalMacros : 0, const Color(0xFFE47A50)),
                   const SizedBox(height: 32),
-                  
                   if (!_isTextMode)
                     Center(
                       child: TextButton(
@@ -208,13 +203,12 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                           );
                         },
                         child: const Text(
-                          'Not your food? Input your food manually',
+                          'Bukan makanan Anda? Input manual',
                            style: TextStyle(color: AppTheme.primaryColor),
-                         ),
+                        ),
                       ),
                     ),
                   const SizedBox(height: 16),
-
                   Row(
                     children: [
                       Expanded(
@@ -226,19 +220,19 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                             side: const BorderSide(color: AppTheme.primaryColor),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           ),
-                          child: const Text('Cancel'),
+                          child: const Text('Batal'),
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: _saveNutritionalInfo,
+                          onPressed: _isLoading ? null : _saveNutritionalInfo,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             backgroundColor: AppTheme.primaryColor,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           ),
-                          child: const Text('Save'),
+                          child: _isLoading ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)) : const Text('Simpan'),
                         ),
                       ),
                     ],
@@ -246,8 +240,7 @@ class _FoodResultScreenState extends State<FoodResultScreen> {
                 ],
               ),
             ),
-          
-          if (_isLoading)
+          if (_isLoading && _nutritionalInfo != null)
             Container(
               color: Colors.black.withOpacity(0.5),
               child: const Center(child: CircularProgressIndicator()),

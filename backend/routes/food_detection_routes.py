@@ -89,6 +89,10 @@ def get_nutritional_info():
             'protein': total_nutrients.get('PROCNT', {}).get('quantity', 'N/A'),
             'fat': total_nutrients.get('FAT', {}).get('quantity', 'N/A'),
             'carbs': total_nutrients.get('CHOCDF', {}).get('quantity', 'N/A'),
+            'folic_acid': total_nutrients.get('FOLAC', {}).get('quantity', 'N/A'),
+            'iron': total_nutrients.get('FE', {}).get('quantity', 'N/A'),
+            'zinc': total_nutrients.get('ZN', {}).get('quantity', 'N/A'),
+            'calcium': total_nutrients.get('CA', {}).get('quantity', 'N/A'),
         }
 
         return jsonify({
@@ -119,7 +123,11 @@ def store_nutritional_info():
     calories = data.get('calories')
     protein = data.get('protein')
     fat = data.get('fat')
-    carbs = data.get('carbs')
+    carbs = data.get('carbs') 
+    folic_acid = data.get('folic_acid', 0)
+    iron = data.get('iron', 0)            
+    calcium = data.get('calcium', 0)      
+    zinc = data.get('zinc', 0)  
 
     if not user_id:
         return jsonify({'error': 'Missing user_id'}), 400
@@ -134,6 +142,10 @@ def store_nutritional_info():
         daily_protein=protein,
         daily_fat=fat,
         daily_carbs=carbs,
+        daily_folac_acid=folic_acid, 
+        daily_iron=iron,             
+        daily_calcium=calcium,       
+        daily_zinc=zinc,  
         date=date.today()
     )
     db.session.add(nutrition_entry)
@@ -174,11 +186,32 @@ def get_nutrition_by_text():
     total_fat      = sum(f.get('nf_total_fat', 0) for f in foods)
     total_carbs    = sum(f.get('nf_total_carbohydrate', 0) for f in foods)
 
+    total_folic_acid = 0
+    total_iron = 0
+    total_calcium = 0
+    total_zinc = 0
+
+    for food in foods:
+        for nutrient in food.get('full_nutrients', []):
+            if nutrient['attr_id'] == 318: 
+                total_folic_acid += nutrient.get('value', 0)
+            elif nutrient['attr_id'] == 303: 
+                total_iron += nutrient.get('value', 0)
+            elif nutrient['attr_id'] == 301:
+                total_calcium += nutrient.get('value', 0)
+            elif nutrient['attr_id'] == 309: 
+                total_zinc += nutrient.get('value', 0)
+
+
     return jsonify({
         'calories': total_calories,
         'protein':  total_protein,
         'fat':      total_fat,
-        'carbs':    total_carbs
+        'carbs':    total_carbs,
+        'folic_acid': total_folic_acid,
+        'iron': total_iron,            
+        'calcium': total_calcium,      
+        'zinc': total_zinc
     })
 
 @food_detection_bp.route('/goal', methods=['GET'])
@@ -212,17 +245,11 @@ def get_nutrition_goal():
 @food_detection_bp.route('/log/today', methods=['GET'])
 @jwt_required()
 def get_today_log():
-    """
-    Calculates the sum of all nutrition logs for the current user for today.
-    NOW INCLUDES WATER AND SLEEP.
-    """
     user_id = int(get_jwt_identity())
     log = find_or_create_log(user_id, db.session)
 
-    # Return the log using the to_dict() method we created
     return jsonify(log.to_dict()), 200
 
-# --- NEW ROUTE for logging water ---
 @food_detection_bp.route('/log/water', methods=['POST'])
 @jwt_required()
 def log_water():
