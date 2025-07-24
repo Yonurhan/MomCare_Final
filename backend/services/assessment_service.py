@@ -2,16 +2,11 @@ from datetime import date, timedelta
 from models import db
 from models.user import User
 from models.daily_nutrition_log import DailyNutritionLog
-# --- 1. TAMBAHKAN IMPORT INI ---
 from services.nutrition_service import calculate_nutrition_goals
 
-# --- Bagian 1: Definisi Target STATIS (Hanya untuk Mikronutrien) ---
-
 MICRO_TARGETS = {
-    'folic_acid': 600,  # mcg
-    'iron': 27,       # mg
-    'calcium': 1300,    # mg
-    'zinc': 11        # mg
+    'folic_acid': 600, 'iron': 27, 'calcium': 1300, 'zinc': 11,
+    'water': 2000, 'sleep': 8.0
 }
 
 FOOD_RECOMMENDATIONS = {
@@ -19,26 +14,24 @@ FOOD_RECOMMENDATIONS = {
     'iron': 'Daging merah tanpa lemak, unggas, ikan, dan kacang-kacangan.',
     'calcium': 'Produk susu (yoghurt, keju), tahu, dan sayuran seperti kale.',
     'zinc': 'Daging sapi, biji labu, buncis, dan gandum utuh.',
-    'protein': 'Telur, dada ayam, ikan salmon, dan tempe.'
+    'protein': 'Telur, dada ayam, ikan salmon, dan tempe.',
+    'calories': 'Alpukat, kacang-kacangan, dan ubi jalar untuk sumber kalori sehat.',
+    'carbs': 'Nasi merah, oatmeal, dan buah-buahan sebagai sumber karbohidrat kompleks.',
+    'fat': 'Ikan salmon, alpukat, dan minyak zaitun untuk lemak sehat.',
+    'water': 'Pastikan untuk minum setidaknya 8 gelas air setiap hari agar tetap terhidrasi.',
+    'sleep': 'Tidur yang cukup sangat penting untuk pemulihan energi dan pertumbuhan janin.'
 }
 
 ALERT_THRESHOLD_DAYS = 5
 
 def perform_weekly_assessment(user_id, quiz_answers):
-    """
-    Menjalankan asesmen mingguan untuk seorang pengguna.
-    """
     user = User.query.get(user_id)
     if not user or not user.lmp_date:
-        raise ValueError("Pengguna tidak ditemukan atau belum mengatur HPL.")
+        raise ValueError("Pengguna tidak ditemukan atau belum mengatur HPHT.")
 
     dynamic_targets = calculate_nutrition_goals(
-        age=user.age,
-        weight=user.weight,
-        height=user.height,
-        lmp_date=user.lmp_date
+        age=user.age, weight=user.weight, height=user.height, lmp_date=user.lmp_date
     )
-
     targets = {**dynamic_targets, **MICRO_TARGETS}
     
     today = date.today()
@@ -48,38 +41,26 @@ def perform_weekly_assessment(user_id, quiz_answers):
         DailyNutritionLog.date >= seven_days_ago
     ).all()
 
-    days_completed = {
-        'calories': 0, 'protein': 0, 'fat': 0, 'carbs': 0,
-        'folic_acid': 0, 'iron': 0, 'calcium': 0, 'zinc': 0
-    }
-
+    days_completed = { key: 0 for key in targets.keys() }
     log_to_target_map = {
-        'daily_calories': 'calories',
-        'daily_protein': 'protein',
-        'daily_fat': 'fat',
-        'daily_carbs': 'carbs',
-        'daily_folac_acid': 'folic_acid',
-        'daily_iron': 'iron',
-        'daily_calcium': 'calcium',
-        'daily_zinc': 'zinc'
+        'daily_calories': 'calories', 'daily_protein': 'protein', 'daily_fat': 'fat',
+        'daily_carbs': 'carbs', 'daily_folac_acid': 'folic_acid', 'daily_iron': 'iron',
+        'daily_calcium': 'calcium', 'daily_zinc': 'zinc',
+        'daily_water': 'water', 'daily_sleep': 'sleep'
     }
-
+    
     logs_by_date = {}
     for log in weekly_logs:
         if log.date not in logs_by_date:
-            logs_by_date[log.date] = {}
-        # Jumlahkan nilai untuk hari yang sama
+            logs_by_date[log.date] = { key: 0 for key in targets.keys() }
         for log_attr, target_key in log_to_target_map.items():
-            current_value = logs_by_date[log.date].get(target_key, 0)
-            logs_by_date[log.date][target_key] = current_value + getattr(log, log_attr, 0)
+            logs_by_date[log.date][target_key] += getattr(log, log_attr, 0)
 
-    # Sekarang bandingkan total harian dengan target
-    for day_total in logs_by_date.values():
-        for nutrient, total_value in day_total.items():
-            if total_value >= targets.get(nutrient, float('inf')):
+    for day_totals in logs_by_date.values():
+        for nutrient, total_value in day_totals.items():
+            if nutrient in targets and total_value >= targets[nutrient]:
                 days_completed[nutrient] += 1
 
-    # 4. Buat hasil akhir dan rekomendasi
     final_results = {}
     for nutrient, days in days_completed.items():
         recommendation = None
@@ -91,26 +72,29 @@ def perform_weekly_assessment(user_id, quiz_answers):
             "target_daily": targets.get(nutrient),
             "recommendation": recommendation
         }
-
-    # Tambahkan rekomendasi personal berdasarkan jawaban kuis
+    
     energy_level = quiz_answers.get('energy_level')
+    mood = quiz_answers.get('mood') 
+    general_symptoms = quiz_answers.get('general_symptoms', [])
+    healthy_habits = quiz_answers.get('healthy_habits', [])
+
     if energy_level and energy_level <= 2 and final_results['iron']['days_completed'] < ALERT_THRESHOLD_DAYS:
         final_results['iron']['recommendation'] += " Asupan zat besi yang cukup sangat penting untuk mengatasi kelelahan."
 
-     # Logika untuk Kalori & Energi
-    if energy_level and energy_level <= 2 and final_results['calories']['days_completed'] < ALERT_THRESHOLD_DAYS:
-        final_results['calories']['recommendation'] += " Kalori adalah sumber energi utama, pastikan asupannya cukup."
+    if mood in ['sedih', 'cemas'] and final_results['zinc']['days_completed'] < ALERT_THRESHOLD_DAYS:
+        final_results['zinc']['recommendation'] += " Zinc juga berperan penting dalam menjaga kestabilan suasana hati lho."
 
-    # Logika untuk Zinc & Suasana Hati (Mood)
-    if mood == 'sedih' and final_results['zinc']['days_completed'] < ALERT_THRESHOLD_DAYS:
-        final_results['zinc']['recommendation'] += " Zinc berperan penting dalam menjaga kestabilan suasana hati."
-
-    # Logika untuk Kalsium & Gejala Sulit Tidur atau Sakit Punggung
-    if ('sulit tidur' in symptoms or 'sakit punggung' in symptoms) and final_results['calcium']['days_completed'] < ALERT_THRESHOLD_DAYS:
-        final_results['calcium']['recommendation'] += " Kalsium membantu relaksasi otot dan dapat meningkatkan kualitas tidur."
-
-    # Logika untuk Asam Folat (selalu penting)
-    if final_results['folic_acid']['days_completed'] < ALERT_THRESHOLD_DAYS:
-        final_results['folic_acid']['recommendation'] += " Ini adalah nutrisi krusial untuk perkembangan sistem saraf bayi Anda."
+    if ('sulit tidur' in general_symptoms or 'sakit punggung' in general_symptoms) and final_results['sleep']['days_completed'] < ALERT_THRESHOLD_DAYS:
+        final_results['sleep']['recommendation'] += " Kualitas tidur yang baik dapat membantu mengurangi nyeri punggung dan gejala lainnya."
     
+    if 'vitamin prenatal' not in healthy_habits:
+        if 'general_recommendation' not in final_results:
+            final_results['general_recommendation'] = []
+        final_results['general_recommendation'].append("Jangan lupa untuk rutin mengonsumsi vitamin prenatal sesuai anjuran dokter ya.")
+    
+    if 'aktivitas fisik' not in healthy_habits:
+        if 'general_recommendation' not in final_results:
+            final_results['general_recommendation'] = []
+        final_results['general_recommendation'].append("Aktivitas fisik ringan seperti berjalan kaki dapat membantu menjaga kebugaran selama kehamilan.")
+
     return final_results

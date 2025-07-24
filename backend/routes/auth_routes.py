@@ -5,7 +5,7 @@ from models.daily_nutrition import DailyNutrition
 from models import db
 from models.user import User
 import datetime
-from datetime import date
+from datetime import datetime, date, timedelta
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
@@ -16,7 +16,6 @@ def register():
     """
     data = request.get_json()
 
-    # --- PERUBAHAN 1: Memeriksa 'lmp_date' ---
     required_fields = ['username', 'email', 'password', 'age', 'weight', 'height', 'lmp_date']
     if not all(key in data for key in required_fields):
         return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
@@ -25,10 +24,8 @@ def register():
         return jsonify({'success': False, 'message': 'Email sudah terdaftar'}), 400
     
     try:
-        # --- PERUBAHAN 2: Mengubah string 'YYYY-MM-DD' menjadi objek date ---
         lmp_date_obj = datetime.strptime(data['lmp_date'], '%Y-%m-%d').date()
 
-        # --- PERUBAHAN 3: Menggunakan lmp_date saat membuat user ---
         new_user = User.create(
             data['username'], 
             data['email'], 
@@ -36,10 +33,9 @@ def register():
             data['age'], 
             data['height'], 
             data['weight'], 
-            lmp_date_obj  # Menggunakan objek date, bukan string
+            lmp_date_obj 
         )
         
-        # --- PERUBAHAN 4: Kalkulasi goal sekarang juga menggunakan lmp_date ---
         goals = calculate_nutrition_goals(
             new_user.age,
             new_user.weight,
@@ -102,8 +98,8 @@ def login():
 # )
         # Generate JWT token
         access_token = create_access_token(
-            identity=str(user.id),  # Gunakan ID user sebagai string
-            expires_delta=datetime.timedelta(hours=1)
+            identity=str(user.id),
+            expires_delta=timedelta(hours=1)
         )
 
         return jsonify({

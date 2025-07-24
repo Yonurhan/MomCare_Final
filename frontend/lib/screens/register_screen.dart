@@ -49,7 +49,6 @@ class _RegisterScreenState extends State<RegisterScreen>
     _animationController.forward();
   }
 
-  // Helper untuk membuat animasi bertingkat (staggered)
   Animation<double> _createAnimation(double begin, double end) {
     return Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(

@@ -790,3 +790,110 @@
 2025-07-24 21:27:57,866 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
 2025-07-24 21:27:57,951 - werkzeug - WARNING -  * Debugger is active!
 2025-07-24 21:27:57,956 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:34:41,719 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\models\\weekly_assessment.py', reloading
+2025-07-24 23:34:43,227 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 23:34:53,158 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 23:34:53,158 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 23:34:53,311 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 23:34:53,325 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:36:58,731 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-24 23:36:59,163 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 23:37:06,668 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 23:37:06,668 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 23:37:06,843 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 23:37:06,844 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:38:38,242 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\assessment_routes.py', reloading
+2025-07-24 23:38:38,718 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 23:38:46,550 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 23:38:46,557 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 23:38:46,750 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 23:38:46,762 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:39:43,330 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\assessment_routes.py', reloading
+2025-07-24 23:39:43,904 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 23:39:50,692 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 23:39:50,692 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 23:39:50,795 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 23:39:50,801 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:44:45,813 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-24 23:44:46,331 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 23:44:53,179 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 23:44:53,179 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 23:44:53,463 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 23:44:53,479 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:46:48,464 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-24 23:46:48,979 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 23:46:56,215 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 23:46:56,215 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 23:46:56,332 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 23:46:56,342 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 23:58:57,002 - werkzeug - INFO - 127.0.0.1 - - [24/Jul/2025 23:58:57] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-24 23:59:38,215 - werkzeug - INFO - 127.0.0.1 - - [24/Jul/2025 23:59:38] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-24 23:59:52,723 - werkzeug - INFO - 127.0.0.1 - - [24/Jul/2025 23:59:52] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:00:27,539 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:00:27] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:01:03,259 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:01:03] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:03:14,661 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:03:14,661 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:03:30,317 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:03:30,317 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:03:30,520 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-07-25 00:03:30,520 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 00:03:30,522 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 00:03:37,507 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:03:37,507 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:03:37,641 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 00:03:37,649 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-25 00:07:42,146 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:07:42] "[31m[1mPOST /api/auth/register HTTP/1.1[0m" 400 -
+2025-07-25 00:07:49,421 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:07:49] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-07-25 00:08:28,302 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:08:28] "[31m[1mPOST /api/auth/login HTTP/1.1[0m" 401 -
+2025-07-25 00:08:53,840 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:08:53] "[31m[1mPOST /api/auth/register HTTP/1.1[0m" 400 -
+2025-07-25 00:09:21,498 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:09:21] "[31m[1mPOST /api/auth/register HTTP/1.1[0m" 400 -
+2025-07-25 00:09:52,000 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:09:52] "[31m[1mPOST /api/auth/register HTTP/1.1[0m" 400 -
+2025-07-25 00:18:44,233 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:18:44] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-07-25 00:19:37,872 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:19:37] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 500 -
+2025-07-25 00:21:57,860 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\auth_routes.py', reloading
+2025-07-25 00:21:58,259 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 00:22:03,264 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:22:03,264 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:22:03,352 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 00:22:03,358 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-25 00:22:15,652 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\auth_routes.py', reloading
+2025-07-25 00:22:15,927 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 00:22:19,452 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:22:19,452 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:22:19,529 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 00:22:19,541 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-25 00:24:02,599 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:24:02] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 201 -
+2025-07-25 00:24:15,053 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:24:15] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:24:18,183 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:24:18] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:24:19,649 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:24:19] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:24:44,348 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:24:44] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:24:54,669 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:24:54] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:25:01,725 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:25:01] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:25:12,130 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:25:12] "[35m[1mPOST /api/auth/login HTTP/1.1[0m" 500 -
+2025-07-25 00:27:05,284 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\auth_routes.py', reloading
+2025-07-25 00:27:05,579 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 00:27:09,440 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:27:09,440 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:27:09,487 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 00:27:09,493 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-25 00:27:11,012 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:27:11] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-25 00:27:11,881 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:27:11] "GET /api/auth/profile HTTP/1.1" 200 -
+2025-07-25 00:27:11,903 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:27:11] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-25 00:27:12,060 - werkzeug - INFO - 192.168.1.12 - - [25/Jul/2025 00:27:12] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-25 00:27:18,325 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:27:18] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-25 00:28:13,785 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:28:13] "GET /assessment/status HTTP/1.1" 200 -
+2025-07-25 00:28:31,516 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:28:31] "[31m[1mGET /assessment/perform HTTP/1.1[0m" 405 -
+2025-07-25 00:28:41,796 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:28:41] "POST /assessment/perform HTTP/1.1" 200 -
+2025-07-25 00:29:01,961 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:29:01] "[31m[1mPOST /assessment/perform HTTP/1.1[0m" 409 -
+2025-07-25 00:29:20,453 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:29:20] "[31m[1mPOST /assessment/perform HTTP/1.1[0m" 409 -
+2025-07-25 00:29:23,963 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:29:23] "[31m[1mPOST /assessment/perform HTTP/1.1[0m" 409 -
+2025-07-25 00:29:45,562 - werkzeug - INFO - 192.168.1.13 - - [25/Jul/2025 00:29:45] "POST /assessment/perform HTTP/1.1" 200 -
+2025-07-25 00:31:16,284 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 00:31:16,612 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 00:31:20,784 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 00:31:20,785 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 00:31:20,892 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 00:31:20,899 - werkzeug - INFO -  * Debugger PIN: 110-584-636

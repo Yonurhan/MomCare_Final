@@ -72,7 +72,7 @@ class AuthService with ChangeNotifier {
 
   // Register user
   Future<Map<String, dynamic>> register(String username, String email,
-      String password, int age, int weight, int height, String dueDate) async {
+      String password, int age, int weight, int height, String lmpDate) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/api/auth/register'),
@@ -84,13 +84,13 @@ class AuthService with ChangeNotifier {
           'age': age,
           'weight': weight,
           'height': height,
-          'due_date': dueDate,
+          'lmp_date': lmpDate,
         }),
       );
       return jsonDecode(response.body);
     } catch (e) {
       throw Exception('Registration error: $e');
-    }
+    } 
   }
 
   // Get current user from SharedPreferences
