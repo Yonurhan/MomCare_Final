@@ -79,7 +79,8 @@ with app.app_context():
         from models.like import Like
         from models.daily_nutrition import DailyNutrition
         from models.daily_nutrition_log import DailyNutritionLog
-        
+        from models.weekly_assessment import WeeklyAssessment
+
         # Create tables
         db.create_all()
         print("✅ Semua tabel berhasil diinisialisasi")
@@ -137,6 +138,13 @@ try:
     print("✅ Rute nutrition berhasil didaftarkan")    
 except ImportError as e:
     print(f"❌ Error saat mengimpor nutrition_routes: {str(e)}")
+
+try:
+    from routes.assessment_routes import assessment_bp
+    app.register_blueprint(assessment_bp, url_prefix='/assessment')
+    print("✅ Rute assessment berhasil didaftarkan")    
+except ImportError as e:
+    print(f"❌ Error saat mengimpor assessment_routes: {str(e)}")
 
 
 # Routes
