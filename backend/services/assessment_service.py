@@ -7,7 +7,6 @@ from services.nutrition_service import calculate_nutrition_goals
 
 # --- Bagian 1: Definisi Target STATIS (Hanya untuk Mikronutrien) ---
 
-# Target untuk nutrisi penting ini bisa Anda sesuaikan. Nilainya per hari.
 MICRO_TARGETS = {
     'folic_acid': 600,  # mcg
     'iron': 27,       # mg
@@ -15,7 +14,6 @@ MICRO_TARGETS = {
     'zinc': 11        # mg
 }
 
-# Rekomendasi makanan statis (tidak berubah)
 FOOD_RECOMMENDATIONS = {
     'folic_acid': 'Sayuran hijau (bayam, brokoli), alpukat, dan sereal yang diperkaya.',
     'iron': 'Daging merah tanpa lemak, unggas, ikan, dan kacang-kacangan.',
@@ -24,32 +22,25 @@ FOOD_RECOMMENDATIONS = {
     'protein': 'Telur, dada ayam, ikan salmon, dan tempe.'
 }
 
-# Aturan untuk memicu peringatan (kurang dari 5 hari terpenuhi)
 ALERT_THRESHOLD_DAYS = 5
-
-# --- Bagian 2: Fungsi Utama untuk Menjalankan Asesmen ---
 
 def perform_weekly_assessment(user_id, quiz_answers):
     """
     Menjalankan asesmen mingguan untuk seorang pengguna.
     """
     user = User.query.get(user_id)
-    if not user or not user.due_date:
+    if not user or not user.lmp_date:
         raise ValueError("Pengguna tidak ditemukan atau belum mengatur HPL.")
 
-    # --- 2. PERBAIKAN UTAMA DI SINI ---
-    # Panggil fungsi kalkulasi dinamis untuk mendapatkan target makro
     dynamic_targets = calculate_nutrition_goals(
         age=user.age,
         weight=user.weight,
         height=user.height,
-        due_date=user.due_date
+        lmp_date=user.lmp_date
     )
 
-    # Gabungkan target dinamis dengan target mikro statis
     targets = {**dynamic_targets, **MICRO_TARGETS}
     
-    # 2. Ambil semua log nutrisi pengguna selama 7 hari terakhir
     today = date.today()
     seven_days_ago = today - timedelta(days=7)
     weekly_logs = DailyNutritionLog.query.filter(
@@ -57,7 +48,6 @@ def perform_weekly_assessment(user_id, quiz_answers):
         DailyNutritionLog.date >= seven_days_ago
     ).all()
 
-    # 3. Hitung berapa hari setiap target nutrisi terpenuhi
     days_completed = {
         'calories': 0, 'protein': 0, 'fat': 0, 'carbs': 0,
         'folic_acid': 0, 'iron': 0, 'calcium': 0, 'zinc': 0
@@ -74,7 +64,6 @@ def perform_weekly_assessment(user_id, quiz_answers):
         'daily_zinc': 'zinc'
     }
 
-    # Dapatkan semua log yang unik berdasarkan tanggal
     logs_by_date = {}
     for log in weekly_logs:
         if log.date not in logs_by_date:
@@ -108,4 +97,20 @@ def perform_weekly_assessment(user_id, quiz_answers):
     if energy_level and energy_level <= 2 and final_results['iron']['days_completed'] < ALERT_THRESHOLD_DAYS:
         final_results['iron']['recommendation'] += " Asupan zat besi yang cukup sangat penting untuk mengatasi kelelahan."
 
+     # Logika untuk Kalori & Energi
+    if energy_level and energy_level <= 2 and final_results['calories']['days_completed'] < ALERT_THRESHOLD_DAYS:
+        final_results['calories']['recommendation'] += " Kalori adalah sumber energi utama, pastikan asupannya cukup."
+
+    # Logika untuk Zinc & Suasana Hati (Mood)
+    if mood == 'sedih' and final_results['zinc']['days_completed'] < ALERT_THRESHOLD_DAYS:
+        final_results['zinc']['recommendation'] += " Zinc berperan penting dalam menjaga kestabilan suasana hati."
+
+    # Logika untuk Kalsium & Gejala Sulit Tidur atau Sakit Punggung
+    if ('sulit tidur' in symptoms or 'sakit punggung' in symptoms) and final_results['calcium']['days_completed'] < ALERT_THRESHOLD_DAYS:
+        final_results['calcium']['recommendation'] += " Kalsium membantu relaksasi otot dan dapat meningkatkan kualitas tidur."
+
+    # Logika untuk Asam Folat (selalu penting)
+    if final_results['folic_acid']['days_completed'] < ALERT_THRESHOLD_DAYS:
+        final_results['folic_acid']['recommendation'] += " Ini adalah nutrisi krusial untuk perkembangan sistem saraf bayi Anda."
+    
     return final_results

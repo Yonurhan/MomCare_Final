@@ -1,19 +1,23 @@
+# services/nutrition_service.py
+
 from datetime import date, timedelta
 
-def calculate_nutrition_goals(age, weight, height, due_date):
+def calculate_due_date(lmp_date):
+    """Menghitung perkiraan tanggal lahir (HPL) dari HPHT."""
+    return lmp_date + timedelta(days=280)
+
+def calculate_nutrition_goals(age, weight, height, lmp_date):
     """
-    Calculates daily nutrition goals based on user's stats and due date.
+    Menghitung target nutrisi harian berdasarkan statistik pengguna dan HPHT.
     """
     today = date.today()
     
-    if not isinstance(due_date, date):
-        raise TypeError("due_date must be a valid date object.")
+    if not isinstance(lmp_date, date):
+        raise TypeError("lmp_date harus berupa objek date yang valid.")
 
-    pregnancy_duration_days = 280
-    days_remaining = (due_date - today).days
-
-    current_pregnancy_day = pregnancy_duration_days - days_remaining
-    current_week = (current_pregnancy_day / 7)
+    days_since_lmp = (today - lmp_date).days
+    
+    current_week = (days_since_lmp / 7)
 
     if 1 <= current_week <= 13:
         trimester = 1

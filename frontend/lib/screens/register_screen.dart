@@ -24,8 +24,8 @@ class _RegisterScreenState extends State<RegisterScreen>
   final _ageController = TextEditingController();
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
-  final _dueDateController = TextEditingController();
-  DateTime? _selectedDueDate;
+  final _lmpDateController = TextEditingController();
+  DateTime? _selectedLmpDate;
 
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -75,13 +75,13 @@ class _RegisterScreenState extends State<RegisterScreen>
     return Validators.validateConfirmPassword(value, _passwordController.text);
   }
 
-  Future<void> _selectDueDate(BuildContext context) async {
+  Future<void> _selectLmpDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDueDate ?? DateTime.now().add(const Duration(days: 280)),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 400)),
-      helpText: 'Pilih Perkiraan Tanggal Lahir',
+      initialDate: _selectedLmpDate ?? DateTime.now().subtract(const Duration(days: 30)),
+      firstDate: DateTime.now().subtract(const Duration(days: 300)), // Sekitar 10 bulan lalu
+      lastDate: DateTime.now(), // Tanggal terakhir adalah hari ini
+      helpText: 'Pilih Tanggal Haid Terakhir',
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -92,10 +92,10 @@ class _RegisterScreenState extends State<RegisterScreen>
         );
       },
     );
-    if (picked != null && picked != _selectedDueDate) {
+    if (picked != null && picked != _selectedLmpDate) {
       setState(() {
-        _selectedDueDate = picked;
-        _dueDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+        _selectedLmpDate = picked;
+        _lmpDateController.text = DateFormat('yyyy-MM-dd').format(picked);
       });
     }
   }
@@ -119,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen>
         int.tryParse(_ageController.text.trim()) ?? 0,
         int.tryParse(_weightController.text.trim()) ?? 0,
         int.tryParse(_heightController.text.trim()) ?? 0,
-        _dueDateController.text, 
+        _lmpDateController.text,
       );
 
       if (!mounted) return;
@@ -160,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     _weightController.dispose();
     _heightController.dispose();
     _animationController.dispose();
-    _dueDateController.dispose(); 
+    _lmpDateController.dispose(); 
     super.dispose();
   }
 
@@ -372,7 +372,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               ],
             ),
           ),
-          _buildAnimatedWidget(begin: 0.65, end: 1.0, child: _buildDueDateField()),
+          _buildAnimatedWidget(begin: 0.65, end: 1.0, child: _buildLmpDateField()),
         ],
       ),
     );
@@ -418,17 +418,17 @@ class _RegisterScreenState extends State<RegisterScreen>
     );
   }
 
-  Widget _buildDueDateField() {
+  Widget _buildLmpDateField() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
-        controller: _dueDateController,
-        validator: (value) => value == null || value.isEmpty ? 'HPL tidak boleh kosong' : null,
+        controller: _lmpDateController,
+        validator: (value) => value == null || value.isEmpty ? 'HPHT tidak boleh kosong' : null,
         readOnly: true,
-        onTap: () => _selectDueDate(context),
+        onTap: () => _selectLmpDate(context),
         style: GoogleFonts.poppins(),
         decoration: _buildInputDecoration(
-          hintText: 'Perkiraan Tanggal Lahir (HPL)',
+          hintText: 'Tanggal Haid Terakhir (HPHT)',
           prefixIcon: const Icon(Icons.calendar_month_outlined, color: primaryColor, size: 22),
         ),
       ),

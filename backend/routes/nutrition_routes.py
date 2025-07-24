@@ -27,12 +27,12 @@ def set_nutrition_goal():
     age = user.age
     weight = user.weight
     height = user.height
-    due_date = user.due_date
+    lmp_date = user.lmp_date
 
-    if not due_date:
+    if not lmp_date:
         return jsonify({'error': 'Due date has not been set for this user.'}), 400
 
-    goals = calculate_nutrition_goals(age, weight, height, due_date)
+    goals = calculate_nutrition_goals(age, weight, height, lmp_date)
 
     new_goal = DailyNutrition(
         user_id=user_id,
@@ -116,10 +116,10 @@ def get_nutrition_summary():
     goal = DailyNutrition.query.filter_by(user_id=user_id).order_by(DailyNutrition.id.desc()).first()
 
     if not goal:
-        if not user.due_date:
+        if not user.lmp_date:
             return jsonify({'error': 'Due date not set, cannot create nutrition goal'}), 400
         
-        calculated_goals = calculate_nutrition_goals(user.age, user.weight, user.height, user.due_date)
+        calculated_goals = calculate_nutrition_goals(user.age, user.weight, user.height, user.lmp_date)
         goal = DailyNutrition(
             user_id=user_id, calories=calculated_goals['calories'],
             protein=calculated_goals['protein'], fat=calculated_goals['fat'],

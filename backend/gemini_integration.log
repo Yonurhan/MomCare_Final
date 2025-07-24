@@ -736,3 +736,57 @@
 2025-07-24 20:27:21,576 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
 2025-07-24 20:27:21,650 - werkzeug - WARNING -  * Debugger is active!
 2025-07-24 20:27:21,656 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:27:29,968 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\models\\user.py', reloading
+2025-07-24 20:27:30,496 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:27:35,012 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:27:35,012 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:27:35,086 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:27:35,091 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:27:56,594 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\models\\user.py', reloading
+2025-07-24 20:27:56,887 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:28:00,063 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:28:00,063 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:28:00,120 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:28:00,126 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:29:38,577 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\nutrition_service.py', reloading
+2025-07-24 20:29:38,855 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:29:43,200 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:29:43,200 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:29:43,261 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:29:43,265 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:29:58,628 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\nutrition_service.py', reloading
+2025-07-24 20:29:58,921 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:30:02,580 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:30:02,580 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:30:02,647 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:30:02,654 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:35:03,621 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\nutrition_routes.py', reloading
+2025-07-24 20:35:03,912 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:35:08,060 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:35:08,060 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:35:08,151 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:35:08,156 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:35:38,811 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\auth_routes.py', reloading
+2025-07-24 20:35:39,086 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:35:42,226 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:35:42,226 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:35:42,301 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:35:42,308 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:36:23,158 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-24 20:36:23,507 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:36:26,961 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:36:26,974 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:36:27,071 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:36:27,082 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 20:36:57,751 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-24 20:36:58,039 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 20:37:01,525 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 20:37:01,526 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 20:37:01,604 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 20:37:01,614 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-24 21:27:53,144 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-24 21:27:53,491 - werkzeug - INFO -  * Restarting with stat
+2025-07-24 21:27:57,865 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-24 21:27:57,866 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-24 21:27:57,951 - werkzeug - WARNING -  * Debugger is active!
+2025-07-24 21:27:57,956 - werkzeug - INFO -  * Debugger PIN: 110-584-636

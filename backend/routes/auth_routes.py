@@ -12,23 +12,39 @@ auth_bp = Blueprint('auth', __name__)
 def register():
     """
     Endpoint untuk registrasi pengguna baru.
+    Sekarang menggunakan 'lmp_date' (HPHT).
     """
     data = request.get_json()
 
-    if not all(key in data for key in ['username', 'email', 'password', 'age', 'weight', 'height', 'due_date']):
+    # --- PERUBAHAN 1: Memeriksa 'lmp_date' ---
+    required_fields = ['username', 'email', 'password', 'age', 'weight', 'height', 'lmp_date']
+    if not all(key in data for key in required_fields):
         return jsonify({'success': False, 'message': 'Data tidak lengkap'}), 400
     
     if User.find_by_email(data['email']):
         return jsonify({'success': False, 'message': 'Email sudah terdaftar'}), 400
     
     try:
-        new_user = User.create(data['username'], data['email'], data['password'], data['age'], data['height'], data['weight'], data['due_date'])
+        # --- PERUBAHAN 2: Mengubah string 'YYYY-MM-DD' menjadi objek date ---
+        lmp_date_obj = datetime.strptime(data['lmp_date'], '%Y-%m-%d').date()
+
+        # --- PERUBAHAN 3: Menggunakan lmp_date saat membuat user ---
+        new_user = User.create(
+            data['username'], 
+            data['email'], 
+            data['password'], 
+            data['age'], 
+            data['height'], 
+            data['weight'], 
+            lmp_date_obj  # Menggunakan objek date, bukan string
+        )
         
+        # --- PERUBAHAN 4: Kalkulasi goal sekarang juga menggunakan lmp_date ---
         goals = calculate_nutrition_goals(
             new_user.age,
             new_user.weight,
             new_user.height,
-            new_user.due_date
+            new_user.lmp_date
         )
 
         initial_goal = DailyNutrition(
@@ -41,18 +57,17 @@ def register():
         db.session.add(initial_goal)
         db.session.commit()
         
-
         access_token = create_access_token(identity=str(new_user.id))
         return jsonify({
-        'success': True,
-        'message': 'Registrasi berhasil',
-        'user': new_user.to_dict(),
-        'token': access_token
+            'success': True,
+            'message': 'Registrasi berhasil',
+            'user': new_user.to_dict(),
+            'token': access_token
         }), 201
         
     except Exception as e:
+        db.session.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
-        
 
 
 @auth_bp.route('/login', methods=['POST'])
@@ -66,7 +81,7 @@ def login():
                 'success': False,
                 'message': 'Email dan password wajib diisi'
             }), 400
-        print("test")
+
         email = data['email'].strip().lower()
         password = data['password']
 

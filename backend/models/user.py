@@ -12,7 +12,7 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=False)
     height = db.Column(db.Integer, nullable=False)
     weight = db.Column(db.Integer, nullable=False)
-    due_date = db.Column(db.Date, nullable=True) 
+    lmp_date = db.Column(db.Date, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False)  # Tambahan untuk fitur admin berdasarkan sequence diagram
 
@@ -24,7 +24,9 @@ class User(db.Model):
     nutrition_goal = db.relationship('DailyNutrition', backref='user', lazy=True)
 
 
-    def __init__(self, id=None, username=None, email=None, password=None, age=None, height=None, weight=None, due_date=None, created_at=None, is_admin=False):
+    def __init__(self, id=None, username=None, email=None, 
+                 password=None, age=None, height=None, weight=None, 
+                 lmp_date=None, created_at=None, is_admin=False):
         """Inisialisasi objek User"""
         self.id = id
         self.username = username
@@ -33,12 +35,12 @@ class User(db.Model):
         self.age = age
         self.height = height
         self.weight = weight
-        self.due_date = due_date
+        self.lmp_date = lmp_date
         self.created_at = created_at or datetime.utcnow()
         self.is_admin = is_admin
 
     @classmethod
-    def create(cls, username, email, password, age, height, weight, due_date):
+    def create(cls, username, email, password, age, height, weight, lmp_date):
         """Membuat user baru dengan password terenkripsi dan data kehamilan"""
         try:
             hashed_password = hash_password(password)
@@ -49,7 +51,7 @@ class User(db.Model):
                 age=age,
                 height=height,
                 weight=weight,
-                due_date=due_date
+                lmp_date=lmp_date
             )
             db.session.add(new_user)
             db.session.commit()
@@ -111,7 +113,7 @@ class User(db.Model):
             'age': self.age,
             'height': self.height,
             'weight': self.weight,
-            'due_date': self.due_date.isoformat() if isinstance(self.due_date, date) else None, # MODIFIED
+            'lmp_date': self.lmp_date.isoformat() if isinstance(self.lmp_date, date) else None, # MODIFIED
             'is_admin': self.is_admin,
             'created_at': self.created_at.isoformat() if isinstance(self.created_at, datetime) else self.created_at
         }
