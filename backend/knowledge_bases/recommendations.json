@@ -1,0 +1,273 @@
+{
+  "calories": [
+    { "type": "info", "text": "Fokus pada sumber kalori padat nutrisi." },
+    {
+      "food": "Alpukat",
+      "serving_size": "1 buah sedang (200g)",
+      "value": 322,
+      "unit": "kcal",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Kacang Almond",
+      "serving_size": "1/4 cangkir (35g)",
+      "value": 207,
+      "unit": "kcal",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Ubi Jalar (panggang)",
+      "serving_size": "1 buah besar (180g)",
+      "value": 162,
+      "unit": "kcal",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "protein": [
+    {
+      "food": "Dada Ayam (panggang)",
+      "serving_size": "100g",
+      "value": 31,
+      "unit": "g",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Ikan Salmon (panggang)",
+      "serving_size": "100g",
+      "value": 22,
+      "unit": "g",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Telur Rebus",
+      "serving_size": "2 butir besar",
+      "value": 12,
+      "unit": "g",
+      "tags": ["vegetarian"]
+    },
+    {
+      "food": "Tempe",
+      "serving_size": "100g",
+      "value": 19,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Greek Yogurt",
+      "serving_size": "1 cangkir",
+      "value": 23,
+      "unit": "g",
+      "tags": ["vegetarian"]
+    }
+  ],
+  "carbs": [
+    {
+      "type": "info",
+      "text": "Pilih karbohidrat kompleks untuk energi yang stabil."
+    },
+    {
+      "food": "Nasi Merah (masak)",
+      "serving_size": "1 cangkir (195g)",
+      "value": 45,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Oatmeal (kering)",
+      "serving_size": "1/2 cangkir (40g)",
+      "value": 27,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Pisang",
+      "serving_size": "1 buah sedang",
+      "value": 27,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "fat": [
+    {
+      "type": "info",
+      "text": "Lemak sehat penting untuk perkembangan otak janin."
+    },
+    {
+      "food": "Minyak Zaitun Extra Virgin",
+      "serving_size": "1 sendok makan",
+      "value": 14,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Biji Chia",
+      "serving_size": "2 sendok makan",
+      "value": 9,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Ikan Salmon (panggang)",
+      "serving_size": "100g",
+      "value": 13,
+      "unit": "g",
+      "tags": ["non-veg"]
+    }
+  ],
+  "folic_acid": [
+    {
+      "food": "Bayam (dimasak)",
+      "serving_size": "1 cangkir (180g)",
+      "value": 263,
+      "unit": "mcg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Brokoli (kukus)",
+      "serving_size": "1 cangkir (156g)",
+      "value": 168,
+      "unit": "mcg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Alpukat",
+      "serving_size": "1 buah sedang (200g)",
+      "value": 163,
+      "unit": "mcg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Sereal Sarapan (diperkaya)",
+      "serving_size": "1 porsi",
+      "value": 100,
+      "unit": "mcg",
+      "tags": ["vegetarian"]
+    }
+  ],
+  "iron": [
+    {
+      "food": "Lentil (dimasak)",
+      "serving_size": "1 cangkir (200g)",
+      "value": 6.6,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Daging Merah Tanpa Lemak (dimasak)",
+      "serving_size": "100g",
+      "value": 2.7,
+      "unit": "mg",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Dada Kalkun (dimasak)",
+      "serving_size": "100g",
+      "value": 1.4,
+      "unit": "mg",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Tahu",
+      "serving_size": "1 cangkir",
+      "value": 6.0,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "calcium": [
+    {
+      "food": "Yoghurt Plain",
+      "serving_size": "1 cangkir (245g)",
+      "value": 450,
+      "unit": "mg",
+      "tags": ["vegetarian"]
+    },
+    {
+      "food": "Keju Mozzarella",
+      "serving_size": "30g",
+      "value": 222,
+      "unit": "mg",
+      "tags": ["vegetarian"]
+    },
+    {
+      "food": "Kale (dimasak)",
+      "serving_size": "1 cangkir",
+      "value": 179,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Tahu (dengan kalsium sulfat)",
+      "serving_size": "100g",
+      "value": 350,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "zinc": [
+    {
+      "food": "Daging Sapi (cincang)",
+      "serving_size": "100g",
+      "value": 4.8,
+      "unit": "mg",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Biji Labu",
+      "serving_size": "1/4 cangkir",
+      "value": 2.5,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Buncis (dimasak)",
+      "serving_size": "1 cangkir",
+      "value": 1.5,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Gandum Utuh (roti)",
+      "serving_size": "2 lembar",
+      "value": 1.1,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "water": [
+    {
+      "type": "habit",
+      "text": "Selalu bawa botol air minum agar mudah dijangkau."
+    },
+    {
+      "type": "habit",
+      "text": "Setel pengingat setiap jam untuk minum segelas air."
+    },
+    {
+      "type": "habit",
+      "text": "Minum segelas air setelah bangun tidur dan sebelum tidur."
+    },
+    {
+      "type": "habit",
+      "text": "Makan buah kaya air seperti semangka, stroberi, dan melon."
+    }
+  ],
+  "sleep": [
+    {
+      "type": "habit",
+      "text": "Buat jadwal tidur dan bangun yang konsisten, bahkan di akhir pekan."
+    },
+    {
+      "type": "habit",
+      "text": "Ciptakan rutinitas santai sebelum tidur: membaca buku, mandi air hangat, atau meditasi."
+    },
+    {
+      "type": "habit",
+      "text": "Pastikan kamar tidur gelap, sejuk, dan tenang. Hindari layar gadget 1 jam sebelum tidur."
+    },
+    {
+      "type": "habit",
+      "text": "Gunakan bantal untuk menopang perut dan punggung agar posisi tidur lebih nyaman."
+    }
+  ]
+}

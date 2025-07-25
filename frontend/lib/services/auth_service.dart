@@ -90,7 +90,7 @@ class AuthService with ChangeNotifier {
       return jsonDecode(response.body);
     } catch (e) {
       throw Exception('Registration error: $e');
-    } 
+    }
   }
 
   // Get current user from SharedPreferences
@@ -104,6 +104,7 @@ class AuthService with ChangeNotifier {
     _currentUser = User.fromJson(jsonDecode(userDataString));
     return _currentUser;
   }
+
   Future<void> refreshUserProfile() async {
     if (_token == null) return; // Can't refresh without a token
 

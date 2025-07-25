@@ -15,7 +15,9 @@ class User(db.Model):
     lmp_date = db.Column(db.Date, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     is_admin = db.Column(db.Boolean, default=False)  # Tambahan untuk fitur admin berdasarkan sequence diagram
-
+    # Kolom untuk personalisasi asesmen
+    preferences = db.Column(db.JSON)
+    health_profile = db.Column(db.JSON)
     # Relationships berdasarkan sequence diagram dan struktur folder
     forums = db.relationship('Forum', backref='author', lazy=True, cascade='all, delete-orphan', overlaps='author' )
     comments = db.relationship('Comment', backref='author', lazy=True, cascade='all, delete-orphan')

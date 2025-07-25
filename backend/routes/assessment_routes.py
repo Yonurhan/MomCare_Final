@@ -1,71 +1,85 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app, url_for
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import date, timedelta
+import threading
 
-# Impor model dan service yang relevan
 from models import db
 from models.weekly_assessment import WeeklyAssessment
-from services.assessment_service import perform_weekly_assessment
+from services.assessment_service import perform_weekly_assessment_task
 
 assessment_bp = Blueprint('assessment', __name__, url_prefix='/assessment')
 
-@assessment_bp.route('/status', methods=['GET'])
-@jwt_required()
-def get_assessment_status():
-    user_id = int(get_jwt_identity())
-    today = date.today()
-    start_of_week = today - timedelta(days=today.weekday())
-
-    existing_assessment = WeeklyAssessment.query.filter(
-        WeeklyAssessment.user_id == user_id,
-        WeeklyAssessment.week_start_date == start_of_week
-    ).first()
-
-    if existing_assessment:
-        return jsonify({'status': 'completed'})
-    else:
-        return jsonify({'status': 'available'})
-
 @assessment_bp.route('/perform', methods=['POST'])
 @jwt_required()
-def perform_assessment():
+def perform_assessment_async():
+    """
+    Endpoint untuk MEMULAI proses asesmen. Proses berjalan di background.
+    (Tidak ada perubahan, kode ini sudah siap)
+    """
     user_id = int(get_jwt_identity())
     quiz_answers = request.get_json()
+    if not quiz_answers:
+        return jsonify({'error': 'Request body tidak boleh kosong.'}), 400
 
-    today = date.today()
-    start_of_week = today - timedelta(days=today.weekday())
-    existing_assessment = WeeklyAssessment.query.filter_by(
-        user_id=user_id, week_start_date=start_of_week
+    start_of_week = date.today() - timedelta(days=date.today().weekday())
+    
+    existing = WeeklyAssessment.query.filter(
+        WeeklyAssessment.user_id == user_id,
+        WeeklyAssessment.week_start_date == start_of_week,
+        WeeklyAssessment.status.in_(['completed', 'processing'])
     ).first()
-
-    if existing_assessment:
-        return jsonify({'error': 'Asesmen untuk minggu ini sudah dilakukan.'}), 409
-
-    try:
-        nutrition_results = perform_weekly_assessment(user_id, quiz_answers)
-        
-        new_assessment = WeeklyAssessment(
-            user_id=user_id,
-            week_start_date=start_of_week,
-            nutrition_results=nutrition_results, 
-            
-            red_flag_symptoms=quiz_answers.get('red_flag_symptoms'),
-            energy_level=quiz_answers.get('energy_level'),
-            mood=quiz_answers.get('mood'),
-            general_symptoms=quiz_answers.get('general_symptoms'),
-            healthy_habits=quiz_answers.get('healthy_habits')
-        )
-        db.session.add(new_assessment)
-        db.session.commit()
-
+    if existing:
         return jsonify({
-            'message': 'Asesmen berhasil disimpan.',
-            'results': nutrition_results
-        })
+            'message': 'Asesmen untuk minggu ini sudah selesai atau sedang diproses.',
+            'status': existing.status,
+            'result_url': url_for('assessment.get_assessment_result', assessment_id=existing.id, _external=True)
+        }), 409
 
-    except ValueError as e:
-        return jsonify({'error': str(e)}), 400
-    except Exception as e:
-        db.session.rollback()
-        print(f"ASSESSMENT ERROR: {str(e)}") 
-        return jsonify({'error': 'Terjadi kesalahan saat menjalankan asesmen.'}), 500
+    new_assessment = WeeklyAssessment(
+        user_id=user_id,
+        week_start_date=start_of_week,
+        quiz_answers=quiz_answers,
+        status='processing'
+    )
+    db.session.add(new_assessment)
+    db.session.commit()
+
+    app = current_app._get_current_object()
+    thread = threading.Thread(
+        target=perform_weekly_assessment_task,
+        args=(app, new_assessment.id)
+    )
+    thread.daemon = True
+    thread.start()
+
+    return jsonify({
+        'message': 'Asesmen sedang diproses. Silakan periksa kembali dalam beberapa saat.',
+        'status': 'processing',
+        'result_url': url_for('assessment.get_assessment_result', assessment_id=new_assessment.id, _external=True)
+    }), 202
+
+
+@assessment_bp.route('/result/<int:assessment_id>', methods=['GET'])
+@jwt_required()
+def get_assessment_result(assessment_id):
+    """
+    Endpoint untuk MENGAMBIL hasil asesmen setelah selesai diproses.
+    (Tidak ada perubahan, kode ini sudah siap)
+    """
+    user_id = int(get_jwt_identity())
+    
+    assessment = WeeklyAssessment.query.filter_by(id=assessment_id, user_id=user_id).first_or_404(
+        'Asesmen tidak ditemukan atau Anda tidak memiliki akses.'
+    )
+
+    if assessment.status == 'processing':
+        return jsonify({
+            'status': 'processing',
+            'message': 'Hasil asesmen masih sedang diproses.'
+        }), 202
+    
+    return jsonify({
+        'status': assessment.status,
+        'results': assessment.results,
+        'created_at': assessment.created_at.isoformat()
+    }), 200
