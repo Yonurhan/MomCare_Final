@@ -18,20 +18,6 @@ from models.weekly_assessment import WeeklyAssessment
 # Asumsi Anda memiliki file ini untuk kalkulasi nutrisi
 from services.nutrition_service import calculate_nutrition_goals
 
-# --- Custom Exceptions untuk Error Handling yang Lebih Baik ---
-class AssessmentError(Exception):
-    """Base exception class for assessment errors."""
-    pass
-
-class UserNotFoundError(AssessmentError):
-    """Raised when the user for the assessment is not found."""
-    pass
-
-class InsufficientDataError(AssessmentError):
-    """Raised when there is not enough data to perform an assessment."""
-    pass
-
-# --- Struktur Data Formal ---
 @dataclass
 class Alert:
     """Mendefinisikan struktur objek Peringatan secara formal."""
@@ -122,6 +108,7 @@ SYMPTOM_KNOWLEDGE_BASE = {
 
 # --- Kelas MealPlanner yang Ditingkatkan ---
 # --- Kelas MealPlanner yang Ditingkatkan (PERBAIKAN) ---
+# --- Kelas MealPlanner yang Ditingkatkan (PERBAIKAN) ---
 class MealPlanner:
     def __init__(self, recommendations: Dict, preferences: Dict):
         self.recommendations = recommendations
@@ -133,28 +120,25 @@ class MealPlanner:
         Metode ini lebih jelas dalam memisahkan logika untuk tipe 'info' dan 'food',
         serta memiliki filter diet yang lebih akurat.
         """
-        nutrient_key = nutrient.lower()
+        nutrient_key = nutrient.lower().replace(' ', '_') # Normalisasi nama nutrisi
         all_recs = self.recommendations.get(nutrient_key, [])
         
-        # Jika tidak ada rekomendasi untuk nutrisi ini, kembalikan daftar kosong
         if not all_recs:
             return []
 
         filtered_list = []
-        # Menggunakan set untuk pencarian yang lebih cepat
         disliked_foods = {food.lower() for food in self.preferences.get('disliked_foods', [])}
         dietary_pref = self.preferences.get('dietary', 'all')
 
         for rec in all_recs:
-            rec_type = rec.get('type')
-
             # 1. Selalu sertakan teks informasi umum
-            if rec_type == 'info':
+            if rec.get('type') == 'info':
                 filtered_list.append(rec)
-                continue  # Lanjut ke item berikutnya
+                continue
 
-            # 2. Proses dan filter rekomendasi makanan spesifik
-            if rec_type == 'food':
+            # PERBAIKAN 1: Mengidentifikasi item makanan dengan memeriksa keberadaan kunci 'food'
+            # bukan dengan 'type' == 'food'.
+            if 'food' in rec:
                 # Filter 1: Lewati jika makanan tidak disukai
                 if rec.get('food', '').lower() in disliked_foods:
                     continue
@@ -164,7 +148,6 @@ class MealPlanner:
                 if dietary_pref == 'vegetarian' and 'non-veg' in tags:
                     continue
                 
-                # Perbaikan filter vegan: juga mengecualikan produk turunan susu dan telur
                 if dietary_pref == 'vegan' and ('non-veg' in tags or 'susu' in tags or 'telur' in tags):
                     continue
 
@@ -179,8 +162,9 @@ class MealPlanner:
         food_scores = {}
         all_relevant_foods = {}
         for nutrient in deficient_nutrients:
-            # Pastikan hanya memproses item bertipe 'food'
-            for food in [f for f in self._get_filtered_foods(nutrient) if f.get('type') == 'food']:
+            # PERBAIKAN 2: Filter untuk item bertipe 'food' di sini juga diperbaiki.
+            # Sekarang memeriksa keberadaan kunci 'food'.
+            for food in [f for f in self._get_filtered_foods(nutrient) if 'food' in f]:
                 food_name = food['food']
                 all_relevant_foods[food_name] = food
                 food_scores[food_name] = food_scores.get(food_name, 0) + 1
@@ -205,8 +189,8 @@ class MealPlanner:
             plan['dinner'] = f"{dinner_food['food']} ({dinner_food['serving_size']})."
             used_foods.add(dinner_food_name)
             
-        # Cari opsi sarapan dari karbohidrat atau protein yang belum digunakan
-        breakfast_options = [f for f in (self._get_filtered_foods('carbs') + self._get_filtered_foods('protein')) if f.get('type') == 'food']
+        # PERBAIKAN 3: Filter untuk opsi sarapan juga disesuaikan.
+        breakfast_options = [f for f in (self._get_filtered_foods('carbs') + self._get_filtered_foods('protein')) if 'food' in f]
         for food in breakfast_options:
             if food['food'] not in used_foods:
                 plan['breakfast'] = f"{food['food']} sebagai sumber energi pagi."
