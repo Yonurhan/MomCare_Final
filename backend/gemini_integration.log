@@ -1322,3 +1322,15 @@ AttributeError: 'User' object has no attribute 'preferences'
 2025-07-25 13:17:59,251 - werkzeug - INFO -  * Debugger PIN: 805-942-767
 2025-07-25 13:20:56,968 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 13:20:56] "[35m[1mPOST /assessment/perform HTTP/1.1[0m" 202 -
 2025-07-25 13:21:00,583 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 13:21:00] "GET /assessment/result/2 HTTP/1.1" 200 -
+2025-07-25 13:56:22,862 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 13:56:22,863 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 13:56:23,017 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.13:5000
+2025-07-25 13:56:23,017 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 13:56:23,022 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 13:56:26,831 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 13:56:26,831 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 13:56:26,905 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 13:56:26,911 - werkzeug - INFO -  * Debugger PIN: 110-584-636
