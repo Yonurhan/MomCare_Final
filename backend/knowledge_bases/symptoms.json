@@ -4,8 +4,7 @@
     "lifestyle_tips": [
       "Makan dalam porsi kecil tapi sering (misalnya, cracker atau roti kering) sebelum beranjak dari tempat tidur.",
       "Hindari makanan berlemak, pedas, atau beraroma kuat yang dapat memicu mual.",
-      "Coba konsumsi jahe dalam bentuk teh hangat atau permen jahe.",
-      "Pastikan sirkulasi udara di ruangan baik untuk mengurangi sensitivitas terhadap bau."
+      "Coba konsumsi jahe dalam bentuk teh hangat atau permen jahe."
     ]
   },
   "kelelahan": {
@@ -13,8 +12,7 @@
     "lifestyle_tips": [
       "Prioritaskan tidur malam yang berkualitas selama 7-9 jam.",
       "Lakukan tidur siang singkat (20-30 menit) jika memungkinkan.",
-      "Lakukan aktivitas fisik ringan seperti berjalan kaki untuk meningkatkan sirkulasi dan energi.",
-      "Delegasikan tugas kepada pasangan atau keluarga untuk mengurangi beban."
+      "Lakukan aktivitas fisik ringan seperti berjalan kaki untuk meningkatkan sirkulasi dan energi."
     ]
   },
   "sakit punggung": {
@@ -22,26 +20,7 @@
     "lifestyle_tips": [
       "Lakukan peregangan kucing-unta (cat-cow stretch) untuk fleksibilitas tulang belakang.",
       "Gunakan bantal kehamilan untuk menopang punggung dan perut saat tidur.",
-      "Pilih kursi dengan sandaran punggung yang baik dan hindari duduk terlalu lama.",
-      "Gunakan kompres hangat di area punggung yang nyeri selama 15-20 menit."
-    ]
-  },
-  "sembelit": {
-    "related_nutrients": ["fiber", "water"],
-    "lifestyle_tips": [
-      "Tingkatkan asupan serat secara bertahap dari buah, sayur, dan biji-bijian.",
-      "Pastikan minum cukup air, karena serat tanpa air dapat memperburuk sembelit.",
-      "Aktivitas fisik seperti berjalan kaki dapat merangsang pergerakan usus.",
-      "Pertimbangkan suplemen probiotik setelah berkonsultasi dengan dokter."
-    ]
-  },
-  "nyeri ulu hati (heartburn)": {
-    "related_nutrients": [],
-    "lifestyle_tips": [
-      "Makan dalam porsi lebih kecil untuk mengurangi tekanan pada lambung.",
-      "Hindari makan 2-3 jam sebelum tidur.",
-      "Hindari pemicu umum seperti makanan pedas, asam (tomat, jeruk), dan kafein.",
-      "Tinggikan posisi kepala saat tidur dengan bantal tambahan."
+      "Pilih kursi dengan sandaran punggung yang baik dan hindari duduk terlalu lama."
     ]
   }
 }

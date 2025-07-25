@@ -1508,3 +1508,144 @@ AttributeError: 'User' object has no attribute 'preferences'
 2025-07-25 14:44:06,029 - werkzeug - WARNING -  * Debugger is active!
 2025-07-25 14:44:06,039 - werkzeug - INFO -  * Debugger PIN: 805-942-767
 2025-07-25 14:44:16,854 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 14:44:16] "GET /assessment/result/4 HTTP/1.1" 200 -
+2025-07-25 14:50:27,787 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 14:50:27,788 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 14:50:29,327 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-25 14:50:29,328 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 14:50:29,334 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 14:50:38,867 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 14:50:38,867 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 14:50:38,985 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 14:50:39,009 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 14:51:40,945 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 14:51:40] "[35m[1mPOST /api/auth/register HTTP/1.1[0m" 201 -
+2025-07-25 14:51:47,434 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 14:51:47] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-25 14:52:58,458 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 14:52:58] "[35m[1mPOST /assessment/perform HTTP/1.1[0m" 202 -
+2025-07-25 14:53:16,883 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 14:53:16] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 14:59:30,853 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 14:59:32,171 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 14:59:43,178 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 14:59:43,178 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 14:59:43,242 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 14:59:43,255 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:00:15,541 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:00:15] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:04:38,385 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:04:39,207 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:04:46,107 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:04:46,108 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:04:46,306 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:04:46,327 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:04:49,625 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:04:49] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:04:51,382 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:04:51] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:08:55,399 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:08:56,318 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:09:02,972 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:09:02,972 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:09:03,117 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:09:03,131 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:09:19,018 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:09:19] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:09:33,039 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:09:33] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:09:54,416 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:09:55,138 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:10:03,435 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:10:03,436 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:10:04,776 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-25 15:10:04,776 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 15:10:04,778 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:10:09,399 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:10:09,400 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:10:09,453 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:10:09,462 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:10:14,996 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:10:14] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:14:14,066 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:14:15,393 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:14:22,443 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:14:22,444 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:14:22,524 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:14:22,536 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:14:30,264 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:14:30] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:14:57,106 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:14:57,935 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:15:03,236 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:15:03,237 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:15:03,340 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:15:03,354 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:15:31,137 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:15:31,137 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:15:31,281 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-25 15:15:31,281 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 15:15:46,423 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:15:46] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:21:31,358 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:21:31] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:21:51,942 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:21:51,942 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:21:53,274 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-25 15:21:53,274 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 15:21:53,277 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:21:57,765 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:21:57,765 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:21:57,814 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:21:57,823 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:22:00,151 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:22:00] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:22:02,428 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:22:02] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:34:57,641 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:34:58,425 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:35:05,600 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:35:05,600 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:36:26,436 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:36:26,436 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:36:27,776 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.101:5000
+2025-07-25 15:36:27,777 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-25 15:36:27,779 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:36:31,868 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:36:31,868 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:36:31,922 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:36:31,932 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:36:40,131 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:36:40] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:36:59,301 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:36:59] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:37:11,020 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:37:11,995 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:37:17,214 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:37:17,214 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:37:17,279 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:37:17,291 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:37:21,541 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:37:21] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:41:16,642 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:41:17,327 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:41:22,635 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:41:22,636 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:41:22,723 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:41:22,733 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:41:26,504 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:41:26] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:41:33,302 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:41:33] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:43:04,672 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:43:05,532 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:43:10,605 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:43:10,605 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:43:10,671 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:43:10,679 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:43:27,864 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:43:28,569 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:43:35,484 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:43:35,485 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:43:35,577 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:43:35,590 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:43:59,114 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:43:59] "GET /assessment/result/1 HTTP/1.1" 200 -
+2025-07-25 15:49:47,320 - werkzeug - INFO -  * Detected change in 'C:\\SOCS\\WEB_PROG\\BREADING\\USECASE\\stunting\\MomCare\\backend\\services\\assessment_service.py', reloading
+2025-07-25 15:49:48,074 - werkzeug - INFO -  * Restarting with stat
+2025-07-25 15:49:53,781 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-25 15:49:53,781 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-25 15:49:53,859 - werkzeug - WARNING -  * Debugger is active!
+2025-07-25 15:49:53,868 - werkzeug - INFO -  * Debugger PIN: 805-942-767
+2025-07-25 15:50:13,723 - werkzeug - INFO - 127.0.0.1 - - [25/Jul/2025 15:50:13] "GET /assessment/result/1 HTTP/1.1" 200 -

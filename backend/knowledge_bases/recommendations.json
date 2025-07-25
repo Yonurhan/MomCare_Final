@@ -14,13 +14,6 @@
       "value": 207,
       "unit": "kcal",
       "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Ubi Jalar (panggang)",
-      "serving_size": "1 buah besar (180g)",
-      "value": 162,
-      "unit": "kcal",
-      "tags": ["vegetarian", "vegan"]
     }
   ],
   "protein": [
@@ -44,20 +37,6 @@
       "value": 12,
       "unit": "g",
       "tags": ["vegetarian"]
-    },
-    {
-      "food": "Tempe",
-      "serving_size": "100g",
-      "value": 19,
-      "unit": "g",
-      "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Greek Yogurt",
-      "serving_size": "1 cangkir",
-      "value": 23,
-      "unit": "g",
-      "tags": ["vegetarian"]
     }
   ],
   "carbs": [
@@ -69,20 +48,6 @@
       "food": "Nasi Merah (masak)",
       "serving_size": "1 cangkir (195g)",
       "value": 45,
-      "unit": "g",
-      "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Oatmeal (kering)",
-      "serving_size": "1/2 cangkir (40g)",
-      "value": 27,
-      "unit": "g",
-      "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Pisang",
-      "serving_size": "1 buah sedang",
-      "value": 27,
       "unit": "g",
       "tags": ["vegetarian", "vegan"]
     }
@@ -98,20 +63,6 @@
       "value": 14,
       "unit": "g",
       "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Biji Chia",
-      "serving_size": "2 sendok makan",
-      "value": 9,
-      "unit": "g",
-      "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Ikan Salmon (panggang)",
-      "serving_size": "100g",
-      "value": 13,
-      "unit": "g",
-      "tags": ["non-veg"]
     }
   ],
   "folic_acid": [
@@ -128,20 +79,6 @@
       "value": 168,
       "unit": "mcg",
       "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Alpukat",
-      "serving_size": "1 buah sedang (200g)",
-      "value": 163,
-      "unit": "mcg",
-      "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Sereal Sarapan (diperkaya)",
-      "serving_size": "1 porsi",
-      "value": 100,
-      "unit": "mcg",
-      "tags": ["vegetarian"]
     }
   ],
   "iron": [
@@ -158,20 +95,6 @@
       "value": 2.7,
       "unit": "mg",
       "tags": ["non-veg"]
-    },
-    {
-      "food": "Dada Kalkun (dimasak)",
-      "serving_size": "100g",
-      "value": 1.4,
-      "unit": "mg",
-      "tags": ["non-veg"]
-    },
-    {
-      "food": "Tahu",
-      "serving_size": "1 cangkir",
-      "value": 6.0,
-      "unit": "mg",
-      "tags": ["vegetarian", "vegan"]
     }
   ],
   "calcium": [
@@ -181,20 +104,6 @@
       "value": 450,
       "unit": "mg",
       "tags": ["vegetarian"]
-    },
-    {
-      "food": "Keju Mozzarella",
-      "serving_size": "30g",
-      "value": 222,
-      "unit": "mg",
-      "tags": ["vegetarian"]
-    },
-    {
-      "food": "Kale (dimasak)",
-      "serving_size": "1 cangkir",
-      "value": 179,
-      "unit": "mg",
-      "tags": ["vegetarian", "vegan"]
     },
     {
       "food": "Tahu (dengan kalsium sulfat)",
@@ -218,20 +127,6 @@
       "value": 2.5,
       "unit": "mg",
       "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Buncis (dimasak)",
-      "serving_size": "1 cangkir",
-      "value": 1.5,
-      "unit": "mg",
-      "tags": ["vegetarian", "vegan"]
-    },
-    {
-      "food": "Gandum Utuh (roti)",
-      "serving_size": "2 lembar",
-      "value": 1.1,
-      "unit": "mg",
-      "tags": ["vegetarian", "vegan"]
     }
   ],
   "water": [
@@ -242,14 +137,6 @@
     {
       "type": "habit",
       "text": "Setel pengingat setiap jam untuk minum segelas air."
-    },
-    {
-      "type": "habit",
-      "text": "Minum segelas air setelah bangun tidur dan sebelum tidur."
-    },
-    {
-      "type": "habit",
-      "text": "Makan buah kaya air seperti semangka, stroberi, dan melon."
     }
   ],
   "sleep": [
@@ -259,15 +146,7 @@
     },
     {
       "type": "habit",
-      "text": "Ciptakan rutinitas santai sebelum tidur: membaca buku, mandi air hangat, atau meditasi."
-    },
-    {
-      "type": "habit",
-      "text": "Pastikan kamar tidur gelap, sejuk, dan tenang. Hindari layar gadget 1 jam sebelum tidur."
-    },
-    {
-      "type": "habit",
-      "text": "Gunakan bantal untuk menopang perut dan punggung agar posisi tidur lebih nyaman."
+      "text": "Ciptakan rutinitas santai sebelum tidur: membaca buku atau mandi air hangat."
     }
   ]
 }
