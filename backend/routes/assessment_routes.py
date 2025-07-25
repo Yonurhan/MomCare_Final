@@ -1,3 +1,5 @@
+# routes/assessment_routes.py
+
 from flask import Blueprint, request, jsonify, current_app, url_for
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import date, timedelta
@@ -12,14 +14,14 @@ assessment_bp = Blueprint('assessment', __name__, url_prefix='/assessment')
 @assessment_bp.route('/perform', methods=['POST'])
 @jwt_required()
 def perform_assessment_async():
-    """
-    Endpoint untuk MEMULAI proses asesmen. Proses berjalan di background.
-    (Tidak ada perubahan, kode ini sudah siap)
-    """
+    """Endpoint untuk MEMULAI proses asesmen."""
     user_id = int(get_jwt_identity())
-    quiz_answers = request.get_json()
-    if not quiz_answers:
-        return jsonify({'error': 'Request body tidak boleh kosong.'}), 400
+    # Dapatkan seluruh body JSON, termasuk 'quiz_answers' di dalamnya
+    request_data = request.get_json()
+    if not request_data or 'quiz_answers' not in request_data:
+        return jsonify({'error': 'Request body harus berisi "quiz_answers".'}), 400
+    
+    quiz_answers = request_data['quiz_answers']
 
     start_of_week = date.today() - timedelta(days=date.today().weekday())
     
@@ -62,10 +64,7 @@ def perform_assessment_async():
 @assessment_bp.route('/result/<int:assessment_id>', methods=['GET'])
 @jwt_required()
 def get_assessment_result(assessment_id):
-    """
-    Endpoint untuk MENGAMBIL hasil asesmen setelah selesai diproses.
-    (Tidak ada perubahan, kode ini sudah siap)
-    """
+    """Endpoint untuk MENGAMBIL hasil asesmen."""
     user_id = int(get_jwt_identity())
     
     assessment = WeeklyAssessment.query.filter_by(id=assessment_id, user_id=user_id).first_or_404(
@@ -81,5 +80,5 @@ def get_assessment_result(assessment_id):
     return jsonify({
         'status': assessment.status,
         'results': assessment.results,
-        'created_at': assessment.created_at.isoformat()
+        'created_at': assessment.created_at.isoformat() if assessment.created_at else None
     }), 200

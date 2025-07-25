@@ -9,11 +9,8 @@ class DailyNutritionLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
-    # --- PERBAIKAN: Hapus server_default dan gunakan default Python ---
-    # Ini memastikan kompatibilitas dengan MySQL versi lama.
     date = db.Column(db.Date, nullable=False, default=date.today)
 
-    # Kolom lainnya tetap sama
     daily_calories = db.Column(db.Float, nullable=False, default=0)
     daily_protein = db.Column(db.Float, nullable=False, default=0)
     daily_fat = db.Column(db.Float, nullable=False, default=0)
