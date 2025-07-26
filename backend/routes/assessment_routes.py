@@ -11,6 +11,36 @@ from services.assessment_service import perform_weekly_assessment_task
 
 assessment_bp = Blueprint('assessment', __name__, url_prefix='/assessment')
 
+
+@assessment_bp.route('/status', methods=['GET'])
+@jwt_required()
+def get_assessment_status():
+    """Endpoint untuk MEMERIKSA status asesmen minggu ini."""
+    user_id = int(get_jwt_identity())
+    
+    # Tentukan tanggal awal minggu ini (Senin)
+    today = date.today()
+    start_of_week = today - timedelta(days=today.weekday())
+
+    # Cari asesmen yang sudah selesai atau sedang diproses untuk minggu ini
+    existing_assessment = WeeklyAssessment.query.filter(
+        WeeklyAssessment.user_id == user_id,
+        WeeklyAssessment.week_start_date == start_of_week,
+        WeeklyAssessment.status.in_(['completed', 'processing'])
+    ).first()
+
+    if existing_assessment:
+        # Jika ada, kirim status 'completed' dan ID-nya
+        return jsonify({
+            'status': 'completed',
+            'assessment_id': existing_assessment.id
+        }), 200
+    else:
+        # Jika tidak ada, kirim status 'pending'
+        return jsonify({
+            'status': 'pending'
+        }), 200
+
 @assessment_bp.route('/perform', methods=['POST'])
 @jwt_required()
 def perform_assessment_async():

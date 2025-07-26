@@ -36,6 +36,8 @@ dependencies:
   shimmer: ^3.0.0
   flutter_staggered_animations: ^1.1.1
   timeago: ^3.6.1
+  flutter_local_notifications: ^17.1.2
+  workmanager: ^0.5.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,0 +1,22 @@
+{
+  "user_id": "2",
+  "messages": [
+    {
+      "content": "Apa itu stunting?",
+      "is_user": true,
+      "timestamp": "2025-07-26T16:16:39.337425",
+      "attachments": []
+    },
+    {
+      "content": "Halo! Saya senang bisa membantu Anda memahami tentang stunting dan cara pencegahannya. Stunting adalah kondisi gagal tumbuh pada anak akibat kekurangan gizi kronis, terutama pada 1000 hari pertama kehidupannya (mulai dari dalam kandungan hingga usia 2 tahun). Kondisi ini menyebabkan anak menjadi lebih pendek dari standar usianya dan dapat mempengaruhi perkembangan otak serta kemampuan kognitifnya di masa depan.\n\nLalu, bagaimana cara efektif untuk mencegah stunting pada anak? Berikut beberapa langkah penting yang bisa Anda terapkan:\n\n*   **ASI Eksklusif (Prioritas Tinggi):** Berikan ASI eksklusif selama 6 bulan pertama kehidupan bayi. ASI adalah makanan terbaik untuk bayi karena mengandung nutrisi lengkap yang dibutuhkan untuk pertumbuhan dan perkembangan optimal, serta meningkatkan sistem kekebalan tubuhnya.\n\n*   **Nutrisi Ibu Hamil (Prioritas Tinggi):** Pastikan ibu hamil mendapatkan nutrisi yang cukup selama kehamilan. Nutrisi penting yang dibutuhkan antara lain protein, zat besi, asam folat, dan kalsium. Konsultasikan dengan dokter atau ahli gizi untuk mendapatkan rekomendasi suplemen yang tepat.\n\n*   **MPASI Bergizi (Prioritas Tinggi):** Setelah bayi berusia 6 bulan, berikan makanan pendamping ASI (MPASI) yang bergizi dan beragam. Pastikan MPASI mengandung karbohidrat, protein, lemak, vitamin, dan mineral yang cukup. Buat MPASI sendiri di rumah agar lebih terjamin kebersihannya dan sesuaikan teksturnya dengan usia bayi.\n\n*   **Pemantauan Pertumbuhan (Prioritas Sedang):** Pantau pertumbuhan anak secara teratur di posyandu atau fasilitas kesehatan lainnya. Dengan pemantauan rutin, kita bisa mendeteksi dini jika ada masalah pertumbuhan dan segera mengambil tindakan yang diperlukan.\n\n*   **Sanitasi dan Kebersihan (Prioritas Sedang):** Jaga kebersihan lingkungan, cuci tangan dengan sabun, dan pastikan akses ke air bersih. Kebersihan yang baik dapat mencegah infeksi dan diare, yang dapat menghambat pertumbuhan anak.\n\n*   **Imunisasi Lengkap (Prioritas Sedang):** Berikan imunisasi lengkap sesuai jadwal untuk melindungi anak dari penyakit infeksi yang dapat menghambat pertumbuhan.\n\n**Faktor Risiko Stunting dan Cara Mengatasinya:**\n\nBeberapa faktor risiko stunting antara lain:\n\n*   **Kekurangan Gizi pada Ibu Hamil:** Pastikan ibu hamil mendapatkan nutrisi yang cukup, termasuk suplemen jika diperlukan.\n*   **Kelahiran Prematur atau Berat Badan Lahir Rendah (BBLR):** Perawatan intensif dan pemantauan pertumbuhan yang ketat diperlukan untuk bayi prematur atau BBLR.\n*   **Infeksi Berulang:** Jaga kebersihan lingkungan dan berikan imunisasi lengkap untuk mencegah infeksi.\n*   **Sanitasi yang Buruk:** Pastikan akses ke air bersih dan sanitasi yang baik.\n\n**Pentingnya Nutrisi Selama 1000 Hari Pertama Kehidupan:**\n\n1000 hari pertama kehidupan adalah periode emas yang sangat penting untuk pertumbuhan dan perkembangan anak. Nutrisi yang optimal selama periode ini akan menentukan kualitas hidup anak di masa depan. Kekurangan gizi pada periode ini dapat menyebabkan stunting, gangguan perkembangan otak, dan masalah kesehatan lainnya.\n\n**Rekomendasi Praktis untuk Keluarga:**\n\n*   Konsultasikan dengan dokter atau ahli gizi untuk mendapatkan informasi yang lebih spesifik tentang nutrisi kehamilan dan MPASI.\n*   Ikuti kelas atau seminar tentang parenting dan nutrisi anak.\n*   Buat catatan makanan harian untuk memastikan anak mendapatkan nutrisi yang cukup.\n*   Libatkan seluruh anggota keluarga dalam upaya pencegahan stunting.\n\nSemoga informasi ini bermanfaat! Jika Anda memiliki pertanyaan lebih lanjut, jangan ragu untuk bertanya.\n",
+      "is_user": false,
+      "timestamp": "2025-07-26T16:16:45.261611",
+      "attachments": []
+    }
+  ],
+  "context": {
+    "last_intent": "pencegahan_stunting",
+    "last_entities": {},
+    "last_context": []
+  }
+}

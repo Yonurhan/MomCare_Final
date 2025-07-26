@@ -142,7 +142,7 @@ def store_nutritional_info():
         daily_protein=protein,
         daily_fat=fat,
         daily_carbs=carbs,
-        daily_folac_acid=folic_acid, 
+        daily_folic_acid=folic_acid, 
         daily_iron=iron,             
         daily_calcium=calcium,       
         daily_zinc=zinc,  

@@ -1,3 +1,5 @@
+// lib/services/auth_service.dart
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +14,6 @@ class AuthService with ChangeNotifier {
   String? _token;
   User? _currentUser;
 
-  // Getter for authentication status
   bool get isAuthenticated => _isAuthenticated;
   String? get token => _token;
   User? get currentUser => _currentUser;
@@ -21,8 +22,18 @@ class AuthService with ChangeNotifier {
     _loadFromPrefs();
   }
 
-  // Load token and user data from SharedPreferences
+  // --- TAMBAHKAN METHOD BARU DI SINI ---
+  /// Menghasilkan map headers yang diperlukan untuk request API yang terotentikasi.
+  Map<String, String> getAuthHeaders() {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': _token != null ? 'Bearer $_token' : '',
+    };
+  }
+  // --- AKHIR PENAMBAHAN ---
+
   Future<void> _loadFromPrefs() async {
+    // ... sisa kode tidak ada perubahan ...
     try {
       final prefs = await SharedPreferences.getInstance();
       _token = prefs.getString('token');
@@ -41,7 +52,6 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Login user
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await http.post(
@@ -70,7 +80,6 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Register user
   Future<Map<String, dynamic>> register(String username, String email,
       String password, int age, int weight, int height, String lmpDate) async {
     try {
@@ -93,7 +102,6 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Get current user from SharedPreferences
   Future<User?> getCurrentUser() async {
     if (_currentUser != null) return _currentUser;
 
@@ -106,7 +114,7 @@ class AuthService with ChangeNotifier {
   }
 
   Future<void> refreshUserProfile() async {
-    if (_token == null) return; // Can't refresh without a token
+    if (_token == null) return;
 
     try {
       final response = await http.get(
@@ -121,13 +129,11 @@ class AuthService with ChangeNotifier {
         final userData = jsonDecode(response.body);
         _currentUser = User.fromJson(userData);
 
-        // Update the stored user data in SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('user_data', jsonEncode(userData));
 
         notifyListeners();
       } else {
-        // Handle token expiration or other errors by logging out
         await logout();
       }
     } catch (e) {
@@ -135,7 +141,6 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Logout user
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
@@ -146,7 +151,6 @@ class AuthService with ChangeNotifier {
     notifyListeners();
   }
 
-  // Check if user is logged in
   Future<bool> isLoggedIn() async {
     if (_token != null) return _isAuthenticated;
 

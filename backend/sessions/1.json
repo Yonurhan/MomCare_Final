@@ -2,15 +2,15 @@
   "user_id": "1",
   "messages": [
     {
-      "content": "Tanda-tanda bahaya kehamilan",
+      "content": "makanan yang bagus untuk kesehatan ibu hamil khusus nya yang kekurangan protein?",
       "is_user": true,
-      "timestamp": "2025-07-21T01:55:15.432514",
+      "timestamp": "2025-07-26T10:30:55.726690",
       "attachments": []
     },
     {
-      "content": "Halo! Kehamilan adalah masa yang sangat penting dan membutuhkan perhatian khusus terhadap nutrisi. Saya akan bantu memberikan informasi tentang nutrisi yang penting selama kehamilan dan rekomendasi makanan yang sehat.\n\nSelama kehamilan, kebutuhan nutrisi Ibu meningkat untuk mendukung pertumbuhan dan perkembangan janin. Berikut adalah beberapa nutrisi penting dan rekomendasi makanan yang bisa Ibu konsumsi:\n\n*   **Protein:** Protein sangat penting untuk pertumbuhan janin. Sumber protein yang baik meliputi:\n\n    *   **Telur:** Satu butir telur (50g) merupakan sumber protein lengkap dan mengandung kolin yang penting untuk perkembangan otak janin.\n    *   **Ikan salmon:** Konsumsi ikan salmon 2-3 kali seminggu (85-140g per porsi) akan memberikan asupan omega-3 yang bermanfaat untuk perkembangan otak janin.\n    *   **Daging tanpa lemak:** Konsumsi daging tanpa lemak sekitar 85g per hari dapat memberikan zat besi heme yang mudah diserap oleh tubuh.\n    *   **Kacang-kacangan:** Setengah mangkuk kacang-kacangan (100g) merupakan sumber protein nabati dan serat yang baik.\n\n*   **Zat Besi dan Folat:** Zat besi dan folat sangat penting untuk mencegah anemia pada ibu hamil dan mendukung perkembangan saraf janin. Sumber yang baik meliputi:\n\n    *   **Bayam:** Satu mangkuk bayam (30g) kaya akan zat besi, folat, dan vitamin K.\n    *   **Brokoli:** Satu mangkuk brokoli (30g) kaya akan folat, kalsium, dan serat.\n\n**Contoh Menu Harian:**\n\nBerikut adalah contoh menu harian yang seimbang untuk ibu hamil:\n\n*   **Sarapan:** Telur rebus, roti gandum dengan alpukat, dan segelas susu.\n*   **Makan Siang:** Nasi merah, ikan salmon panggang, tumis brokoli dan wortel.\n*   **Makan Malam:** Daging tanpa lemak, sup bayam, dan nasi putih.\n*   **Camilan:** Kacang-kacangan, buah-buahan segar.\n\n**Penting untuk Diingat:**\n\n*   Kebutuhan kalori setiap ibu hamil bisa berbeda-beda, tergantung pada berat badan sebelum hamil, usia, dan tingkat aktivitas fisik. Konsultasikan dengan dokter atau ahli gizi untuk mengetahui kebutuhan kalori yang tepat.\n*   Selain makanan di atas, pastikan Ibu juga mengonsumsi makanan dari semua kelompok makanan (karbohidrat, protein, lemak, vitamin, dan mineral) untuk mendapatkan nutrisi yang lengkap.\n*   Hindari makanan mentah atau kurang matang, makanan olahan, dan minuman manis selama kehamilan.\n\nSemoga informasi ini bermanfaat ya, Bu! Jika ada pertanyaan lain, jangan ragu untuk bertanya.\n",
+      "content": "Berikut rekomendasi makanan untuk ibu hamil:\n\n\n• Kategori protein:\n  - Telur: Sumber protein lengkap, kolin untuk perkembangan otak\n  - Ikan salmon: Omega-3 untuk perkembangan otak janin\n  - Daging tanpa lemak: Zat besi heme yang mudah diserap\n\n• Kategori sayuran:\n  - Bayam: Kaya zat besi, folat, dan vitamin K\n  - Brokoli: Kaya folat, kalsium, dan serat\n  - Kacang-kacangan: Sumber protein nabati dan serat\n",
       "is_user": false,
-      "timestamp": "2025-07-21T01:55:20.056655",
+      "timestamp": "2025-07-26T10:30:57.090350",
       "attachments": []
     }
   ],
@@ -18,6 +18,7 @@
     "last_intent": "nutrisi_kehamilan",
     "last_entities": {},
     "last_context": [
+      "rekomendasi_makanan",
       "rekomendasi_makanan"
     ]
   }
