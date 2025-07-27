@@ -1,0 +1,25 @@
+{
+  "user_id": "1",
+  "messages": [
+    {
+      "content": "makanan yang bagus untuk kesehatan ibu hamil khusus nya yang kekurangan protein?",
+      "is_user": true,
+      "timestamp": "2025-07-26T10:30:55.726690",
+      "attachments": []
+    },
+    {
+      "content": "Berikut rekomendasi makanan untuk ibu hamil:\n\n\n• Kategori protein:\n  - Telur: Sumber protein lengkap, kolin untuk perkembangan otak\n  - Ikan salmon: Omega-3 untuk perkembangan otak janin\n  - Daging tanpa lemak: Zat besi heme yang mudah diserap\n\n• Kategori sayuran:\n  - Bayam: Kaya zat besi, folat, dan vitamin K\n  - Brokoli: Kaya folat, kalsium, dan serat\n  - Kacang-kacangan: Sumber protein nabati dan serat\n",
+      "is_user": false,
+      "timestamp": "2025-07-26T10:30:57.090350",
+      "attachments": []
+    }
+  ],
+  "context": {
+    "last_intent": "nutrisi_kehamilan",
+    "last_entities": {},
+    "last_context": [
+      "rekomendasi_makanan",
+      "rekomendasi_makanan"
+    ]
+  }
+}

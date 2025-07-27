@@ -1,0 +1,26 @@
+{
+  "mual": {
+    "related_nutrients": ["b6", "protein"],
+    "lifestyle_tips": [
+      "Makan dalam porsi kecil tapi sering (misalnya, cracker atau roti kering) sebelum beranjak dari tempat tidur.",
+      "Hindari makanan berlemak, pedas, atau beraroma kuat yang dapat memicu mual.",
+      "Coba konsumsi jahe dalam bentuk teh hangat atau permen jahe."
+    ]
+  },
+  "kelelahan": {
+    "related_nutrients": ["iron", "protein", "calories"],
+    "lifestyle_tips": [
+      "Prioritaskan tidur malam yang berkualitas selama 7-9 jam.",
+      "Lakukan tidur siang singkat (20-30 menit) jika memungkinkan.",
+      "Lakukan aktivitas fisik ringan seperti berjalan kaki untuk meningkatkan sirkulasi dan energi."
+    ]
+  },
+  "sakit punggung": {
+    "related_nutrients": ["calcium", "vitamin_d"],
+    "lifestyle_tips": [
+      "Lakukan peregangan kucing-unta (cat-cow stretch) untuk fleksibilitas tulang belakang.",
+      "Gunakan bantal kehamilan untuk menopang punggung dan perut saat tidur.",
+      "Pilih kursi dengan sandaran punggung yang baik dan hindari duduk terlalu lama."
+    ]
+  }
+}

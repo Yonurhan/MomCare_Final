@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
+  camera: ^0.10.0+1 # Or the latest version
+  path_provider: ^2.0.11 # Or the latest version
   shared_preferences:
   flutter_markdown: ^0.6.18
   cupertino_icons: ^1.0.2
@@ -24,7 +27,17 @@ dependencies:
   animated_text_kit: ^4.2.2
   lottie: ^2.7.0
   image_picker: ^1.0.4
-
+  image: ^3.0.1
+  flutter_image_compress: 2.4.0
+  smooth_page_indicator: ^1.1.0
+  liquid_swipe: ^3.1.0
+  animate_do: ^3.3.4
+  font_awesome_flutter: ^10.7.0
+  shimmer: ^3.0.0
+  flutter_staggered_animations: ^1.1.1
+  timeago: ^3.6.1
+  flutter_local_notifications: ^17.1.2
+  workmanager: ^0.7.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -36,3 +49,4 @@ flutter:
 
   assets:
     - assets/images/
+    - .env

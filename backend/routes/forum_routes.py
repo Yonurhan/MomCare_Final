@@ -10,6 +10,7 @@ from utils.validation import validate_forum_data, validate_comment_data
 from utils.auth_middleware import admin_required
 from datetime import datetime
 import os
+from datetime import date
 
 forum_bp = Blueprint('forum', __name__, url_prefix='/api/forums')
 
@@ -407,3 +408,59 @@ def toggle_like(forum_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Gagal memproses like/dislike: {str(e)}'}), 500
+
+# Tambahkan fungsi ini di dalam file forum_bp.py Anda
+
+@forum_bp.route('/me', methods=['GET'])
+@jwt_required()
+def get_my_forums():
+    """
+    Mendapatkan semua forum yang dibuat oleh pengguna yang saat ini login.
+    Menggunakan ID pengguna dari token JWT.
+    """
+    current_user_id = get_jwt_identity()
+    
+    # Ambil argumen untuk pagination dan sorting dari request
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    sort_by = request.args.get('sort_by', 'created_at')
+    order = request.args.get('order', 'desc')
+    
+    # Query dasar untuk forum milik pengguna saat ini
+    query = Forum.query.filter_by(user_id=current_user_id)
+    
+    # Logika sorting (sama seperti di get_all_forums)
+    if sort_by == 'likes':
+        # Ini memerlukan query yang lebih kompleks, untuk sekarang menggunakan placeholder
+        if order == 'asc':
+            query = query.order_by(Forum.id.asc())
+        else:
+            query = query.order_by(Forum.id.desc())
+    else:
+        # Default sorting by created_at
+        if order == 'asc':
+            query = query.order_by(Forum.created_at.asc())
+        else:
+            query = query.order_by(Forum.created_at.desc())
+
+    # Pagination
+    forums_page = query.paginate(page=page, per_page=per_page, error_out=False)
+    forums = forums_page.items
+    
+    # Format hasil dan tambahkan username
+    from models.user import User
+    user = User.query.get(current_user_id)
+    username = user.username if user else "Unknown User"
+    
+    result = []
+    for forum in forums:
+        forum_dict = forum.to_dict()
+        forum_dict['username'] = username  # Semua forum di sini dibuat oleh pengguna yang sama
+        result.append(forum_dict)
+        
+    return jsonify({
+        'forums': result,
+        'total': forums_page.total,
+        'pages': forums_page.pages,
+        'current_page': page
+    }), 200

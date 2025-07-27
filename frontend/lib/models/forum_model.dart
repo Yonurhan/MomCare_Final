@@ -32,6 +32,41 @@ class Forum {
     this.comments = const [],
   });
 
+  // Metode untuk membuat salinan objek dengan nilai yang diperbarui
+  Forum copyWith({
+    int? id,
+    String? title,
+    String? description,
+    String? imagePath,
+    int? userId,
+    String? username,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    int? likeCount,
+    int? dislikeCount,
+    int? commentCount,
+    String? userLikeStatus,
+    List<Comment>? comments,
+  }) {
+    return Forum(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      imagePath: imagePath ?? this.imagePath,
+      userId: userId ?? this.userId,
+      username: username ?? this.username,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      likeCount: likeCount ?? this.likeCount,
+      dislikeCount: dislikeCount ?? this.dislikeCount,
+      commentCount: commentCount ?? this.commentCount,
+      // Untuk properti nullable, kita bisa langsung menimpanya.
+      // Jika userLikeStatus adalah null, nilai baru akan null.
+      userLikeStatus: userLikeStatus,
+      comments: comments ?? this.comments,
+    );
+  }
+
   factory Forum.fromJson(Map<String, dynamic> json) {
     List<Comment> commentsList = [];
     if (json['comments'] != null) {

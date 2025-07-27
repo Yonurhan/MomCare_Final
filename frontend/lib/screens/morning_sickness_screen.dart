@@ -6,6 +6,7 @@ import 'package:pregnancy_app/models/tip_model.dart';
 import 'package:pregnancy_app/theme/app_theme.dart';
 import 'package:pregnancy_app/utils/constants.dart';
 import 'package:pregnancy_app/widgets/food_item.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pregnancy_app/widgets/tip_card.dart';
 
 class MorningSicknessScreen extends StatelessWidget {
@@ -84,7 +85,7 @@ class MorningSicknessScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppConstants.morningSicknessTitle),
-        backgroundColor: AppTheme.morningCardColor,
+        backgroundColor: AppTheme.accentColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -148,7 +149,7 @@ class MorningSicknessScreen extends StatelessWidget {
                   Text(
                     AppConstants.tipsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppTheme.morningCardColor.withOpacity(0.8),
+                          color: AppTheme.accentColor.withOpacity(0.8),
                         ),
                   ),
                   const SizedBox(height: 20),
@@ -157,7 +158,7 @@ class MorningSicknessScreen extends StatelessWidget {
                   ...tips
                       .map((tip) => TipCard(
                             tip: tip,
-                            iconColor: AppTheme.morningCardColor,
+                            iconColor: AppTheme.accentColor,
                           ))
                       .toList(),
 
@@ -167,7 +168,7 @@ class MorningSicknessScreen extends StatelessWidget {
                   Text(
                     AppConstants.recommendedFoodsTitle,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppTheme.morningCardColor.withOpacity(0.8),
+                          color: AppTheme.accentColor.withOpacity(0.8),
                         ),
                   ),
                   const SizedBox(height: 20),
@@ -175,7 +176,7 @@ class MorningSicknessScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppTheme.morningCardColor.withOpacity(0.1),
+                      color: AppTheme.accentColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -266,7 +267,7 @@ class MorningSicknessScreen extends StatelessWidget {
                       icon: const Icon(Icons.chat),
                       label: const Text(AppConstants.chatWithNutritionist),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.morningCardColor,
+                        backgroundColor: AppTheme.accentColor,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),

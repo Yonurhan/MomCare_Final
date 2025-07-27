@@ -1,0 +1,152 @@
+{
+  "calories": [
+    { "type": "info", "text": "Fokus pada sumber kalori padat nutrisi." },
+    {
+      "food": "Alpukat",
+      "serving_size": "1 buah sedang (200g)",
+      "value": 322,
+      "unit": "kcal",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Kacang Almond",
+      "serving_size": "1/4 cangkir (35g)",
+      "value": 207,
+      "unit": "kcal",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "protein": [
+    {
+      "food": "Dada Ayam (panggang)",
+      "serving_size": "100g",
+      "value": 31,
+      "unit": "g",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Ikan Salmon (panggang)",
+      "serving_size": "100g",
+      "value": 22,
+      "unit": "g",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Telur Rebus",
+      "serving_size": "2 butir besar",
+      "value": 12,
+      "unit": "g",
+      "tags": ["vegetarian"]
+    }
+  ],
+  "carbs": [
+    {
+      "type": "info",
+      "text": "Pilih karbohidrat kompleks untuk energi yang stabil."
+    },
+    {
+      "food": "Nasi Merah (masak)",
+      "serving_size": "1 cangkir (195g)",
+      "value": 45,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "fat": [
+    {
+      "type": "info",
+      "text": "Lemak sehat penting untuk perkembangan otak janin."
+    },
+    {
+      "food": "Minyak Zaitun Extra Virgin",
+      "serving_size": "1 sendok makan",
+      "value": 14,
+      "unit": "g",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "folic_acid": [
+    {
+      "food": "Bayam (dimasak)",
+      "serving_size": "1 cangkir (180g)",
+      "value": 263,
+      "unit": "mcg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Brokoli (kukus)",
+      "serving_size": "1 cangkir (156g)",
+      "value": 168,
+      "unit": "mcg",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "iron": [
+    {
+      "food": "Lentil (dimasak)",
+      "serving_size": "1 cangkir (200g)",
+      "value": 6.6,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    },
+    {
+      "food": "Daging Merah Tanpa Lemak (dimasak)",
+      "serving_size": "100g",
+      "value": 2.7,
+      "unit": "mg",
+      "tags": ["non-veg"]
+    }
+  ],
+  "calcium": [
+    {
+      "food": "Yoghurt Plain",
+      "serving_size": "1 cangkir (245g)",
+      "value": 450,
+      "unit": "mg",
+      "tags": ["vegetarian"]
+    },
+    {
+      "food": "Tahu (dengan kalsium sulfat)",
+      "serving_size": "100g",
+      "value": 350,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "zinc": [
+    {
+      "food": "Daging Sapi (cincang)",
+      "serving_size": "100g",
+      "value": 4.8,
+      "unit": "mg",
+      "tags": ["non-veg"]
+    },
+    {
+      "food": "Biji Labu",
+      "serving_size": "1/4 cangkir",
+      "value": 2.5,
+      "unit": "mg",
+      "tags": ["vegetarian", "vegan"]
+    }
+  ],
+  "water": [
+    {
+      "type": "habit",
+      "text": "Selalu bawa botol air minum agar mudah dijangkau."
+    },
+    {
+      "type": "habit",
+      "text": "Setel pengingat setiap jam untuk minum segelas air."
+    }
+  ],
+  "sleep": [
+    {
+      "type": "habit",
+      "text": "Buat jadwal tidur dan bangun yang konsisten, bahkan di akhir pekan."
+    },
+    {
+      "type": "habit",
+      "text": "Ciptakan rutinitas santai sebelum tidur: membaca buku atau mandi air hangat."
+    }
+  ]
+}

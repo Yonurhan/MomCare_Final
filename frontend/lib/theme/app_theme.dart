@@ -2,36 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Updated color palette
-  static const Color primaryColor = Color(0xFFD24C9B); // #d24c9b
-  static const Color secondaryColor = Color(0xFF662D91); // #662d91
-  static const Color accentColor = Color(0xFFE8C1E0); // Light pink accent
+  // ## PALET WARNA BARU ##
+  // Warna utama baru
+  static const Color primaryColor = Color(0xFFE53888);
+  // Warna putih untuk latar belakang dan elemen lainnya
+  static const Color whiteColor = Colors.white;
+  // Aksen: versi transparan dari warna utama untuk elemen non-aktif
+  static const Color accentColor =
+      Color(0x66E53888); // Primary color with 40% opacity
 
-  // Background colors
-  static const Color scaffoldBackgroundColor = Color(0xFFFCF5F9);
-  static const Color cardColor = Color(0xFFFFF9FD);
-
-  // Text colors
-  static const Color primaryTextColor = Color(0xFF2C3E50);
-  static const Color secondaryTextColor = Color(0xFF7F8C8D);
-
-  // Feature card colors
-  static const Color nutritionCardColor = Color(0xFFF7E4EF);
-  static const Color morningCardColor = Color(0xFFEDE2F4);
-  static const Color weightCardColor = Color(0xFFE4F0F7);
-  static const Color appointmentCardColor = Color(0xFFF0E4F7);
+  // Warna teks untuk keterbacaan
+  static const Color primaryTextColor = Color(0xFF1A1A1A); // Hitam pekat
+  static const Color secondaryTextColor = Color(0xFF666666); // Abu-abu
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
+      // Skema warna utama
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         primary: primaryColor,
-        secondary: secondaryColor,
-        background: scaffoldBackgroundColor,
+        secondary: primaryColor, // Secondary juga menggunakan warna utama
+        background: whiteColor,
       ),
-      scaffoldBackgroundColor: scaffoldBackgroundColor,
-      cardColor: cardColor,
+      scaffoldBackgroundColor: whiteColor,
+      cardColor: whiteColor,
+      // Tema untuk AppBar
       appBarTheme: AppBarTheme(
         backgroundColor: primaryColor,
         elevation: 2,
@@ -39,35 +35,34 @@ class AppTheme {
         titleTextStyle: GoogleFonts.nunito(
           fontSize: 20,
           fontWeight: FontWeight.w700,
-          color: Colors.white,
+          color: whiteColor,
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: whiteColor),
       ),
+      // Tema untuk semua teks di aplikasi
       textTheme: GoogleFonts.nunitoTextTheme(
         const TextTheme(
           headlineLarge: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: primaryTextColor,
-          ),
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              color: primaryTextColor),
           headlineMedium: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: primaryTextColor,
-          ),
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: primaryTextColor),
           headlineSmall: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: primaryTextColor,
-          ),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: primaryTextColor),
           bodyLarge: TextStyle(fontSize: 16, color: primaryTextColor),
           bodyMedium: TextStyle(fontSize: 14, color: secondaryTextColor),
         ),
       ),
+      // Tema untuk Tombol
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
+          foregroundColor: whiteColor,
           elevation: 1,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
@@ -79,9 +74,11 @@ class AppTheme {
           ),
         ),
       ),
+      // Tema untuk Input Field
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        // Sedikit warna abu-abu agar field terlihat di atas latar putih
+        fillColor: const Color(0xFFF5F5F5),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 16,
@@ -103,14 +100,16 @@ class AppTheme {
           borderSide: const BorderSide(color: Colors.red, width: 1.5),
         ),
         hintStyle: const TextStyle(color: secondaryTextColor),
-        labelStyle: const TextStyle(color: secondaryColor),
+        labelStyle: const TextStyle(color: primaryTextColor),
       ),
+      // Tema untuk Ikon
       iconTheme: const IconThemeData(
-        color: secondaryColor,
+        color: primaryColor,
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      // Tema untuk Floating Action Button
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: whiteColor,
       ),
     );
   }

@@ -1,17 +1,19 @@
+// lib/services/auth_service.dart
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AuthService with ChangeNotifier {
-  static const String baseUrl = 'http://192.168.0.103:5000/api';
+  final baseUrl = dotenv.env['BASE_URL'];
 
   bool _isAuthenticated = false;
   String? _token;
   User? _currentUser;
 
-  // Getter for authentication status
   bool get isAuthenticated => _isAuthenticated;
   String? get token => _token;
   User? get currentUser => _currentUser;
@@ -20,8 +22,18 @@ class AuthService with ChangeNotifier {
     _loadFromPrefs();
   }
 
-  // Load token and user data from SharedPreferences
+  // --- TAMBAHKAN METHOD BARU DI SINI ---
+  /// Menghasilkan map headers yang diperlukan untuk request API yang terotentikasi.
+  Map<String, String> getAuthHeaders() {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': _token != null ? 'Bearer $_token' : '',
+    };
+  }
+  // --- AKHIR PENAMBAHAN ---
+
   Future<void> _loadFromPrefs() async {
+    // ... sisa kode tidak ada perubahan ...
     try {
       final prefs = await SharedPreferences.getInstance();
       _token = prefs.getString('token');
@@ -40,11 +52,10 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Login user
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/auth/login'),
+        Uri.parse('$baseUrl/api/auth/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -69,17 +80,20 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Register user
-  Future<Map<String, dynamic>> register(
-      String username, String email, String password) async {
+  Future<Map<String, dynamic>> register(String username, String email,
+      String password, int age, int weight, int height, String lmpDate) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/auth/register'),
+        Uri.parse('$baseUrl/api/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
           'email': email,
           'password': password,
+          'age': age,
+          'weight': weight,
+          'height': height,
+          'lmp_date': lmpDate,
         }),
       );
       return jsonDecode(response.body);
@@ -88,7 +102,6 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  // Get current user from SharedPreferences
   Future<User?> getCurrentUser() async {
     if (_currentUser != null) return _currentUser;
 
@@ -100,7 +113,34 @@ class AuthService with ChangeNotifier {
     return _currentUser;
   }
 
-  // Logout user
+  Future<void> refreshUserProfile() async {
+    if (_token == null) return;
+
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/auth/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final userData = jsonDecode(response.body);
+        _currentUser = User.fromJson(userData);
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_data', jsonEncode(userData));
+
+        notifyListeners();
+      } else {
+        await logout();
+      }
+    } catch (e) {
+      print('Failed to refresh user profile: $e');
+    }
+  }
+
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
@@ -111,7 +151,6 @@ class AuthService with ChangeNotifier {
     notifyListeners();
   }
 
-  // Check if user is logged in
   Future<bool> isLoggedIn() async {
     if (_token != null) return _isAuthenticated;
 
