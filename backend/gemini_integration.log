@@ -2663,3 +2663,25 @@ AttributeError: 'User' object has no attribute 'preferences'
 2025-07-27 20:31:44,554 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
 2025-07-27 20:31:44,738 - werkzeug - WARNING -  * Debugger is active!
 2025-07-27 20:31:44,758 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:33:56,583 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /api/auth/profile HTTP/1.1" 200 -
+2025-07-27 20:33:56,603 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-27 20:33:56,604 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /assessment/status HTTP/1.1" 200 -
+2025-07-27 20:33:56,606 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-27 20:34:22,737 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\forum_routes.py', reloading
+2025-07-27 20:34:23,760 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:35:01,095 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:35:01,112 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:35:01,519 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:35:01,531 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:36:00,201 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\app.py', reloading
+2025-07-27 20:36:01,021 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:36:16,395 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:36:16,398 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:36:17,070 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:36:17,095 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:40:58,367 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\chat_routes.py', reloading
+2025-07-27 20:40:59,149 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:41:07,964 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:41:07,965 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:41:08,215 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:41:08,233 - werkzeug - INFO -  * Debugger PIN: 110-584-636
