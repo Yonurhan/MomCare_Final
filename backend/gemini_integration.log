@@ -2663,3 +2663,76 @@ AttributeError: 'User' object has no attribute 'preferences'
 2025-07-27 20:31:44,554 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
 2025-07-27 20:31:44,738 - werkzeug - WARNING -  * Debugger is active!
 2025-07-27 20:31:44,758 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:33:56,583 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /api/auth/profile HTTP/1.1" 200 -
+2025-07-27 20:33:56,603 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-27 20:33:56,604 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /assessment/status HTTP/1.1" 200 -
+2025-07-27 20:33:56,606 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:33:56] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-27 20:34:22,737 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\forum_routes.py', reloading
+2025-07-27 20:34:23,760 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:35:01,095 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:35:01,112 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:35:01,519 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:35:01,531 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:36:00,201 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\app.py', reloading
+2025-07-27 20:36:01,021 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:36:16,395 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:36:16,398 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:36:17,070 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:36:17,095 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:40:58,367 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\chat_routes.py', reloading
+2025-07-27 20:40:59,149 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:41:07,964 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:41:07,965 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:41:08,215 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:41:08,233 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:44:59,055 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:44:59,055 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:44:59,245 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.14:5000
+2025-07-27 20:44:59,245 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 20:44:59,254 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:45:07,075 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:45:07,075 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:45:07,180 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:45:07,188 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:47:02,405 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:02] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-27 20:47:02,914 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:02] "GET /assessment/status HTTP/1.1" 200 -
+2025-07-27 20:47:02,925 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:02] "GET /api/auth/profile HTTP/1.1" 200 -
+2025-07-27 20:47:02,927 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:02] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-27 20:47:24,731 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:24] "POST /api/auth/login HTTP/1.1" 200 -
+2025-07-27 20:47:26,213 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:26] "GET /api/auth/profile HTTP/1.1" 200 -
+2025-07-27 20:47:26,218 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:26] "GET /assessment/status HTTP/1.1" 200 -
+2025-07-27 20:47:26,236 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:26] "GET /api/forums?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-27 20:47:26,237 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:47:26] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-27 20:51:29,147 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:51:29,147 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:51:29,199 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.14:5000
+2025-07-27 20:51:29,199 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-27 20:51:29,200 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:51:32,387 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:51:32,387 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:51:32,429 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:51:32,433 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:51:52,477 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:51:52] "POST /food_detection/detect_food HTTP/1.1" 200 -
+2025-07-27 20:51:56,103 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:51:56] "POST /food_detection/get_nutritional_info HTTP/1.1" 200 -
+2025-07-27 20:51:58,525 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:51:58] "[35m[1mPOST /food_detection/store_nutritional_info HTTP/1.1[0m" 500 -
+2025-07-27 20:52:26,513 - werkzeug - INFO -  * Detected change in 'C:\\Users\\yonur\\Documents\\GitHub\\MomCare\\backend\\routes\\food_detection_routes.py', reloading
+2025-07-27 20:52:26,841 - werkzeug - INFO -  * Restarting with stat
+2025-07-27 20:52:30,012 - GeminiIntegration - INFO - Model utama 'gemini-2.0-flash' berhasil diinisialisasi
+2025-07-27 20:52:30,013 - GeminiIntegration - INFO - Model fallback 'gemini-1.5-flash' berhasil diinisialisasi
+2025-07-27 20:52:30,072 - werkzeug - WARNING -  * Debugger is active!
+2025-07-27 20:52:30,078 - werkzeug - INFO -  * Debugger PIN: 110-584-636
+2025-07-27 20:52:33,081 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:52:33] "POST /food_detection/store_nutritional_info HTTP/1.1" 200 -
+2025-07-27 20:52:36,782 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:52:36] "GET /api/auth/profile HTTP/1.1" 200 -
+2025-07-27 20:52:36,794 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:52:36] "GET /assessment/status HTTP/1.1" 200 -
+2025-07-27 20:52:36,807 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:52:36] "GET /nutrition/summary HTTP/1.1" 200 -
+2025-07-27 20:52:54,427 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:52:54] "[35m[1mPOST /api/forums HTTP/1.1[0m" 201 -
+2025-07-27 20:52:54,572 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:52:54] "GET /api/forums/me?page=1&per_page=10&sort_by=created_at&order=desc HTTP/1.1" 200 -
+2025-07-27 20:52:57,645 - GeminiIntegration - INFO - Request #1, time since last request: 1753624377.65s
+2025-07-27 20:53:02,744 - GeminiIntegration - INFO - Berhasil mendapatkan respons dari model gemini-2.0-flash (latency: 5.10s)
+2025-07-27 20:53:02,746 - werkzeug - INFO - 192.168.1.12 - - [27/Jul/2025 20:53:02] "POST /api/chat HTTP/1.1" 200 -

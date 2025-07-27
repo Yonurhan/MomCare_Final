@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as img;
-import 'package:camera/camera.dart'; // <-- NEW IMPORT
+import 'package:camera/camera.dart'; 
 import 'food_result_screen.dart'; 
 
 class FoodCapture extends StatefulWidget {
@@ -55,7 +55,6 @@ class _FoodCaptureState extends State<FoodCapture> {
     super.dispose();
   }
 
-  // --- NEW: This function now uses the camera controller ---
   Future<void> _takePicture() async {
     if (!_cameraController!.value.isInitialized) {
       return;
@@ -176,7 +175,7 @@ class _FoodCaptureState extends State<FoodCapture> {
                         icon: const Icon(Icons.photo_library_outlined, color: Colors.white, size: 36),
                       ),
                       GestureDetector(
-                        onTap: _takePicture, // <-- USES NEW FUNCTION
+                        onTap: _takePicture, 
                         child: Container(
                           height: 70,
                           width: 70,
@@ -197,7 +196,7 @@ class _FoodCaptureState extends State<FoodCapture> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 36), // Placeholder for balance
+                      const SizedBox(width: 36), 
                     ],
                   ),
                 ),

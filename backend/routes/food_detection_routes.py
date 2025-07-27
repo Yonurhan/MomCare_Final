@@ -113,10 +113,9 @@ def store_nutritional_info():
     data = request.get_json()
     print("→ payload:", data)
 
-    # Retrieve and cast the JWT identity to int
     raw_id = get_jwt_identity()
     try:
-        user_id = int(raw_id)  # Highlight: convert string identity to integer
+        user_id = int(raw_id)  
     except (TypeError, ValueError):
         return jsonify({'error': 'Invalid user_id format'}), 400
 
@@ -224,14 +223,14 @@ def get_nutrition_goal():
         if not user:
             return jsonify({'error': 'User not found'}), 404
         
-        if not user.due_date:
+        if not user.lmp_date:
             return jsonify({'error': 'Due date has not been set for this user.'}), 400
 
         nutrition_goals = calculate_nutrition_goals(
             age=user.age,
             weight=user.weight,
             height=user.height,
-            due_date=user.due_date
+            lmp_date=user.lmp_date
         )
 
         nutrition_goals['water_ml'] = 2000  
