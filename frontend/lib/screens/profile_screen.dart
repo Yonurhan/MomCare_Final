@@ -72,14 +72,14 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 const Text(
-                  'Ibu Hamil',
+                  'Putri Azzahra',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Text(
-                  'ibuhamil@example.com',
+                  'zahra@gmail.com',
                   style: TextStyle(
                     fontSize: 16,
                     color: AppTheme.secondaryTextColor,

@@ -1,4 +1,3 @@
-// lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,8 +10,6 @@ import '../widgets/home/today_nutrition_card.dart';
 import '../widgets/home/home_section_header.dart';
 import '../widgets/feature_card.dart';
 import 'nutrition_screen.dart';
-// assessment_screen.dart dan assessment_result_screen.dart tidak perlu diimpor
-// karena navigasinya sudah diatur oleh ViewModel.
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (viewModel.isLoading) {
       return const Center(child: CircularProgressIndicator(color: Colors.pink));
     }
+
     if (viewModel.errorMessage != null) {
       return Center(
         child: Padding(
@@ -95,12 +93,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 : AssessmentCompleteCard(
                     onTap: () => viewModel.handleAssessmentNavigation(context)),
           ),
-          if (viewModel.currentUser?.dueDate != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-              child: PregnancyProgressCard(
-                  dueDateString: viewModel.currentUser!.dueDate!),
+
+          // --- PERUBAHAN DI SINI ---
+          // Kondisi 'if' dinonaktifkan untuk sementara agar kartu selalu muncul.
+          // Gunakan ini untuk memastikan tampilan kartu sudah benar.
+          // if (viewModel.currentUser?.dueDate != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+            child: PregnancyProgressCard(
+              // Gunakan tanggal statis (hardcode) untuk pengujian.
+              // Ganti dengan tanggal yang sesuai dalam format 'YYYY-MM-DD'.
+              // Contoh ini menggunakan 20 April 2026.
+              // Saat ini, 27 Juli 2025, ini setara dengan ~ minggu ke-9.
+              dueDateString: '2026-03-25',
+
+              // 💡 Setelah data dari ViewModel benar, hapus baris di atas dan
+              //    kembalikan baris di bawah ini serta aktifkan lagi kondisi 'if'-nya.
+              // dueDateString: viewModel.currentUser!.dueDate!,
             ),
+          ),
+
           if (viewModel.nutritionSummary != null)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
