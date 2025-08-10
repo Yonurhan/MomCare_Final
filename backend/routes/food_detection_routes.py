@@ -16,7 +16,6 @@ API_USER_TOKEN = '974fc78c1d070486d453c379a5d78437970d7db5'
 HEADERS = {'Authorization': f'Bearer {API_USER_TOKEN}'}
 API_URL = 'https://api.logmeal.es/v2/image/segmentation/complete'
 
-# Nutritionix API (Text-Based)
 NUTRITIONIX_APP_ID  = os.getenv('NUTRITIONIX_APP_ID')
 NUTRITIONIX_APP_KEY = os.getenv('NUTRITIONIX_APP_KEY')
 NUTRITIONIX_URL     = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
@@ -27,7 +26,6 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-# --- Helper Function ---
 def find_or_create_log(user_id, session):
     """Finds today's log for a user or creates a new one if it doesn't exist."""
     today = date.today()
@@ -267,7 +265,6 @@ def log_water():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-# --- NEW ROUTE for logging sleep ---
 @food_detection_bp.route('/log/sleep', methods=['POST'])
 @jwt_required()
 def log_sleep():

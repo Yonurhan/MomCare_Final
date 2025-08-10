@@ -1,5 +1,3 @@
-# models/weekly_assessment.py
-
 from models import db
 
 class WeeklyAssessment(db.Model):
@@ -9,11 +7,8 @@ class WeeklyAssessment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     week_start_date = db.Column(db.Date, nullable=False)
 
-    # --- PERBAIKAN: Mengganti JSONB menjadi db.JSON ---
-    # `db.JSON` adalah tipe data generik yang kompatibel dengan MySQL.
     quiz_answers = db.Column(db.JSON, nullable=True)
     results = db.Column(db.JSON, nullable=True)
-    # ----------------------------------------------------
 
     status = db.Column(db.String(20), nullable=False, default='processing')
     has_critical_alert = db.Column(db.Boolean, nullable=False, default=False)
@@ -21,8 +16,6 @@ class WeeklyAssessment(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, server_default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
 
-    # Definisikan relasi dengan User (jika belum ada)
-    # user = db.relationship('User', back_populates='assessments')
 
     def to_dict(self):
         """Mengonversi objek model menjadi dictionary."""

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import threading
 import json
 import os
@@ -9,14 +7,12 @@ from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, field
 import logging
 
-# --- Impor Model & Layanan ---
 from models import db
 from models.user import User
 from models.daily_nutrition_log import DailyNutritionLog
 from models.weekly_assessment import WeeklyAssessment
 from services.nutrition_service import calculate_nutrition_goals
 
-# --- Definisi Exception Kustom ---
 class UserNotFoundError(Exception):
     """Exception raised when a user is not found in the database."""
     pass
@@ -118,7 +114,6 @@ SYMPTOM_KNOWLEDGE_BASE = {
     }
 }
 
-# --- Kelas MealPlanner yang Diperbaiki ---
 class MealPlanner:
     def __init__(self, recommendations: Dict, preferences: Dict):
         self.recommendations = recommendations
@@ -128,7 +123,6 @@ class MealPlanner:
 
     def _get_filtered_foods(self, nutrient: str) -> List[Dict]:
         """Menyaring makanan berdasarkan nutrisi dan preferensi diet pengguna."""
-        # Normalisasi format nutrisi
         nutrient_key = nutrient.lower().replace(' ', '_')
         
         self.logger.debug(f"Mencari rekomendasi untuk nutrisi: '{nutrient_key}'")
@@ -143,21 +137,17 @@ class MealPlanner:
         dietary_pref = self.preferences.get('dietary', 'all').lower()
 
         for rec in all_recs:
-            # Tangani rekomendasi berupa info/tip
             if rec.get('type') == 'info' or rec.get('tip'):
                 filtered_list.append(rec)
                 continue
                 
-            # Filter makanan berdasarkan preferensi
             if 'food' in rec:
                 food_name = rec['food'].lower()
                 
-                # Skip jika makanan tidak disukai
                 if food_name in disliked_foods:
                     self.logger.debug(f"Melewati {food_name} karena ada di daftar tidak disukai")
                     continue
                 
-                # Filter berdasarkan preferensi diet
                 tags = [tag.lower() for tag in rec.get('tags', [])]
                 skip = False
                 
@@ -180,26 +170,22 @@ class MealPlanner:
         """Menghasilkan ide rencana makan yang lebih andal."""
         self.logger.info(f"Memulai pembuatan meal plan untuk nutrisi: {deficient_nutrients}")
         
-        # Jika tidak ada nutrisi yang kurang, buat plan umum
         if not deficient_nutrients:
             self.logger.info("Tidak ada nutrisi kurang spesifik, menggunakan plan umum")
             return self._get_general_plan()
         
-        # Fungsi untuk memformat entri makanan
         def format_food_entry(food):
             base = f"{food['food']} ({food['serving_size']})"
             if 'value' in food and 'unit' in food:
                 return f"{base} - {food['value']}{food['unit']}"
             return base
         
-        # Kumpulkan semua makanan yang relevan
         food_scores = {}
         all_relevant_foods = {}
         
         for nutrient in deficient_nutrients:
             foods = self._get_filtered_foods(nutrient)
             for food in foods:
-                # Skip tips/info
                 if 'food' not in food:
                     continue
                     
@@ -207,16 +193,13 @@ class MealPlanner:
                 all_relevant_foods[food_name] = food
                 food_scores[food_name] = food_scores.get(food_name, 0) + 1
         
-        # Jika tidak ada makanan yang cocok, gunakan plan umum
         if not food_scores:
             self.logger.warning("Tidak ada makanan yang cocok, menggunakan plan umum")
             return self._get_general_plan()
-        
-        # Urutkan makanan berdasarkan relevansi
+
         sorted_foods = sorted(food_scores.items(), key=lambda item: item[1], reverse=True)
         used_foods = set()
-        
-        # Bangun rencana makan
+
         plan = {
             "breakfast": "Makanan kaya karbohidrat kompleks untuk energi pagi",
             "lunch": "Makanan bergizi seimbang dengan protein dan sayuran",

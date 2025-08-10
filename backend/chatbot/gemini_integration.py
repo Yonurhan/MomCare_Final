@@ -8,7 +8,6 @@ from typing import Dict, Any, Optional, List, Tuple, Union
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 
-# Konfigurasi logging dengan rotasi file
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -53,7 +52,7 @@ class ResponseCache:
     def __init__(self, max_size: int = 100, ttl: int = 3600):
         self.cache = {}
         self.max_size = max_size
-        self.ttl = ttl  # Time to live in seconds
+        self.ttl = ttl  
     
     def _generate_key(self, prompt: str) -> str:
         """Generate unique key for prompt"""
@@ -68,7 +67,6 @@ class ResponseCache:
                 logger.info(f"Cache hit for prompt: {prompt[:50]}...")
                 return response
             else:
-                # Remove expired entry
                 del self.cache[key]
         return None
     
@@ -76,8 +74,7 @@ class ResponseCache:
         """Set response in cache"""
         key = self._generate_key(prompt)
         self.cache[key] = (time.time(), response)
-        
-        # Remove oldest entries if cache exceeds max size
+
         if len(self.cache) > self.max_size:
             oldest_key = min(self.cache.keys(), key=lambda k: self.cache[k][0])
             del self.cache[oldest_key]

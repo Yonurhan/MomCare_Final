@@ -3,7 +3,6 @@ import random
 
 class ResponseGenerator:
     def __init__(self):
-        # Default responses for different intents
         self.default_responses = {
             'greeting': [
                 'Halo! Selamat datang di Chatbot Stunting. Apa yang ingin Anda ketahui tentang nutrisi kehamilan atau pencegahan stunting?',
@@ -21,27 +20,21 @@ class ResponseGenerator:
         entities = nlp_result.get('entities', {})
         context = nlp_result.get('context', [])
         
-        # Handle greetings
         if intent == 'greeting':
             return random.choice(self.default_responses['greeting'])
         
-        # Handle general queries with low confidence
         if nlp_result.get('confidence', 0) < 0.7:
             return random.choice(self.default_responses['general_query'])
         
-        # Handle nutrition queries
         if intent == 'nutrisi_kehamilan':
             return self._format_nutrition_response(kb_data, entities, user_preferences)
         
-        # Handle detail nutrition queries
         if intent == 'detail_nutrisi':
             return self._format_food_nutrition_response(kb_data)
         
-        # Handle stunting prevention queries
         if intent == 'pencegahan_stunting':
             return self._format_stunting_prevention_response(kb_data)
         
-        # Default response
         return random.choice(self.default_responses['general_query'])
     
     def _format_nutrition_response(self, kb_data: Dict[str, Any], entities: Dict[str, str], user_preferences: Dict[str, Any]) -> str:

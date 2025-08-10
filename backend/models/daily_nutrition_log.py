@@ -1,5 +1,3 @@
-# models/daily_nutrition_log.py
-
 from datetime import date
 from models import db
 

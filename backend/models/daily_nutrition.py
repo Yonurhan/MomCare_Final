@@ -1,5 +1,3 @@
-# models/daily_nutrition.py
-
 from models import db
 
 class DailyNutrition(db.Model):

@@ -6,26 +6,21 @@ class KnowledgeBase:
     def __init__(self, data_path: str = "chatbot/data"):
         self.data_path = data_path
         
-        # Create data directory if it doesn't exist
         os.makedirs(self.data_path, exist_ok=True)
         
-        # Load data or create default data if files don't exist
         self.trimester_nutrition = self._load_json("trimester_nutrition.json")
         self.food_recommendations = self._load_json("food_recommendations.json")
         self.food_nutrition_details = self._load_json("food_nutrition_details.json")
         self.stunting_prevention = self._load_json("stunting_prevention.json")
         
-        # Create default data if not loaded
         if not self.trimester_nutrition:
             self._create_default_data()
             
-            # Reload data
             self.trimester_nutrition = self._load_json("trimester_nutrition.json")
             self.food_recommendations = self._load_json("food_recommendations.json")
             self.food_nutrition_details = self._load_json("food_nutrition_details.json")
             self.stunting_prevention = self._load_json("stunting_prevention.json")
         
-        # In-memory storage for user preferences
         self.user_preferences = {}
     
     def _load_json(self, filename: str) -> Dict:
@@ -34,7 +29,6 @@ class KnowledgeBase:
             with open(f"{self.data_path}/{filename}", "r", encoding="utf-8") as file:
                 return json.load(file)
         except (FileNotFoundError, json.JSONDecodeError):
-            # Return empty dict if file doesn't exist or is invalid
             return {}
     
     def _save_json(self, data: Dict, filename: str) -> bool:
@@ -49,7 +43,6 @@ class KnowledgeBase:
     
     def _create_default_data(self):
         """Create default data files"""
-        # Trimester nutrition data
         trimester_nutrition = {
             "trimester_nutrition": [
                 {
@@ -91,7 +84,6 @@ class KnowledgeBase:
             ]
         }
         
-        # Food recommendations data
         food_recommendations = {
             "food_recommendations": [
                 {
@@ -139,7 +131,6 @@ class KnowledgeBase:
             ]
         }
         
-        # Food nutrition details data
         food_nutrition_details = {
             "food_nutrition_details": [
                 {
@@ -238,7 +229,6 @@ class KnowledgeBase:
             ]
         }
         
-        # Save data to files
         self._save_json(trimester_nutrition, "trimester_nutrition.json")
         self._save_json(food_recommendations, "food_recommendations.json")
         self._save_json(food_nutrition_details, "food_nutrition_details.json")
@@ -288,7 +278,6 @@ class KnowledgeBase:
         """Get relevant data based on intent, entities and context"""
         result = {}
         
-        # Handle nutrition intent
         if intent == 'nutrisi_kehamilan':
             trimester = None
             for key, value in entities.items():
@@ -301,7 +290,6 @@ class KnowledgeBase:
             if "rekomendasi_makanan" in context:
                 result["food_recommendations"] = self.get_food_recommendations()
         
-        # Handle detail nutrition intent
         elif intent == 'detail_nutrisi':
             food_item = None
             for key, value in entities.items():
@@ -311,7 +299,6 @@ class KnowledgeBase:
             if food_item:
                 result["food_nutrition"] = self.get_food_nutrition(food_item)
         
-        # Handle stunting prevention intent
         elif intent == 'pencegahan_stunting':
             result["stunting_prevention"] = self.get_stunting_prevention()
         

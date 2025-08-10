@@ -7,18 +7,14 @@ import sys
 from dotenv import load_dotenv
 import nltk
 
-# Add project root to sys.path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-# Load environment variables
 load_dotenv()
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 app.static_folder = 'static'
 
-# Database configuration
 app.config['MYSQL_HOST'] = os.getenv('DB_HOST', 'localhost')
 app.config['MYSQL_USER'] = os.getenv('DB_USER', 'root')
 app.config['MYSQL_PASSWORD'] = os.getenv('DB_PASSWORD', 'admin')
@@ -29,49 +25,27 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI',
     f"mysql://{os.getenv('DB_USER', 'root')}:{os.getenv('DB_PASSWORD', 'admin')}@{os.getenv('DB_HOST', 'localhost')}/{os.getenv('DB_NAME', 'forum_db')}")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize MySQL
 mysql = MySQL(app)
 
-# Import db from models and initialize it with the app
 from models import db
-db.init_app(app)  # Initialize ONLY ONCE
+db.init_app(app)  
 
-# JWT configuration
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'super-secret-key')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600
 jwt = JWTManager(app)
 
-# Upload folder configuration
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-# Create upload directories
 try:
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'topics'), exist_ok=True)
     print("✅ Direktori upload berhasil dibuat")
 except Exception as e:
     print(f"❌ Error saat membuat direktori upload: {str(e)}")
-# ================== INISIALISASI MODEL USER ================== 
-# try:
-#     # Import models satu per satu
-#     from models.user import User
-    
-#     with app.app_context():
-#         # Sambungkan instance MySQL ke model User
-#         User.mysql = mysql
-        
-#         # Buat tabel users
-#         User.create_table()
-        
-#         print("✅ Tabel users berhasil diinisialisasi")
-        
-# except Exception as e:
-#     print(f"❌ Error saat inisialisasi tabel users: {str(e)}")
-# Initialize database tables
+
 with app.app_context():
     try:
-        # Import all models
         from models.user import User
         from models.forum import Forum
         from models.comment import Comment
@@ -81,7 +55,6 @@ with app.app_context():
         from models.daily_nutrition_log import DailyNutritionLog
         from models.weekly_assessment import WeeklyAssessment
 
-        # Create tables
         db.create_all()
         print("✅ Semua tabel berhasil diinisialisasi")
     except Exception as e:
@@ -89,7 +62,6 @@ with app.app_context():
         print(f"❌ Error saat menginisialisasi tabel: {str(e)}")
         print(traceback.format_exc())
 
-# Register blueprints
 try:
     from routes.auth_routes import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')

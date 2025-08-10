@@ -46,7 +46,6 @@ def get_assessment_status():
 def perform_assessment_async():
     """Endpoint untuk MEMULAI proses asesmen."""
     user_id = int(get_jwt_identity())
-    # Dapatkan seluruh body JSON, termasuk 'quiz_answers' di dalamnya
     request_data = request.get_json()
     if not request_data or 'quiz_answers' not in request_data:
         return jsonify({'error': 'Request body harus berisi "quiz_answers".'}), 400
