@@ -1,7 +1,7 @@
 Untuk menjalankan aplikasi prototype MomCare, lakukan langkah-langkah berikut
 
 1. Clone Repository
-git clone https://github.com/yonurhan/MomCare.git
+git clone https://github.com/yonurhan/MomCare_Final.git
 cd MomCare/backend
 
 2. Install Python Dependencies
