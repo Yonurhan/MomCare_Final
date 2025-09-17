@@ -1,3 +1,5 @@
+setuptools>=65
+wheel
 flask==2.2.3
 flask-cors==3.0.10
 nltk==3.8.1
